@@ -5,11 +5,11 @@ from mpi4py import MPI
 
 class Wavefunction:
     """Container class for Kohn-Sham orbitals
-    
+
     Physically, wavefunction is uniquely labeled by a 2-tuple of band index (int)
     and spin ("up" or "down"). Internally, each wavefunction is labeled by an integer index.
     Several maps are defined to describe related transformations.
-    
+
     Attributes:
         norbs (int): total number of KS orbitals to be considered
         nuorbs/ndorbs (int): number of spin up/down orbitals
@@ -127,7 +127,7 @@ class Wavefunction:
         return psir / norm
 
     def compute_all_psir(self):
-        for iorb in self.iorb_psir_map:
+        for iorb in self.iorb_psig_arr_map:
             self.iorb_psir_map[iorb] = self.get_psir(iorb)
 
     def clear_all_psig_arr(self):

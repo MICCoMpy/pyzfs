@@ -66,7 +66,7 @@ def main():
         "prefix": "pwscf",
         "fftgrid": "wave",
         "comm": MPI.COMM_WORLD,
-        "memory": "low"
+        "memory": "critical"
     }
 
     if "--help" in sys.argv:
@@ -85,6 +85,7 @@ def main():
     # Construct proper wavefunction loader
     wfcfmt = kwargs.pop("wfcfmt")
     fftgrid = kwargs.pop("fftgrid")
+    memory = kwargs["memory"]
     if fftgrid not in ["density", "wave"]:
         fftgrid = np.array(parse_many_values(3, int, fftgrid))
     if wfcfmt == "qe":
@@ -105,7 +106,7 @@ def main():
     elif wfcfmt == "qeh5":
         from .common.wfc.qeh5loader import QEHDF5WavefunctionLoader
         prefix = kwargs.pop("prefix", "pwscf")
-        wfcloader = QEHDF5WavefunctionLoader(fftgrid=fftgrid, prefix=prefix)
+        wfcloader = QEHDF5WavefunctionLoader(fftgrid=fftgrid, prefix=prefix, memory=memory)
     else:
         raise ValueError("Unsupported wfcfmt: {}".format(wfcfmt))
 

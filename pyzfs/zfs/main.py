@@ -44,7 +44,7 @@ class ZFSCalculation:
     """
 
     @indent(2)
-    def __init__(self, wfcloader, memory="low", comm=MPI.COMM_WORLD, **kwargs):
+    def __init__(self, wfcloader, memory="critical", comm=MPI.COMM_WORLD, **kwargs):
         """Initialize ZFS calculation.
 
         Args:
@@ -54,11 +54,13 @@ class ZFSCalculation:
                 "high": high memory usage, better performance
                 "low": low memory usage, some intermediate quantities will not be stored and
                     will be computed every time when needed
+                "critical": lowest memory usage, some intermediate quantities will not be stored
+                    and will be computed every time when needed
         """
 
         # Initialize control parameters
         self.memory = memory
-        assert self.memory in ["high", "low"]
+        assert self.memory in ["high", "low", "critical"]
 
         # Define a 2D processor grid to parallelize summation over pairs of orbitals.
         self.pgrid = ProcessorGrid(comm, square=True)
@@ -95,7 +97,7 @@ class ZFSCalculation:
     def solve(self):
         """Compute and gather local block of I in each processor."""
         self.pgrid.comm.barrier()
-        tssolve = time()
+        t0 = time()
 
         # Load wavefunctions from files
         iorbs = set(
@@ -106,6 +108,10 @@ class ZFSCalculation:
         del self.wfcloader
         self.pgrid.comm.barrier()
         self.print_memory_usage()
+        t1 = time()
+
+        if self.pgrid.onroot:
+            print("Time elapsed for loading wfc: {:.0f}s".format(t1 - t0))
 
         # Compute dipole-dipole interaction tensor. Due to symmetry we only need the
         # upper triangular part of ddig
@@ -185,7 +191,7 @@ class ZFSCalculation:
 
             self.print_memory_usage()
 
-            print("Time elapsed for pair iteration: {:.0f}s".format(time() - tssolve))
+            print("Time elapsed for pair iteration: {:.0f}s".format(time() - t1))
 
     @indent(2)
     def print_memory_usage(self):

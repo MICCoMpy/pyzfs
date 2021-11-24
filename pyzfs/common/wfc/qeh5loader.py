@@ -194,6 +194,9 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
         sdm.colcomm.Bcast(psig_arrs_n, root=0)
         comm.barrier()
 
+        if onroot:
+            del psig_arrs_all
+
         for iloc in range(sdm.mloc):
             iorb = sdm.ltog(iloc)
             self.wfc.set_psig_arr(iorb, psig_arrs_m[iloc])

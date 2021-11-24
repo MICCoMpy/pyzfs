@@ -2,7 +2,8 @@ from __future__ import absolute_import, division, print_function
 from time import time
 import numpy as np
 import pkg_resources
-import resource
+import os
+import psutil
 from mpi4py import MPI
 from lxml import etree
 
@@ -176,7 +177,6 @@ class ZFSCalculation:
         self.Evalue = 0.5 * (dx - dy)
 
         if self.pgrid.onroot:
-
             print("\n\nTotal D tensor (MHz): ")
             print(self.D)
             print("D eigenvalues (MHz): ")
@@ -188,13 +188,15 @@ class ZFSCalculation:
             print("Dx, Dy, Dz (|Dz| > |Dx| > |Dy|) (MHz): ")
             print(dx, dy, dz)
             print("Scalar D = {:.2f} MHz, E = {:.2f} MHz".format(self.Dvalue, self.Evalue))
-
-            self.print_memory_usage()
-
             print("Time elapsed for pair iteration: {:.0f}s".format(time() - t1))
 
     @indent(2)
     def print_memory_usage(self):
+        pyproc = psutil.Process(os.getpid())
+        memloc = np.array(pyproc.memory_info()[0]/2.**20, dtype="f")
+        memtot = np.array(0.0, dtype="f")
+        MPI.COMM_WORLD.Reduce([memloc, MPI.FLOAT], [memtot, MPI.FLOAT])
+
         if self.pgrid.onroot:
             print("\nMemory usage (on process 0):")
 
@@ -212,9 +214,8 @@ class ZFSCalculation:
                 except AttributeError:
                     pass
 
-            print("Total memory usage (on process 0): {:.2f} MB\n".format(
-                resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.
-            ))
+            print("\nTotal memory usage (on process 0): {:.2f} MB".format(memloc))
+            print("Total memory usage (all processes): {:.2f} MB".format(memtot))
 
     def get_xml(self):
         """Generate an xml to store information of this calculation.

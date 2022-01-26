@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function
 import numpy as np
+import cupy as cp
 
 
 def compute_rhog(psi1r, psi2r, ft, rho1g=None, rho2g=None):
@@ -29,23 +30,23 @@ def compute_rhog(psi1r, psi2r, ft, rho1g=None, rho2g=None):
         assert rho1g.shape == psi1r.shape
         f1g = rho1g
     else:
-        f1r = psi1r * np.conj(psi1r)
+        f1r = psi1r * cp.conj(psi1r)
         f1g = ft.forward(f1r)
 
     if rho2g is not None:
         assert rho2g.shape == psi2r.shape
         f2g = rho2g
     else:
-        f2r = psi2r * np.conj(psi2r)
+        f2r = psi2r * cp.conj(psi2r)
         f2g = ft.forward(f2r)
 
-    f3r = psi1r * np.conj(psi2r)
+    f3r = psi1r * cp.conj(psi2r)
     f3g = ft.forward(f3r)
 
     #rhoj = f1g * np.conj(f2g)
     #rhok = f3g * np.conj(f3g)
 
-    rhog = f1g * np.conj(f2g) - f3g * np.conj(f3g)
+    rhog = f1g * cp.conj(f2g) - f3g * cp.conj(f3g)
     #rhor = ft.backward(rhog)
 
     return rhog #, rhor, rhoj, rhok

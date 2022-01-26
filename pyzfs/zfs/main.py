@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function
 from time import time
 import numpy as np
+import cupy as cp
 import pkg_resources
 import os
 import psutil
@@ -146,7 +147,8 @@ class ZFSCalculation:
             psi2r = wfc.get_psir(j)
             rho1g = wfc.get_rhog(i)
             rho2g = wfc.get_rhog(j)
-            rhog = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
+            rhog_d = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
+            rhog = cp.asnumpy(rhog_d)
 
             # Factor to be multiplied with I:
             #   chi comes from spin direction

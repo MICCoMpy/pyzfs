@@ -3,13 +3,14 @@ import sys
 import os
 from datetime import datetime
 import numpy as np
+from cupy.cuda.runtime import getDeviceCount, setDevice
 from mpi4py import MPI
 from pprint import pprint
 import pkg_resources
 from .common.misc import parse_sys_argv
 from .common.misc import parse_many_values
 from .zfs.main import ZFSCalculation
-from .common.parallel import mpiroot
+from .common.parallel import mpiroot, mpirank
 
 
 pyzfs_help_message = """Run Zero Field Splitting calculation
@@ -81,6 +82,13 @@ def main():
     if mpiroot:
         print("pyzfs.run: setting working directory as \"{}\"...".format(path))
     os.chdir(path)
+
+    # CUDA initialization
+    nGPU = getDeviceCount()
+    if mpiroot:
+        print("pyzfs.run: found {} GPU devices".format(nGPU))
+        print("pyzfs.run: setting GPU devices...")
+    setDevice(mpirank%nGPU)
 
     # Construct proper wavefunction loader
     wfcfmt = kwargs.pop("wfcfmt")

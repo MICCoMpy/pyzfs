@@ -1,14 +1,6 @@
 from __future__ import absolute_import, division, print_function
 from mpi4py import MPI
-try:
-    from pyfftw.interfaces.numpy_fft import fftn, ifftn, rfftn, irfftn
-    # if MPI.COMM_WORLD.Get_rank() == 0:
-    #     print("pyzfs.common.ft: using PyFFTW library...")
-except ImportError:
-    from numpy.fft import fftn, ifftn, rfftn, irfftn
-    # if MPI.COMM_WORLD.Get_rank() == 0:
-    #     print("pyzfs.common.ft: using numpy.fft library...")
-from numpy.fft import fftshift, ifftshift
+from cupy.fft import fftn, ifftn, rfftn, irfftn, fftshift, ifftshift
 
 
 class FourierTransform:

@@ -1,11 +1,11 @@
 
-     Program PWSCF v.6.4.1 starts on 14Feb2020 at 17:11:47 
+     Program PWSCF v.6.4.1 starts on 14Feb2020 at 17:11:47
 
      This program is part of the open-source Quantum ESPRESSO suite
      for quantum simulation of materials; please cite
          "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
          "P. Giannozzi et al., J. Phys.:Condens. Matter 29 465901 (2017);
-          URL http://www.quantum-espresso.org", 
+          URL http://www.quantum-espresso.org",
      in publications or presentations arising from this work. More details at
      http://www.quantum-espresso.org/quote
 
@@ -34,14 +34,14 @@
      one sub-group per band group will be used
      scalapack distributed-memory algorithm (size of sub-group:  4*  4 procs)
 
- 
+
      Parallelization info
      --------------------
      sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
      Min          72      72     17                 2924     2924     366
      Max          74      74     20                 2934     2934     374
      Sum        2885    2885    725               117161   117161   14771
- 
+
 
 
      bravais-lattice index     =            0
@@ -62,14 +62,14 @@
      celldm(4)=   0.000000  celldm(5)=   0.000000  celldm(6)=   0.000000
 
      crystal axes: (cart. coord. in units of alat)
-               a(1) = (   1.000000   0.000000   0.000000 )  
-               a(2) = (   0.000000   1.000000   0.000000 )  
-               a(3) = (   0.000000   0.000000   1.000000 )  
+               a(1) = (   1.000000   0.000000   0.000000 )
+               a(2) = (   0.000000   1.000000   0.000000 )
+               a(3) = (   0.000000   0.000000   1.000000 )
 
      reciprocal axes: (cart. coord. in units 2 pi/alat)
-               b(1) = (  1.000000  0.000000  0.000000 )  
-               b(2) = (  0.000000  1.000000  0.000000 )  
-               b(3) = (  0.000000  0.000000  1.000000 )  
+               b(1) = (  1.000000  0.000000  0.000000 )
+               b(2) = (  0.000000  1.000000  0.000000 )
+               b(3) = (  0.000000  0.000000  1.000000 )
 
 
      PseudoPot. # 1 for C  read from file:
@@ -77,7 +77,7 @@
      MD5 check sum: 40f8c33130f0afa4272e9dcc1c4fb0df
      Pseudo is Norm-conserving, Zval =  4.0
      Generated using ONCVPSP code by D. R. Hamann
-     Using radial grid of  602 points,  4 beta functions with: 
+     Using radial grid of  602 points,  4 beta functions with:
                 l(1) =   0
                 l(2) =   0
                 l(3) =   1
@@ -88,7 +88,7 @@
      MD5 check sum: e7391ac1e3da9302b4611eea0a09cd4a
      Pseudo is Norm-conserving, Zval =  5.0
      Generated using ONCVPSP code by D. R. Hamann
-     Using radial grid of  602 points,  4 beta functions with: 
+     Using radial grid of  602 points,  4 beta functions with:
                 l(1) =   0
                 l(2) =   0
                 l(3) =   1
@@ -98,7 +98,7 @@
         C              4.00    12.01100     C ( 1.00)
         N              5.00    14.00700     N ( 1.00)
 
-     Starting magnetic structure 
+     Starting magnetic structure
      atomic species   magnetization
         C            0.000
         N            0.000
@@ -108,7 +108,7 @@
 
                                     s                        frac. trans.
 
-      isym =  1     identity                                     
+      isym =  1     identity
 
  cryst.   s( 1) = (     1          0          0      )
                   (     0          1          0      )
@@ -469,7 +469,7 @@
      iteration # 13     ecut=    50.00 Ry     beta= 0.70
      Davidson diagonalization with overlap
      ethr =  1.12E-11,  avg # of iterations =  3.5
- 
+
      Magnetic moment per site:
      atom:    1    charge:    1.8063    magn:    0.0010    constr:    0.0000
      atom:    2    charge:    1.8000    magn:    0.0010    constr:    0.0000
@@ -561,7 +561,7 @@
      9.9940   9.9940  10.0216  10.0216  10.1213  10.1213  10.2730  10.2731
     10.3426  10.9730  12.2106  12.4558  12.4558  13.8042  14.7825  14.7826
 
-     occupation numbers 
+     occupation numbers
      1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
      1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
      1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
@@ -601,7 +601,7 @@
     10.0137  10.0137  10.0549  10.0549  10.1535  10.1535  10.3284  10.3284
     10.4039  11.3698  12.5174  12.6026  12.6026  14.2723  16.1445  16.1445
 
-     occupation numbers 
+     occupation numbers
      1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
      1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
      1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000   1.0000
@@ -700,7 +700,7 @@
 
 
      Writing output data file pwscf.save/
- 
+
      init_run     :      0.11s CPU      0.13s WALL (       1 calls)
      electrons    :      7.08s CPU      7.28s WALL (       1 calls)
      stress       :      0.15s CPU      0.17s WALL (       1 calls)
@@ -748,15 +748,15 @@
      fft          :      0.07s CPU      0.07s WALL (     214 calls)
      ffts         :      0.01s CPU      0.01s WALL (      26 calls)
      fftw         :      1.72s CPU      1.74s WALL (   13264 calls)
- 
+
      Parallel routines
      fft_scatt_xy :      0.20s CPU      0.21s WALL (   13504 calls)
      fft_scatt_yz :      1.21s CPU      1.23s WALL (   13504 calls)
- 
+
      PWSCF        :      7.55s CPU      8.12s WALL
 
- 
-   This run was terminated on:  17:11:55  14Feb2020            
+
+   This run was terminated on:  17:11:55  14Feb2020
 
 =------------------------------------------------------------------------------=
    JOB DONE.

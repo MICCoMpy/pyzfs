@@ -27,7 +27,7 @@ echo "E = " $E
 echo "Ref E = " $Eref
 
 if [ `python -c "print(int(abs($D - $Dref) < 1 and abs($E - $Eref) < 1))"` -ne 0 ]
-then 
+then
     exit 0
 else
     exit 1

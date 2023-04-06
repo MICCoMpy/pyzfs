@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="pyzfs",
-    version="1.3",
+    version="1.4",
     author="He Ma, Marco Govoni, Giulia Galli",
     author_email="mahe@uchicago.edu, mgovoni@anl.gov, gagalli@uchicago.edu",
-    description="A python code to compute zero-field splitting tensors",
+    description="A Python code to compute zero-field splitting tensors",
     packages=find_packages(),
     classifiers=[],
     install_requires=[

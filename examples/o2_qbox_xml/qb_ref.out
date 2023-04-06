@@ -28,7 +28,7 @@
 <process id="0"> mahe-Precision-Tower-5810 </process>
 </mpi_processes>
 [qbox] <cmd>set cell 9.448712 0.000000 0.000000 0.000000 9.448712 0.000000 0.000000 0.000000 9.448712</cmd>
-<unit_cell 
+<unit_cell
     a="9.44871200   0.00000000   0.00000000  "
     b="0.00000000   9.44871200   0.00000000  "
     c="0.00000000   0.00000000   9.44871200  " />
@@ -58,23 +58,23 @@ Warning at file , line 0, char 0
 
 
  Copyright 2015 The Regents of the University of California
- 
- This work is licensed under the Creative Commons Attribution-ShareAlike 
- 4.0 International License. To view a copy of this license, visit 
- http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to 
+
+ This work is licensed under the Creative Commons Attribution-ShareAlike
+ 4.0 International License. To view a copy of this license, visit
+ http://creativecommons.org/licenses/by-sa/4.0/ or send a letter to
  Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
- 
- This pseudopotential is part of the Schlipf-Gygi norm-conserving 
- pseudopotential library. Its construction parameters were tuned to 
- reproduce materials of a training set with very high accuracy and 
- should be suitable as a general purpose pseudopotential to treat a 
- variety of different compounds. For details of the construction and 
+
+ This pseudopotential is part of the Schlipf-Gygi norm-conserving
+ pseudopotential library. Its construction parameters were tuned to
+ reproduce materials of a training set with very high accuracy and
+ should be suitable as a general purpose pseudopotential to treat a
+ variety of different compounds. For details of the construction and
  testing of the pseudopotential please refer to:
- 
+
  M. Schlipf, F. Gygi, Comp. Phys. Comm. 196, 36 (2015)
  http://dx.doi.org/10.1016/j.cpc.2015.05.011
- 
- We kindly ask that you include this reference in all publications 
+
+ We kindly ask that you include this reference in all publications
  associated to this pseudopotential.
 
 
@@ -224,7 +224,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.95408962 
+ AndersonMixer: theta = -0.95408962
   <eigenvalue_sum>  -9.70023053 </eigenvalue_sum>
   <eigenvalue_sum>  -10.99114876 </eigenvalue_sum>
   <eigenvalue_sum>  -11.23788926 </eigenvalue_sum>
@@ -243,7 +243,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = 0.89196221 -0.44697862 
+ AndersonMixer: theta = 0.89196221 -0.44697862
   <eigenvalue_sum>  -10.59834528 </eigenvalue_sum>
   <eigenvalue_sum>  -10.62857802 </eigenvalue_sum>
 <eigenset>
@@ -260,7 +260,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.74869098 -0.05094145 0.06300793 
+ AndersonMixer: theta = -0.74869098 -0.05094145 0.06300793
   <eigenvalue_sum>  -10.01655358 </eigenvalue_sum>
   <eigenvalue_sum>  -10.13569623 </eigenvalue_sum>
   <eigenvalue_sum>  -10.16620942 </eigenvalue_sum>
@@ -278,7 +278,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = 0.58349459 -0.47188930 -0.08758455 
+ AndersonMixer: theta = 0.58349459 -0.47188930 -0.08758455
   <eigenvalue_sum>  -8.23881747 </eigenvalue_sum>
   <eigenvalue_sum>  -8.25555356 </eigenvalue_sum>
   <eigenvalue_sum>  -8.25938719 </eigenvalue_sum>
@@ -296,7 +296,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.64577632 0.58923608 -0.30413999 
+ AndersonMixer: theta = -0.64577632 0.58923608 -0.30413999
   <eigenvalue_sum>  -7.81518197 </eigenvalue_sum>
   <eigenvalue_sum>  -7.82095166 </eigenvalue_sum>
 <eigenset>
@@ -313,7 +313,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.95853566 0.23734267 -0.05951397 
+ AndersonMixer: theta = -0.95853566 0.23734267 -0.05951397
   <eigenvalue_sum>  -7.88019705 </eigenvalue_sum>
   <eigenvalue_sum>  -7.88415437 </eigenvalue_sum>
 <eigenset>
@@ -330,7 +330,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.76585574 0.44255915 -0.08708140 
+ AndersonMixer: theta = -0.76585574 0.44255915 -0.08708140
   <eigenvalue_sum>  -7.90063034 </eigenvalue_sum>
   <eigenvalue_sum>  -7.90103632 </eigenvalue_sum>
 <eigenset>
@@ -347,7 +347,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.93386558 0.08138930 -0.00336751 
+ AndersonMixer: theta = -0.93386558 0.08138930 -0.00336751
   <eigenvalue_sum>  -7.91348519 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91376209 </eigenvalue_sum>
 <eigenset>
@@ -364,7 +364,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.60864568 0.53674850 -0.11876162 
+ AndersonMixer: theta = -0.60864568 0.53674850 -0.11876162
   <eigenvalue_sum>  -7.91030976 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91036450 </eigenvalue_sum>
 <eigenset>
@@ -381,7 +381,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.01015715 -0.79629166 0.31849334 
+ AndersonMixer: theta = -0.01015715 -0.79629166 0.31849334
   <eigenvalue_sum>  -7.90893404 </eigenvalue_sum>
   <eigenvalue_sum>  -7.90896257 </eigenvalue_sum>
 <eigenset>
@@ -398,7 +398,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.65518242 0.60403565 -0.10143388 
+ AndersonMixer: theta = -0.65518242 0.60403565 -0.10143388
   <eigenvalue_sum>  -7.91290522 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91292829 </eigenvalue_sum>
 <eigenset>
@@ -415,7 +415,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = 0.11649680 -0.15761888 0.03568977 
+ AndersonMixer: theta = 0.11649680 -0.15761888 0.03568977
   <eigenvalue_sum>  -7.91339198 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91339392 </eigenvalue_sum>
 <eigenset>
@@ -432,7 +432,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.93629307 0.22106809 0.02834953 
+ AndersonMixer: theta = -0.93629307 0.22106809 0.02834953
   <eigenvalue_sum>  -7.91261262 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91261402 </eigenvalue_sum>
 <eigenset>
@@ -449,7 +449,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.88687337 0.32828435 -0.29126711 
+ AndersonMixer: theta = -0.88687337 0.32828435 -0.29126711
   <eigenvalue_sum>  -7.91316176 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91316194 </eigenvalue_sum>
 <eigenset>
@@ -466,7 +466,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.32730254 -0.06156517 0.13855494 
+ AndersonMixer: theta = -0.32730254 -0.06156517 0.13855494
   <eigenvalue_sum>  -7.91320730 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91320742 </eigenvalue_sum>
 <eigenset>
@@ -483,7 +483,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.30100778 0.31606822 -0.14775990 
+ AndersonMixer: theta = -0.30100778 0.31606822 -0.14775990
   <eigenvalue_sum>  -7.91302136 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91302141 </eigenvalue_sum>
 <eigenset>
@@ -500,7 +500,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.05087188 -0.18133340 -0.07133628 
+ AndersonMixer: theta = -0.05087188 -0.18133340 -0.07133628
   <eigenvalue_sum>  -7.91305126 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91305127 </eigenvalue_sum>
 <eigenset>
@@ -517,7 +517,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = -0.53387458 0.17339131 -0.02798791 
+ AndersonMixer: theta = -0.53387458 0.17339131 -0.02798791
   <eigenvalue_sum>  -7.91310057 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91310058 </eigenvalue_sum>
 <eigenset>
@@ -534,7 +534,7 @@ Input file for PP generation:
   BOSampleStepper: start scf iteration
   <electronic_charge ispin="0"> 7.00000000 </electronic_charge>
   <electronic_charge ispin="1"> 5.00000000 </electronic_charge>
- AndersonMixer: theta = 0.22234039 -0.12483504 -0.01670560 
+ AndersonMixer: theta = 0.22234039 -0.12483504 -0.01670560
   <eigenvalue_sum>  -7.91310212 </eigenvalue_sum>
   <eigenvalue_sum>  -7.91310212 </eigenvalue_sum>
 <eigenset>
@@ -563,7 +563,7 @@ Input file for PP generation:
   <eefield>      0.00000000 </eefield>
   <enthalpy>   -30.10314909 </enthalpy>
 <atomset>
-<unit_cell 
+<unit_cell
     a="  9.44871200   0.00000000   0.00000000"
     b="  0.00000000   9.44871200   0.00000000"
     c="  0.00000000   0.00000000   9.44871200" />
@@ -613,7 +613,7 @@ Input file for PP generation:
  SampleWriter: file size: 595511
  SampleWriter: aggregate write rate: 21.23 MB/s
 [qbox] <cmd></cmd>
-[qbox]  End of command stream 
+[qbox]  End of command stream
 <real_time> 1.66 </real_time>
 <end_time> 2020-02-14T21:41:27Z </end_time>
 </fpmd:simulation>

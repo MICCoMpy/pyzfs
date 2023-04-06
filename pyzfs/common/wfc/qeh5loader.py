@@ -30,12 +30,12 @@ def _compute_offset(sdm, iorb):
 
 class QEHDF5WavefunctionLoader(WavefunctionLoader):
 
-    def __init__(self, fftgrid="density", prefix="pwscf", comm=MPI.COMM_WORLD):
+    def __init__(self, fftgrid="density", prefix="pwscf", memory="critical", comm=MPI.COMM_WORLD):
         self.fftgrid = fftgrid
         self.dft = None
         self.wft = None
         self.prefix = prefix
-        super(QEHDF5WavefunctionLoader, self).__init__()
+        super(QEHDF5WavefunctionLoader, self).__init__(memory=memory)
 
     def scan(self):
         super(QEHDF5WavefunctionLoader, self).scan()
@@ -127,7 +127,7 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
         if onroot:
             wfcfile = "wfcup1.hdf5"
             wfch5 = h5py.File(os.path.join(
-                self.root, "{}.save".format(self.prefix), wfcfile))
+                self.root, "{}.save".format(self.prefix), wfcfile), "r")
             gvecs = np.array(wfch5["MillerIndices"], dtype=int)
             ngvecs = gvecs.shape[0]
             assert gvecs.shape == (ngvecs, 3)
@@ -149,7 +149,7 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
             for ispin in range(2):
                 wfcfile = "wfcup1.hdf5" if ispin == 0 else "wfcdw1.hdf5"
                 wfch5 = h5py.File(os.path.join(
-                    self.root, "{}.save".format(self.prefix), wfcfile))
+                    self.root, "{}.save".format(self.prefix), wfcfile), "r")
                 gvecs = np.array(wfch5["MillerIndices"], dtype=int)
                 ngvecs = gvecs.shape[0]
                 assert gvecs.shape == (ngvecs, 3)
@@ -193,6 +193,9 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
             print("QEHDF5WavefunctionLoader: first row -> other row bcast")
         sdm.colcomm.Bcast(psig_arrs_n, root=0)
         comm.barrier()
+
+        if onroot:
+            del psig_arrs_all
 
         for iloc in range(sdm.mloc):
             iorb = sdm.ltog(iloc)

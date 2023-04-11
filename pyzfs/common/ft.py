@@ -1,4 +1,3 @@
-from __future__ import absolute_import, division, print_function
 from mpi4py import MPI
 try:
     from cupy.fft import fftn, ifftn, rfftn, irfftn, fftshift, ifftshift

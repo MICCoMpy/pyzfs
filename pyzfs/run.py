@@ -3,7 +3,6 @@ import sys
 import os
 from datetime import datetime
 import numpy as np
-from cupy.cuda.runtime import getDeviceCount, setDevice
 from mpi4py import MPI
 from pprint import pprint
 import pkg_resources
@@ -84,11 +83,16 @@ def main():
     os.chdir(path)
 
     # CUDA initialization
-    nGPU = getDeviceCount()
-    if mpiroot:
-        print("pyzfs.run: found {} GPU devices".format(nGPU))
-        print("pyzfs.run: setting GPU devices...")
-    setDevice(mpirank%nGPU)
+    try:
+        from cupy.cuda.runtime import getDeviceCount, setDevice
+
+        nGPU = getDeviceCount()
+        if mpiroot:
+            print("pyzfs.run: found {} GPU devices".format(nGPU))
+            print("pyzfs.run: setting GPU devices...")
+        setDevice(mpirank%nGPU)
+    except Exception:
+        pass
 
     # Construct proper wavefunction loader
     wfcfmt = kwargs.pop("wfcfmt")

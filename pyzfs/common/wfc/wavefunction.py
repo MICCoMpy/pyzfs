@@ -1,5 +1,4 @@
 import numpy as np
-import cupy as cp
 from ..ft import fftshift, ifftshift, irfftn
 from mpi4py import MPI
 
@@ -112,7 +111,11 @@ class Wavefunction:
             s = "{} Impossible to get psir: orbital {} is not loaded".format(rank, iorb)
             assert iorb in self.iorb_psig_arr_map, s
             psir = self.compute_psir_from_psig_arr(self.iorb_psig_arr_map[iorb])
-            return cp.asarray(psir)
+            try:
+                import cupy as cp
+                return cp.asarray(psir)
+            except ImportError:
+                return psir
 
     def get_rhog(self, iorb):
         """Get rho(G) of certain index"""
@@ -120,7 +123,11 @@ class Wavefunction:
             return self.iorb_rhog_map[iorb]
         else:
             psir = self.get_psir(iorb)
-            return self.ft.forward(psir * cp.conj(psir))
+            try:
+                import cupy as cp
+                return self.ft.forward(psir * cp.conj(psir))
+            except ImportError:
+                return self.ft.forward(psir * np.conj(psir))
 
     def normalize(self, psir):
         """Normalize psir."""

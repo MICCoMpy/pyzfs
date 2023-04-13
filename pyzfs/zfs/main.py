@@ -146,7 +146,13 @@ class ZFSCalculation:
             psi2r = wfc.get_psir(j)
             rho1g = wfc.get_rhog(i)
             rho2g = wfc.get_rhog(j)
-            rhog = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
+
+            try:
+                import cupy as cp
+                rhog_d = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
+                rhog = cp.asnumpy(rhog_d)
+            except ImportError:
+                rhog = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
 
             # Factor to be multiplied with I:
             #   chi comes from spin direction

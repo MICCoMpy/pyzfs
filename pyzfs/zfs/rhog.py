@@ -1,5 +1,4 @@
 from __future__ import absolute_import, division, print_function
-import numpy as np
 
 
 def compute_rhog(psi1r, psi2r, ft, rho1g=None, rho2g=None):
@@ -24,6 +23,11 @@ def compute_rhog(psi1r, psi2r, ft, rho1g=None, rho2g=None):
         rho(G, -G) as a np.ndarray of shape (ft.N, ft.N).
 
     """
+
+    try:
+        import cupy as np
+    except ImportError:
+        import numpy as np
 
     if rho1g is not None:
         assert rho1g.shape == psi1r.shape
@@ -65,6 +69,8 @@ def compute_delta_model_rhog(cell, ft, d1, d2, d3, s=1):
     Returns:
         rho(G, -G) as a np.ndarray of shape (ft.N, ft.N)
     """
+
+    import numpy as np
 
     n1, n2, n3, N = ft.n1, ft.n2, ft.n3, ft.N
     R1, R2, R3 = cell.R1, cell.R2, cell.R3

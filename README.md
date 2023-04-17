@@ -9,7 +9,7 @@ The ZFS tensor describes the lifting of degeneracy of spin sublevels in the abse
 Documentation
 -------------
 
-The tutorial and documentation are hosted on [Read the Docs](https://pyzfs-doc.readthedocs.io/en/latest/).
+The tutorial and documentation are hosted on [GitHub Pages](https://MICCoMpy.github.io/pyzfs/).
 
 Authors
 -------
@@ -25,4 +25,4 @@ Victor Yu (yuw@anl.gov)
 Contact
 -------
 
-Please use the GitHub [issue tracker](https://github.com/MICCoMPy/pyzfs/issues) for bug reports. Contributions to new features are welcome.
+Please use the GitHub [issue tracker](https://github.com/MICCoMpy/pyzfs/issues/) for bug reports. Contributions to new features are welcome.

@@ -1,4 +1,3 @@
-from __future__ import absolute_import, division, print_function
 from time import time
 import numpy as np
 import pkg_resources

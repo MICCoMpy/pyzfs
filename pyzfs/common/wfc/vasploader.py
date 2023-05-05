@@ -1,8 +1,6 @@
-
 # Support for VASP wavefunction is removed since it
 # would need external files that may violate the license used here
 
-# from __future__ import absolute_import, division, print_function
 # import numpy as np
 #
 # from .baseloader import WavefunctionLoader

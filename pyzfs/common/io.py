@@ -1,8 +1,4 @@
-from __future__ import absolute_import, division, print_function
-try:
-    import __builtin__
-except ImportError:
-    import builtins as __builtin__
+import builtins
 
 class indent:
     """Decorator to make all print commands in a function become indented"""
@@ -13,15 +9,15 @@ class indent:
             n (int): indentation, default to zero
         """
         self.prefix = prefix + " " * n
-        self.builtin_print = __builtin__.print
+        self.builtin_print = builtins.print
         self.overridden_print = None
 
     def __call__(self, func):
         def closure(*args, **kwargs):
-            self.overridden_print = __builtin__.print
-            __builtin__.print = self.indented_print
+            self.overridden_print = builtins.print
+            builtins.print = self.indented_print
             func(*args, **kwargs)
-            __builtin__.print = self.overridden_print
+            builtins.print = self.overridden_print
         return closure
 
     def indented_print(self, *args, **kwargs):

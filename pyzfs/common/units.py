@@ -1,4 +1,3 @@
-from __future__ import absolute_import, division, print_function
 # Unit conversions
 from scipy.constants import h
 

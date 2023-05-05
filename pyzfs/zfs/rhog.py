@@ -1,6 +1,3 @@
-from __future__ import absolute_import, division, print_function
-
-
 def compute_rhog(psi1r, psi2r, ft, rho1g=None, rho2g=None):
     """Compute rho(G, -G) for two electrons occupying two (KS) orbitals.
 

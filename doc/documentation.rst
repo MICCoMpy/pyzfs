@@ -1,15 +1,15 @@
 .. _documentation:
 
-Code documentation
-==================
+Documentation
+=============
 
-**PyZFS** can be extended to support more wavefunction formats by defining subclasses of **WavefunctionLoader** abstract class.
-The abstract method **scan** and **load** have to be override to parse and read the wavefunction data into memory and store as a **Wavefunction** object.
+**PyZFS** can be extended to support more wavefunction formats by defining subclasses of the ``WavefunctionLoader`` abstract class.
+The abstract method ``scan`` and ``load`` have to be overridden to parse and read the wavefunction data into memory and store as a ``Wavefunction`` object.
 
 **PyZFS** API documentation:
 
 ZFS
-------
+---
 
 .. automodule:: pyzfs.zfs.main
     :members:
@@ -32,6 +32,4 @@ Common
 
 .. automodule:: pyzfs.common.parallel
     :members:
-
-
 

@@ -58,10 +58,6 @@ class ZFSCalculation:
                     and will be computed every time when needed
         """
 
-        # Initialize control parameters
-        self.memory = memory
-        assert self.memory in ["high", "low", "critical"]
-
         # Define a 2D processor grid to parallelize summation over pairs of orbitals.
         self.pgrid = ProcessorGrid(comm, square=True)
         if self.pgrid.onroot:
@@ -99,6 +95,13 @@ class ZFSCalculation:
         self.pgrid.comm.barrier()
         t0 = time()
 
+        try:
+            import cupy as cp
+
+            lGPU = True
+        except ImportError:
+            lGPU = False
+
         # Load wavefunctions from files
         iorbs = set(
             list(range(self.I.mstart, self.I.mend))
@@ -118,7 +121,10 @@ class ZFSCalculation:
         if self.pgrid.onroot:
             print("\nComputing dipole-dipole interaction tensor in G space...\n")
         ddig = compute_ddig(self.cell, self.ft)
-        self.ddig = ddig[np.triu_indices(3)]
+        if lGPU:
+            self.ddig = cp.asarray(ddig[np.triu_indices(3)])
+        else:
+            self.ddig = ddig[np.triu_indices(3)]
         self.print_memory_usage()
 
         # Compute contribution to D tensor from every pair of electrons
@@ -149,13 +155,7 @@ class ZFSCalculation:
             rho1g = wfc.get_rhog(i)
             rho2g = wfc.get_rhog(j)
 
-            try:
-                import cupy as cp
-
-                rhog_d = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
-                rhog = cp.asnumpy(rhog_d)
-            except ImportError:
-                rhog = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
+            rhog = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
 
             # Factor to be multiplied with I:
             #   chi comes from spin direction
@@ -163,10 +163,16 @@ class ZFSCalculation:
             #   omega**2 comes from convention of FT used here
             fac = chi * prefactor * self.cell.omega**2
 
-            self.I[iloc, jloc, ...] = np.real(
-                fac * np.tensordot(self.ddig, rhog, axes=3)
-            )
+            if lGPU:
+                self.I[iloc, jloc, ...] = cp.asnumpy(
+                    cp.real(fac * cp.tensordot(self.ddig, rhog, axes=3))
+                )
+            else:
+                self.I[iloc, jloc, ...] = np.real(
+                    fac * np.tensordot(self.ddig, rhog, axes=3)
+                )
             # TODO: check if it is safe to only use real apart
+
             c.count()
 
         self.I.symmetrize()

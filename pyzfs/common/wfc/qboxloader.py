@@ -17,9 +17,9 @@ from ..parallel import mpiroot
 
 
 class QboxWavefunctionLoader(WavefunctionLoader):
-    def __init__(self, filename=None):
+    def __init__(self, filename=None, memory="critical"):
         self.xmlfile = filename
-        super(QboxWavefunctionLoader, self).__init__()
+        super(QboxWavefunctionLoader, self).__init__(memory=memory)
 
     def scan(self):
         super(QboxWavefunctionLoader, self).scan()
@@ -157,3 +157,10 @@ class QboxWavefunctionLoader(WavefunctionLoader):
 
             if event == "start" and leaf.tag == "wavefunction_velocity":
                 break
+
+        if self.memory == "high":
+            self.wfc.compute_all_rhog()
+        elif self.memory == "low" or self.memory == "critical":
+            pass
+        else:
+            raise ValueError

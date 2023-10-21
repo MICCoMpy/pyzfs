@@ -1,0 +1,27 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: continuumio/miniconda3:latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: |
+        conda install openmpi
+        conda install mpi4py
+        pip install .
+    - name: Test
+      run: |
+        conda install pytest
+        cd examples
+        cd o2_qbox_xml
+        pyzfs --wfcfmt qbox --filename o2.xml > zfs.out
+        cd ..
+        cd o2_qe_hdf5
+        pyzfs --wfcfmt qeh5 --memory high > zfs.out
+        cd ..
+        pytest

@@ -4,7 +4,7 @@
 # qb < qb.in > qb.out
 
 # Run PyZFS to compute the ZFS tensor
-pyzfs --wfcfmt qbox > zfs.out
+pyzfs --wfcfmt qbox --filename o2.xml > zfs.out
 # An equivalent command is:
 # python -m pyzfs.run --wfcfmt qbox > zfs.out
 

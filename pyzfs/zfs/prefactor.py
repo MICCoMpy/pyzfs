@@ -13,12 +13,11 @@ prefactor = np.prod(
     [
         # -1,  # sign convention for D tensor
         # 1. / 2,            # eq. 2 from PRB paper
-        1. / 4,  # eq. 2 and eq. 8 from PRB paper
+        1.0 / 4,  # eq. 2 and eq. 8 from PRB paper
         mu0 / (4 * np.pi),  # magnetic constant
         (gamma * hbar) ** 2,  # conversion factor from unitless spin to magnetic moment
-
         # at this point, unit is J m^3
-        m_to_bohr ** 3,
+        m_to_bohr**3,
         joule_to_mhz,
         # at this point, unit is MHz bohr^3
     ]

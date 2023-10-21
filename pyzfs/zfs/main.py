@@ -127,8 +127,11 @@ class ZFSCalculation:
             print("\nIterating over pairs...\n")
         wfc = self.wfc
 
-        c = Counter(len(list(self.I.get_triu_iterator())), percent=0.01,
-                    message="(process 0) {n} pairs ({percent}%) computed in {dt}...")
+        c = Counter(
+            len(list(self.I.get_triu_iterator())),
+            percent=0.01,
+            message="(process 0) {n} pairs ({percent}%) computed in {dt}...",
+        )
 
         for iloc, jloc in self.I.get_triu_iterator():
             # Load two wavefunctions
@@ -148,6 +151,7 @@ class ZFSCalculation:
 
             try:
                 import cupy as cp
+
                 rhog_d = compute_rhog(psi1r, psi2r, self.ft, rho1g=rho1g, rho2g=rho2g)
                 rhog = cp.asnumpy(rhog_d)
             except ImportError:
@@ -157,9 +161,11 @@ class ZFSCalculation:
             #   chi comes from spin direction
             #   prefactor comes from physical constants and unit conversions
             #   omega**2 comes from convention of FT used here
-            fac = chi * prefactor * self.cell.omega ** 2
+            fac = chi * prefactor * self.cell.omega**2
 
-            self.I[iloc, jloc, ...] = np.real(fac * np.tensordot(self.ddig, rhog, axes=3))
+            self.I[iloc, jloc, ...] = np.real(
+                fac * np.tensordot(self.ddig, rhog, axes=3)
+            )
             # TODO: check if it is safe to only use real apart
             c.count()
 
@@ -192,13 +198,15 @@ class ZFSCalculation:
             print(self.evc[:, 2])
             print("Dx, Dy, Dz (|Dz| > |Dx| > |Dy|) (MHz): ")
             print(dx, dy, dz)
-            print("Scalar D = {:.2f} MHz, E = {:.2f} MHz".format(self.Dvalue, self.Evalue))
+            print(
+                "Scalar D = {:.2f} MHz, E = {:.2f} MHz".format(self.Dvalue, self.Evalue)
+            )
             print("Time elapsed for pair iteration: {:.0f}s".format(time() - t1))
 
     @indent(2)
     def print_memory_usage(self):
         pyproc = psutil.Process(os.getpid())
-        memloc = np.array(pyproc.memory_info()[0]/2.**20, dtype="f")
+        memloc = np.array(pyproc.memory_info()[0] / 2.0**20, dtype="f")
         memtot = np.array(0.0, dtype="f")
         MPI.COMM_WORLD.Reduce([memloc, MPI.FLOAT], [memtot, MPI.FLOAT])
 
@@ -207,15 +215,17 @@ class ZFSCalculation:
 
             for obj in ["iorb_psir_map", "iorb_rhog_map"]:
                 try:
-                    nbytes = np.sum(value.nbytes for value in self.wfc.__dict__[obj].values())
-                    print("  {:10} {:.2f} MB".format(obj, nbytes/1024.**2))
+                    nbytes = np.sum(
+                        value.nbytes for value in self.wfc.__dict__[obj].values()
+                    )
+                    print("  {:10} {:.2f} MB".format(obj, nbytes / 1024.0**2))
                 except KeyError:
                     pass
 
             for obj in ["ddig", "I", "Iglobal"]:
                 try:
                     nbytes = self.__dict__[obj].nbytes
-                    print("  {:10} {:.2f} MB".format(obj, nbytes/1024.**2))
+                    print("  {:10} {:.2f} MB".format(obj, nbytes / 1024.0**2))
                 except AttributeError:
                     pass
 

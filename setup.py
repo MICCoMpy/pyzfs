@@ -9,9 +9,13 @@ setup(
     packages=find_packages(),
     classifiers=[],
     install_requires=[
-        'numpy', 'scipy', 'mpi4py', 'h5py', 'ase', 'lxml',
+        "numpy",
+        "scipy",
+        "mpi4py",
+        "h5py",
+        "ase",
+        "lxml",
+        "psutil",
     ],
-    entry_points={
-        "console_scripts": ["pyzfs = pyzfs.run:main"]
-    }
+    entry_points={"console_scripts": ["pyzfs = pyzfs.run:main"]},
 )

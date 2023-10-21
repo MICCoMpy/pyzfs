@@ -12,7 +12,6 @@ from ...common.misc import parse_one_value
 
 
 class QEWavefunctionLoader(WavefunctionLoader):
-
     def __init__(self, fftgrid="density"):
         self.fftgrid = fftgrid
         self.dft = None
@@ -23,14 +22,27 @@ class QEWavefunctionLoader(WavefunctionLoader):
         super(QEWavefunctionLoader, self).scan()
 
         dxml = etree.parse("data-file.xml").getroot()
-        assert dxml.find("CELL/DIRECT_LATTICE_VECTORS/UNITS_FOR_DIRECT_LATTICE_VECTORS").attrib["UNITS"] == "Bohr"
-        a1 = np.fromstring(dxml.find("CELL/DIRECT_LATTICE_VECTORS/a1").text, sep=" ", dtype=np.float_)
-        a2 = np.fromstring(dxml.find("CELL/DIRECT_LATTICE_VECTORS/a2").text, sep=" ", dtype=np.float_)
-        a3 = np.fromstring(dxml.find("CELL/DIRECT_LATTICE_VECTORS/a3").text, sep=" ", dtype=np.float_)
+        assert (
+            dxml.find(
+                "CELL/DIRECT_LATTICE_VECTORS/UNITS_FOR_DIRECT_LATTICE_VECTORS"
+            ).attrib["UNITS"]
+            == "Bohr"
+        )
+        a1 = np.fromstring(
+            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a1").text, sep=" ", dtype=np.float_
+        )
+        a2 = np.fromstring(
+            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a2").text, sep=" ", dtype=np.float_
+        )
+        a3 = np.fromstring(
+            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a3").text, sep=" ", dtype=np.float_
+        )
         cell = Cell(empty_ase_cell(a1, a2, a3, unit="bohr"))
 
         fftgrid = dxml.find("PLANE_WAVES/FFT_GRID").attrib
-        grids = np.array([fftgrid["nr1"], fftgrid["nr2"], fftgrid["nr3"]], dtype=np.int_)
+        grids = np.array(
+            [fftgrid["nr1"], fftgrid["nr2"], fftgrid["nr3"]], dtype=np.int_
+        )
         self.dft = FourierTransform(grids[0], grids[1], grids[2])
         if self.fftgrid == "density":
             n1, n2, n3 = grids
@@ -46,8 +58,9 @@ class QEWavefunctionLoader(WavefunctionLoader):
         assert self.gamma, "Only gamma point calculation is supported now"
         self.npw = int(gxml.find("NUMBER_OF_GK-VECTORS").text)
 
-        self.gvecs = np.fromstring(gxml.find("GRID").text,
-                                   sep=" ", dtype=np.int_).reshape(-1, 3)
+        self.gvecs = np.fromstring(
+            gxml.find("GRID").text, sep=" ", dtype=np.int_
+        ).reshape(-1, 3)
         assert self.gvecs.shape == (self.npw, 3)
         assert np.ptp(self.gvecs[:, 0]) <= self.dft.n1
         assert np.ptp(self.gvecs[:, 1]) <= self.dft.n2
@@ -67,23 +80,33 @@ class QEWavefunctionLoader(WavefunctionLoader):
         norbs = nuorbs + ndorbs
 
         iorb_sb_map = list(
-            ("up", iuorbs[iwfc]) if iwfc < nuorbs
-            else ("down", idorbs[iwfc - nuorbs])
+            ("up", iuorbs[iwfc]) if iwfc < nuorbs else ("down", idorbs[iwfc - nuorbs])
             for iwfc in range(norbs)
         )
 
         iorb_fname_map = ["evc1.xml"] * nuorbs + ["evc2.xml"] * ndorbs
 
-        self.wfc = Wavefunction(cell=cell, ft=self.wft, nuorbs=nuorbs, ndorbs=ndorbs,
-                                iorb_sb_map=iorb_sb_map, iorb_fname_map=iorb_fname_map,
-                                dft=self.dft, gamma=self.gamma, gvecs=self.gvecs)
+        self.wfc = Wavefunction(
+            cell=cell,
+            ft=self.wft,
+            nuorbs=nuorbs,
+            ndorbs=ndorbs,
+            iorb_sb_map=iorb_sb_map,
+            iorb_fname_map=iorb_fname_map,
+            dft=self.dft,
+            gamma=self.gamma,
+            gvecs=self.gvecs,
+        )
 
     def load(self, iorbs, sdm=None):
         # TODO: first column and row read, then bcast to all processors
         super(QEWavefunctionLoader, self).load(iorbs, sdm)
 
-        c = Counter(len(iorbs), percent=0.1,
-                    message="(process 0) {n} orbitals ({percent}%) loaded in {dt}...")
+        c = Counter(
+            len(iorbs),
+            percent=0.1,
+            message="(process 0) {n} orbitals ({percent}%) loaded in {dt}...",
+        )
 
         iuorbs = filter(lambda iorb: self.wfc.iorb_sb_map[iorb][0] == "up", iorbs)
         idorbs = filter(lambda iorb: self.wfc.iorb_sb_map[iorb][0] == "down", iorbs)
@@ -95,8 +118,8 @@ class QEWavefunctionLoader(WavefunctionLoader):
                 iorb = self.wfc.sb_iorb_map.get(("up", band))
                 if iorb in iuorbs:
                     psig_arr = np.fromstring(
-                        leaf.text.replace(",", "\n"),
-                        sep="\n", dtype=np.float_).view(np.complex_)
+                        leaf.text.replace(",", "\n"), sep="\n", dtype=np.float_
+                    ).view(np.complex_)
                     self.wfc.set_psig_arr(iorb, psig_arr)
                     c.count()
             leaf.clear()
@@ -108,8 +131,8 @@ class QEWavefunctionLoader(WavefunctionLoader):
                 iorb = self.wfc.sb_iorb_map.get(("down", band))
                 if iorb in idorbs:
                     psig_arr = np.fromstring(
-                        leaf.text.replace(",", "\n"),
-                        sep="\n", dtype=np.float_).view(np.complex_)
+                        leaf.text.replace(",", "\n"), sep="\n", dtype=np.float_
+                    ).view(np.complex_)
                     self.wfc.set_psig_arr(iorb, psig_arr)
                     c.count()
             leaf.clear()
@@ -125,4 +148,3 @@ class QEWavefunctionLoader(WavefunctionLoader):
             pass
         else:
             raise ValueError
-

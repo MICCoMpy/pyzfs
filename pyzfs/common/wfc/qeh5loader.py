@@ -28,8 +28,9 @@ def _compute_offset(sdm, iorb):
 
 
 class QEHDF5WavefunctionLoader(WavefunctionLoader):
-
-    def __init__(self, fftgrid="density", prefix="pwscf", memory="critical", comm=MPI.COMM_WORLD):
+    def __init__(
+        self, fftgrid="density", prefix="pwscf", memory="critical", comm=MPI.COMM_WORLD
+    ):
         self.fftgrid = fftgrid
         self.dft = None
         self.wft = None
@@ -84,14 +85,16 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
             raise NotImplementedError
 
         if nspin == 2:
-            nbnd = [[int(pwxml.find("output/band_structure/nbnd_up").text)],
-                    [int(pwxml.find("output/band_structure/nbnd_dw").text)]]
+            nbnd = [
+                [int(pwxml.find("output/band_structure/nbnd_up").text)],
+                [int(pwxml.find("output/band_structure/nbnd_dw").text)],
+            ]
         else:
             raise NotImplementedError
 
-        occ = np.fromstring(pwxml.find("output/band_structure/ks_energies/occupations").text, sep=" ").reshape(
-            nspin, nkpt, nbnd[0][0]
-        )
+        occ = np.fromstring(
+            pwxml.find("output/band_structure/ks_energies/occupations").text, sep=" "
+        ).reshape(nspin, nkpt, nbnd[0][0])
 
         uoccs = occ[0, 0]
         doccs = occ[1, 0]
@@ -104,15 +107,22 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
         norbs = nuorbs + ndorbs
 
         iorb_sb_map = list(
-            ("up", iuorbs[iwfc]) if iwfc < nuorbs
-            else ("down", idorbs[iwfc - nuorbs])
+            ("up", iuorbs[iwfc]) if iwfc < nuorbs else ("down", idorbs[iwfc - nuorbs])
             for iwfc in range(norbs)
         )
         iorb_fname_map = ["wfcup1.hdf5"] * nuorbs + ["wfcdw1.hdf5"] * ndorbs
 
-        self.wfc = Wavefunction(cell=cell, ft=self.wft, nuorbs=nuorbs, ndorbs=ndorbs,
-                                iorb_sb_map=iorb_sb_map, iorb_fname_map=iorb_fname_map,
-                                dft=self.dft, gamma=self.gamma, gvecs=None)
+        self.wfc = Wavefunction(
+            cell=cell,
+            ft=self.wft,
+            nuorbs=nuorbs,
+            ndorbs=ndorbs,
+            iorb_sb_map=iorb_sb_map,
+            iorb_fname_map=iorb_fname_map,
+            dft=self.dft,
+            gamma=self.gamma,
+            gvecs=None,
+        )
 
     def load(self, iorbs, sdm):
         super(QEHDF5WavefunctionLoader, self).load(iorbs, sdm)
@@ -125,8 +135,9 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
         gvecs = ngvecs = None
         if onroot:
             wfcfile = "wfcup1.hdf5"
-            wfch5 = h5py.File(os.path.join(
-                self.root, "{}.save".format(self.prefix), wfcfile), "r")
+            wfch5 = h5py.File(
+                os.path.join(self.root, "{}.save".format(self.prefix), wfcfile), "r"
+            )
             gvecs = np.array(wfch5["MillerIndices"], dtype=int)
             ngvecs = gvecs.shape[0]
             assert gvecs.shape == (ngvecs, 3)
@@ -143,19 +154,25 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
         psig_arrs_all = None
         if onroot:
             psig_arrs_all = np.zeros([sdm.mx, ngvecs], dtype=complex)
-            c = Counter(self.wfc.norbs , percent=0.1,
-                        message="(process 0) {n} orbitals ({percent}%) loaded in {dt}...")
+            c = Counter(
+                self.wfc.norbs,
+                percent=0.1,
+                message="(process 0) {n} orbitals ({percent}%) loaded in {dt}...",
+            )
             for ispin in range(2):
                 wfcfile = "wfcup1.hdf5" if ispin == 0 else "wfcdw1.hdf5"
-                wfch5 = h5py.File(os.path.join(
-                    self.root, "{}.save".format(self.prefix), wfcfile), "r")
+                wfch5 = h5py.File(
+                    os.path.join(self.root, "{}.save".format(self.prefix), wfcfile), "r"
+                )
                 gvecs = np.array(wfch5["MillerIndices"], dtype=int)
                 ngvecs = gvecs.shape[0]
                 assert gvecs.shape == (ngvecs, 3)
                 evc = np.array(wfch5["evc"])
                 for ievc in range(evc.shape[0]):
                     band = ievc + 1
-                    iorb = self.wfc.sb_iorb_map.get(("up" if ispin == 0 else "down", band))
+                    iorb = self.wfc.sb_iorb_map.get(
+                        ("up" if ispin == 0 else "down", band)
+                    )
                     if iorb is not None:
                         offset = _compute_offset(sdm, iorb)
                         psig_arrs_all[offset] = evc[ievc].view(complex)

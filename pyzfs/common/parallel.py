@@ -10,6 +10,7 @@ mpiroot = mpirank == 0
 
 class ProcessorGrid(object):
     """2D Grid of processors used to wrap MPI communications."""
+
     def __init__(self, comm, square=False):
         """
         Args:
@@ -46,7 +47,9 @@ class ProcessorGrid(object):
                 for rank in range(self.size)
             )
         )
-        self.irow, self.icol = self.pmap[self.rank] if self.rank < self.size else (-1, -1)
+        self.irow, self.icol = (
+            self.pmap[self.rank] if self.rank < self.size else (-1, -1)
+        )
         assert self.irow < self.nrow and self.icol < self.ncol
         self.is_active = self.irow >= 0 and self.icol >= 0
 
@@ -62,7 +65,9 @@ class ProcessorGrid(object):
             self.lower = self.irow > self.icol
             i, j = sorted([self.irow, self.icol], reverse=True)
             color = i * (i + 1) / 2 + j
-            self.symmcomm = self.comm.Split(color=color, key=self.irow)  # upper processor has rank 0
+            self.symmcomm = self.comm.Split(
+                color=color, key=self.irow
+            )  # upper processor has rank 0
 
     def sleep(self, nsec=None):
         sleep(nsec if nsec else self.rank)
@@ -74,12 +79,21 @@ class ProcessorGrid(object):
 
     @indent(4)
     def print_info(self):
-        columns = "rank  onroot  nrow  ncol  size  irow  icol  " \
-                  "is_active  rowcomm_rank  colcomm_rank"
+        columns = (
+            "rank  onroot  nrow  ncol  size  irow  icol  "
+            "is_active  rowcomm_rank  colcomm_rank"
+        )
         message = "  {}    {}      {}    {}    {}    {}    {}    {}    {}    {}".format(
-            self.rank, self.onroot, self.nrow, self.ncol,
-            self.size, self.irow, self.icol, self.is_active,
-            self.rowcomm.Get_rank(), self.colcomm.Get_rank()
+            self.rank,
+            self.onroot,
+            self.nrow,
+            self.ncol,
+            self.size,
+            self.irow,
+            self.icol,
+            self.is_active,
+            self.rowcomm.Get_rank(),
+            self.colcomm.Get_rank(),
         )
         allmessage = self.comm.gather(message, root=0)
         if self.onroot:
@@ -159,7 +173,12 @@ class DistributedMatrix(object):
         # Build index map: irow, icol -> mstart, mloc, mend, nstart, nloc, nend
         indexmap = np.zeros([self.nrow, self.ncol, 6], dtype=np.int_)
         indexmap[self.irow, self.icol] = [
-            self.mstart, self.mloc, self.mend, self.nstart, self.nloc, self.nend
+            self.mstart,
+            self.mloc,
+            self.mend,
+            self.nstart,
+            self.nloc,
+            self.nend,
         ]
         self.indexmap = self.comm.allreduce(indexmap, op=MPI.SUM)
 
@@ -174,10 +193,19 @@ class DistributedMatrix(object):
     def print_info(self, name=""):
         columns = "irow  icol  nrow  ncol  m  mloc  mstart  mend  n  nloc  nstart  nend  val.shape"
         message = "  {}    {}    {}    {}    {}    {}    {}    {}    {}    {}    {}    {}     {}".format(
-            self.pgrid.irow, self.pgrid.icol, self.pgrid.nrow, self.pgrid.ncol,
-            self.m, self.mloc, self.mstart, self.mend,
-            self.n, self.nloc, self.nstart, self.nend,
-            self.val.shape
+            self.pgrid.irow,
+            self.pgrid.icol,
+            self.pgrid.nrow,
+            self.pgrid.ncol,
+            self.m,
+            self.mloc,
+            self.mstart,
+            self.mend,
+            self.n,
+            self.nloc,
+            self.nstart,
+            self.nend,
+            self.val.shape,
         )
         allmessage = self.comm.gather(message, root=0)
         if self.onroot:
@@ -220,7 +248,9 @@ class DistributedMatrix(object):
 
         """
         lmatrix = np.zeros(self.shape, dtype=self.dtype)
-        lmatrix[self.mstart:self.mend, self.nstart:self.nend] = self.val[0:self.mloc, 0:self.nloc]
+        lmatrix[self.mstart : self.mend, self.nstart : self.nend] = self.val[
+            0 : self.mloc, 0 : self.nloc
+        ]
 
         gmatrix = np.zeros(self.shape, dtype=self.dtype)
         self.comm.Allreduce(lmatrix, gmatrix, op=MPI.SUM)
@@ -229,6 +259,7 @@ class DistributedMatrix(object):
 
 class SymmetricDistributedMatrix(DistributedMatrix):
     """A array whose first two dimensions are distributed and symmetric."""
+
     def __init__(self, pgrid, shape, dtype):
         """Extends DistributedMatrix.__init__."""
         super(SymmetricDistributedMatrix, self).__init__(pgrid, shape, dtype)
@@ -261,9 +292,10 @@ class SymmetricDistributedMatrix(DistributedMatrix):
             if self.mloc < self.mlocx or self.nloc < self.nlocx:
                 # boundary case
                 return [
-                    (i,j) for (i,j) in zip(*np.triu_indices(self.mlocx))
+                    (i, j)
+                    for (i, j) in zip(*np.triu_indices(self.mlocx))
                     if i < self.mloc and j < self.nloc
-                    ]
+                ]
             else:
                 return list(zip(*np.triu_indices(self.mloc)))
         else:
@@ -280,7 +312,7 @@ class SymmetricDistributedMatrix(DistributedMatrix):
         if self.pgrid.diagonal:
             # Diagonal processor symmetrize in-place
             for iloc, jloc in zip(*tril):
-               self.val[iloc, jloc, ...] = self.val[jloc, iloc, ...]
+                self.val[iloc, jloc, ...] = self.val[jloc, iloc, ...]
 
         else:
             # Off-diagonal processors communicate with its symmetric counterparts
@@ -300,4 +332,4 @@ class SymmetricDistributedMatrix(DistributedMatrix):
                 self.val = recv.transpose(transpose_axes).copy()
 
             for i in range(self.mlocx):
-                self.val[i, i, ...] /= 2.
+                self.val[i, i, ...] /= 2.0

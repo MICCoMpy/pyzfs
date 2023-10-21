@@ -23,9 +23,19 @@ class Wavefunction:
     Right now only consider ground state, insulating, spin-polarized case.
     No occupation number considerations are implemented yet.
     """
-    def __init__(self, cell, ft, nuorbs, ndorbs, iorb_sb_map, iorb_fname_map,
-                 dft=None, gamma=True, gvecs=None):
 
+    def __init__(
+        self,
+        cell,
+        ft,
+        nuorbs,
+        ndorbs,
+        iorb_sb_map,
+        iorb_fname_map,
+        dft=None,
+        gamma=True,
+        gvecs=None,
+    ):
         self.cell = cell
         self.ft = ft
         self.dft = dft
@@ -35,9 +45,7 @@ class Wavefunction:
         self.norbs = self.nuorbs + self.ndorbs
 
         self.iorb_sb_map = iorb_sb_map
-        self.sb_iorb_map = {
-            self.iorb_sb_map[iorb]: iorb for iorb in range(self.norbs)
-        }
+        self.sb_iorb_map = {self.iorb_sb_map[iorb]: iorb for iorb in range(self.norbs)}
 
         self.iorb_fname_map = iorb_fname_map
 
@@ -50,8 +58,8 @@ class Wavefunction:
 
         if self.gamma:
             yzplane = np.zeros((self.ft.n2, self.ft.n3))
-            yzplane[self.ft.n2 // 2 + 1:, :] = 1
-            yzplane[0, self.ft.n3 // 2 + 1:] = 1
+            yzplane[self.ft.n2 // 2 + 1 :, :] = 1
+            yzplane[0, self.ft.n3 // 2 + 1 :] = 1
             self.yzlowerplane = list(zip(*np.nonzero(yzplane)))
 
     def compute_psir_from_psig_arr(self, psig_arr):
@@ -79,10 +87,11 @@ class Wavefunction:
 
         psigzyxs = ifftshift(
             (fftshift(psigzyxd, axes=(0, 1)))[
-                idxs[2]:idxs[2] + ns[2],
-                idxs[1]:idxs[1] + ns[1],
-                0: ns[0] // 2 + 1,
-            ], axes=(0, 1)
+                idxs[2] : idxs[2] + ns[2],
+                idxs[1] : idxs[1] + ns[1],
+                0 : ns[0] // 2 + 1,
+            ],
+            axes=(0, 1),
         )
 
         for ig2, ig3 in self.yzlowerplane:
@@ -113,6 +122,7 @@ class Wavefunction:
             psir = self.compute_psir_from_psig_arr(self.iorb_psig_arr_map[iorb])
             try:
                 import cupy as cp
+
                 return cp.asarray(psir)
             except ImportError:
                 return psir
@@ -125,6 +135,7 @@ class Wavefunction:
             psir = self.get_psir(iorb)
             try:
                 import cupy as cp
+
                 return self.ft.forward(psir * cp.conj(psir))
             except ImportError:
                 return self.ft.forward(psir * np.conj(psir))

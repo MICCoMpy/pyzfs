@@ -55,7 +55,7 @@ def main():
 
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("PyZFS code {}".format(version))
-        print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
     # Default arguments
@@ -65,7 +65,7 @@ def main():
         "prefix": "pwscf",
         "fftgrid": "wave",
         "comm": MPI.COMM_WORLD,
-        "memory": "critical"
+        "memory": "critical",
     }
 
     if "--help" in sys.argv:
@@ -78,7 +78,7 @@ def main():
     # Change directory
     path = kwargs.pop("path")
     if mpiroot:
-        print("pyzfs.run: setting working directory as \"{}\"...".format(path))
+        print('pyzfs.run: setting working directory as "{}"...'.format(path))
     os.chdir(path)
 
     # CUDA initialization
@@ -89,7 +89,7 @@ def main():
         if mpiroot:
             print("pyzfs.run: found {} GPU devices".format(nGPU))
             print("pyzfs.run: setting GPU devices...")
-        setDevice(mpirank%nGPU)
+        setDevice(mpirank % nGPU)
     except Exception:
         pass
 
@@ -101,14 +101,17 @@ def main():
         fftgrid = np.array(parse_many_values(3, int, fftgrid))
     if wfcfmt == "qe":
         from .common.wfc.qeloader import QEWavefunctionLoader
+
         wfcloader = QEWavefunctionLoader(fftgrid=fftgrid)
     elif wfcfmt in ["cube-wfc", "cube-density"]:
         from .common.wfc.cubeloader import CubeWavefunctionLoader
+
         wfcloader = CubeWavefunctionLoader(
             density=True if wfcfmt == "cube-density" else False
         )
     elif wfcfmt == "qbox":
         from .common.wfc.qboxloader import QboxWavefunctionLoader
+
         filename = kwargs.pop("filename", None)
         wfcloader = QboxWavefunctionLoader(filename=filename)
     # elif wfcfmt == "vasp":
@@ -116,8 +119,11 @@ def main():
     #     wfcloader = VaspWavefunctionLoader()
     elif wfcfmt == "qeh5":
         from .common.wfc.qeh5loader import QEHDF5WavefunctionLoader
+
         prefix = kwargs.pop("prefix", "pwscf")
-        wfcloader = QEHDF5WavefunctionLoader(fftgrid=fftgrid, prefix=prefix, memory=memory)
+        wfcloader = QEHDF5WavefunctionLoader(
+            fftgrid=fftgrid, prefix=prefix, memory=memory
+        )
     else:
         raise ValueError("Unsupported wfcfmt: {}".format(wfcfmt))
 
@@ -125,7 +131,9 @@ def main():
 
     # ZFS calculation
     if mpiroot:
-        print("\n\npyzfs.run: instantializing ZFSCalculation with following arguments...")
+        print(
+            "\n\npyzfs.run: instantializing ZFSCalculation with following arguments..."
+        )
         pprint(kwargs, indent=2)
 
     zfscalc = ZFSCalculation(**kwargs)

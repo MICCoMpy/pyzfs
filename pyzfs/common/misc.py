@@ -36,10 +36,7 @@ def parse_sys_argv(flags=None):
     unparsed = np.ones(argc, dtype=bool)
 
     if flags is None:
-        flags = {
-            flag[2:]: 1
-            for flag in argv if "--" in flag
-        }
+        flags = {flag[2:]: 1 for flag in argv if "--" in flag}
 
     kwargs = OrderedDict()
     for flag, nvalue in flags.items():
@@ -54,10 +51,10 @@ def parse_sys_argv(flags=None):
                 elif nvalue == 1:
                     kwargs[flag] = argv[index + 1]
                 else:
-                    kwargs[flag] = argv[index + 1: index + nvalue + 1]
+                    kwargs[flag] = argv[index + 1 : index + nvalue + 1]
             except IndexError:
                 print("cannot parse enough values for flag --{}".format(flag))
-            unparsed[index: index + nvalue + 1] = False
+            unparsed[index : index + nvalue + 1] = False
         else:
             raise ValueError("flag --{} appeared multiple times".format(flag))
 
@@ -129,9 +126,11 @@ def parse_many_values(n, dtype, content):
             started = True
         else:
             if started:
-                raise ValueError("cannot parse {} {} variables in content {}".format(
-                    n, dtype, content
-                ))
+                raise ValueError(
+                    "cannot parse {} {} variables in content {}".format(
+                        n, dtype, content
+                    )
+                )
         results.extend(found)
         assert len(results) <= n
         if len(results) == n:
@@ -146,4 +145,3 @@ def empty_ase_cell(a, b, c, unit="angstrom"):
     else:
         raise ValueError
     return Atoms(cell=s * np.array([a, b, c]), pbc=[1, 1, 1])
-

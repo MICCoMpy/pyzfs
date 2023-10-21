@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+v2.1 (2023/10/20)
+-----------------
+
+- Added GPU support for Qbox wavefunctions.
+- Improved GPU performance.
+- Added CI via GitHub Actions.
+
 v2.0 (2023/05/05)
 -----------------
 

@@ -27,9 +27,11 @@ class CubeWavefunctionLoader(WavefunctionLoader):
 
         iorb_fname_map = ufnames + dfnames
         idxsbmap = map(
-            lambda fname: ("up" if "up" in fname else "down",
-                           parse_one_value(int, fname, -1)),
-            iorb_fname_map
+            lambda fname: (
+                "up" if "up" in fname else "down",
+                parse_one_value(int, fname, -1),
+            ),
+            iorb_fname_map,
         )
 
         # Define cell and Fourier transform grid from first cube file
@@ -41,9 +43,11 @@ class CubeWavefunctionLoader(WavefunctionLoader):
             if self.fftgrid == "wave":
                 ft = FourierTransform(*map(lambda x: x // 2, psir.shape))
                 if mpiroot:
-                    print("Charge density grid {} will be interpolated to wavefunction grid {}.\n".format(
-                        map(lambda x: x // 2, psir.shape), psir.shape
-                    ))
+                    print(
+                        "Charge density grid {} will be interpolated to wavefunction grid {}.\n".format(
+                            map(lambda x: x // 2, psir.shape), psir.shape
+                        )
+                    )
             else:
                 if mpiroot:
                     print("Charge density grid will be used.\n")
@@ -51,8 +55,14 @@ class CubeWavefunctionLoader(WavefunctionLoader):
         else:
             ft = FourierTransform(*psir.shape)
 
-        self.wfc = Wavefunction(cell=cell, ft=ft, nuorbs=nuorbs, ndorbs=ndorbs,
-                                iorb_sb_map=idxsbmap, iorb_fname_map=iorb_fname_map)
+        self.wfc = Wavefunction(
+            cell=cell,
+            ft=ft,
+            nuorbs=nuorbs,
+            ndorbs=ndorbs,
+            iorb_sb_map=idxsbmap,
+            iorb_fname_map=iorb_fname_map,
+        )
 
         self.info()
 

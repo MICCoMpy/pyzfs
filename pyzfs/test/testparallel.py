@@ -18,6 +18,7 @@ def mpisync(func, comm=MPI.COMM_WORLD):
     Returns: decorated function
 
     """
+
     def mpifunc(*args, **kwargs):
         if comm.Get_rank() == 0:
             res = func(*args, **kwargs)
@@ -25,6 +26,7 @@ def mpisync(func, comm=MPI.COMM_WORLD):
             res = None
         res = comm.bcast(res, root=0)
         return res
+
     return mpifunc
 
 
@@ -40,9 +42,7 @@ class DistributedMatrixTest(TestCase):
         p = mpisync(randint)(1, 4)
         q = mpisync(randint)(1, 4)
         dtype = mpisync(choice)([np.int_, np.float_, np.complex])
-        print("m = {}, n = {}, p = {}, q = {}, dtype = {}".format(
-            m, n, p, q, dtype
-        ))
+        print("m = {}, n = {}, p = {}, q = {}, dtype = {}".format(m, n, p, q, dtype))
         self.m, self.n, self.p, self.q, self.dtype = m, n, p, q, dtype
         self.mat = DistributedMatrix(self.pgrid, [m, n, p, q], dtype)
 
@@ -51,12 +51,12 @@ class DistributedMatrixTest(TestCase):
         mat = self.mat
         self.assertSequenceEqual(
             [mat.m, mat.n, mat.shape[2], mat.shape[3], mat.dtype],
-            [self.m, self.n, self.p, self.q, self.dtype]
+            [self.m, self.n, self.p, self.q, self.dtype],
         )
         if not mat.is_active:
             self.assertSequenceEqual(
                 [mat.mloc, mat.mstart, mat.mend, mat.nloc, mat.nstart, mat.nend],
-                [0, 0, 0, 0, 0, 0]
+                [0, 0, 0, 0, 0, 0],
             )
         else:
             pass
@@ -64,6 +64,7 @@ class DistributedMatrixTest(TestCase):
 
 if __name__ == "__main__":
     import sys
+
     module = sys.modules[__name__]
     suite = TestLoader().loadTestsFromModule(module)
     TextTestRunner().run(suite)

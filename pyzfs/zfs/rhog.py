@@ -43,13 +43,13 @@ def compute_rhog(psi1r, psi2r, ft, rho1g=None, rho2g=None):
     f3r = psi1r * np.conj(psi2r)
     f3g = ft.forward(f3r)
 
-    #rhoj = f1g * np.conj(f2g)
-    #rhok = f3g * np.conj(f3g)
+    # rhoj = f1g * np.conj(f2g)
+    # rhok = f3g * np.conj(f3g)
 
     rhog = f1g * np.conj(f2g) - f3g * np.conj(f3g)
-    #rhor = ft.backward(rhog)
+    # rhor = ft.backward(rhog)
 
-    return rhog #, rhor, rhoj, rhok
+    return rhog  # , rhor, rhoj, rhok
 
 
 def compute_delta_model_rhog(cell, ft, d1, d2, d3, s=1):
@@ -83,20 +83,22 @@ def compute_delta_model_rhog(cell, ft, d1, d2, d3, s=1):
 
     print(ns1, ns2, ns3)
     print(nd1, nd2, nd3)
-    print("effective d1, d2, d3: ", nd1 * R1[0] / n1, nd2 * R2[1] / n2, nd3 * R3[2] / n3)
+    print(
+        "effective d1, d2, d3: ", nd1 * R1[0] / n1, nd2 * R2[1] / n2, nd3 * R3[2] / n3
+    )
 
     psi1r = np.zeros([n1, n2, n3])
     psi2r = np.zeros([n1, n2, n3])
 
     for ir1, ir2, ir3 in np.ndindex(ns1, ns2, ns3):
-        psi1r[ir1, ir2, ir3] = 1.
-        psi2r[nd1 + ir1, nd2 + ir2, nd3 + ir3] = 1.
+        psi1r[ir1, ir2, ir3] = 1.0
+        psi2r[nd1 + ir1, nd2 + ir2, nd3 + ir3] = 1.0
 
-    psi1r /= np.sqrt(np.sum(psi1r ** 2) * omega / N)
-    psi2r /= np.sqrt(np.sum(psi2r ** 2) * omega / N)
+    psi1r /= np.sqrt(np.sum(psi1r**2) * omega / N)
+    psi2r /= np.sqrt(np.sum(psi2r**2) * omega / N)
 
     rhog = compute_rhog(psi1r, psi2r, ft)
     return rhog
 
-    #rhog, rhor, rhoj, rhok = compute_rhog(psi1r, psi2r, ft)
-    #return rhog, rhor, rhoj, rhok, psi1r, psi2r
+    # rhog, rhor, rhoj, rhok = compute_rhog(psi1r, psi2r, ft)
+    # return rhog, rhor, rhoj, rhok, psi1r, psi2r

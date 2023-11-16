@@ -109,23 +109,28 @@ class Wavefunction:
     def set_psir(self, iorb, psir):
         if iorb in self.iorb_psir_map:
             raise ValueError("psir {} already set".format(iorb))
-        self.iorb_psir_map[iorb] = self.normalize(psir)
+        try:
+            import cupy as cp
+
+            self.iorb_psir_map[iorb] = cp.asarray(self.normalize(psir))
+        except ImportError:
+            self.iorb_psir_map[iorb] = self.normalize(psir)
 
     def get_psir(self, iorb):
         """Get psi(r) of certain index"""
         if iorb in self.iorb_psir_map:
-            return self.iorb_psir_map[iorb]
+            psir = self.iorb_psir_map[iorb]
         else:
             rank = MPI.COMM_WORLD.Get_rank()
             s = "{} Impossible to get psir: orbital {} is not loaded".format(rank, iorb)
             assert iorb in self.iorb_psig_arr_map, s
             psir = self.compute_psir_from_psig_arr(self.iorb_psig_arr_map[iorb])
-            try:
-                import cupy as cp
+        try:
+            import cupy as cp
 
-                return cp.asarray(psir)
-            except ImportError:
-                return psir
+            return cp.asarray(psir)
+        except ImportError:
+            return psir
 
     def get_rhog(self, iorb):
         """Get rho(G) of certain index"""

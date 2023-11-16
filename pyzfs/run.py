@@ -113,7 +113,7 @@ def main():
         from .common.wfc.qboxloader import QboxWavefunctionLoader
 
         filename = kwargs.pop("filename", None)
-        wfcloader = QboxWavefunctionLoader(filename=filename)
+        wfcloader = QboxWavefunctionLoader(filename=filename, memory=memory)
     # elif wfcfmt == "vasp":
     #     from ..common.wfc.vasploader import VaspWavefunctionLoader
     #     wfcloader = VaspWavefunctionLoader()

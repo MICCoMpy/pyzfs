@@ -29,13 +29,13 @@ class QEWavefunctionLoader(WavefunctionLoader):
             == "Bohr"
         )
         a1 = np.fromstring(
-            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a1").text, sep=" ", dtype=np.float_
+            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a1").text, sep=" ", dtype=np.float64
         )
         a2 = np.fromstring(
-            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a2").text, sep=" ", dtype=np.float_
+            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a2").text, sep=" ", dtype=np.float64
         )
         a3 = np.fromstring(
-            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a3").text, sep=" ", dtype=np.float_
+            dxml.find("CELL/DIRECT_LATTICE_VECTORS/a3").text, sep=" ", dtype=np.float64
         )
         cell = Cell(empty_ase_cell(a1, a2, a3, unit="bohr"))
 
@@ -69,8 +69,12 @@ class QEWavefunctionLoader(WavefunctionLoader):
         euxml = etree.parse("K00001/eigenval1.xml").getroot()
         edxml = etree.parse("K00001/eigenval2.xml").getroot()
 
-        uoccs = np.fromstring(euxml.find("OCCUPATIONS").text, sep="\n", dtype=np.float_)
-        doccs = np.fromstring(edxml.find("OCCUPATIONS").text, sep="\n", dtype=np.float_)
+        uoccs = np.fromstring(
+            euxml.find("OCCUPATIONS").text, sep="\n", dtype=np.float64
+        )
+        doccs = np.fromstring(
+            edxml.find("OCCUPATIONS").text, sep="\n", dtype=np.float64
+        )
 
         iuorbs = np.where(uoccs > 0.8)[0] + 1
         idorbs = np.where(doccs > 0.8)[0] + 1
@@ -118,8 +122,8 @@ class QEWavefunctionLoader(WavefunctionLoader):
                 iorb = self.wfc.sb_iorb_map.get(("up", band))
                 if iorb in iuorbs:
                     psig_arr = np.fromstring(
-                        leaf.text.replace(",", "\n"), sep="\n", dtype=np.float_
-                    ).view(np.complex_)
+                        leaf.text.replace(",", "\n"), sep="\n", dtype=np.float64
+                    ).view(np.complex128)
                     self.wfc.set_psig_arr(iorb, psig_arr)
                     c.count()
             leaf.clear()
@@ -131,8 +135,8 @@ class QEWavefunctionLoader(WavefunctionLoader):
                 iorb = self.wfc.sb_iorb_map.get(("down", band))
                 if iorb in idorbs:
                     psig_arr = np.fromstring(
-                        leaf.text.replace(",", "\n"), sep="\n", dtype=np.float_
-                    ).view(np.complex_)
+                        leaf.text.replace(",", "\n"), sep="\n", dtype=np.float64
+                    ).view(np.complex128)
                     self.wfc.set_psig_arr(iorb, psig_arr)
                     c.count()
             leaf.clear()

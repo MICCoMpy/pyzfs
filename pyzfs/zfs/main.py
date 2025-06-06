@@ -76,7 +76,7 @@ class ZFSCalculation:
         if self.pgrid.onroot:
             print("\nCreating I array...\n")
         self.I = SymmetricDistributedMatrix(
-            self.pgrid, (self.wfc.norbs, self.wfc.norbs, 6), np.float_
+            self.pgrid, (self.wfc.norbs, self.wfc.norbs, 6), np.float64
         )
         self.I.print_info("I")
         self.Iglobal = None

@@ -22,8 +22,8 @@ Acceptable kwargs are:
         the working dir before any calculations. Default is ".".
 
     --wfcfmt: format of input wavefunction. Supported values are
-        "qeh5": Quantum Espresso HDF5 save file. path should contains "prefix.xml" and save folder.
-        "qe": Quantum Espresso (v6.1) save file. path should be the save folder that contains "data-files.xml", etc.
+        "qeh5": Quantum ESPRESSO HDF5 save file. path should contains "prefix.xml" and save folder.
+        "qe": Quantum ESPRESSO (v6.1) save file. path should be the save folder that contains "data-files.xml", etc.
               The gvector and evc files have to be converted to xml through iotk.
         "qbox": Qbox xml file.
         "cube-wfc": cube files of (real) wavefunctions (Kohn-Sham orbitals).

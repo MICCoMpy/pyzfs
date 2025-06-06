@@ -72,7 +72,7 @@ class Wavefunction:
         ns = np.array([self.ft.n1, self.ft.n2, self.ft.n3])
         idxs = np.zeros(3, dtype=int)
 
-        psigzyxd = np.zeros((nd[2], nd[1], nd[0] // 2 + 1), dtype=np.complex_)
+        psigzyxd = np.zeros((nd[2], nd[1], nd[0] // 2 + 1), dtype=np.complex128)
         psigzyxd[self.gvecs[:, 2], self.gvecs[:, 1], self.gvecs[:, 0]] = psig_arr
 
         for i in range(1, 3):  # idxs[0] = 0 for gamma trick

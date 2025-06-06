@@ -53,8 +53,8 @@ After installation, **PyZFS** can be executed in two ways:
 
    - ``wfcfmt``: Format of input wavefunction. Default is ``qeh5`` Supported options are:
 
-      - ``qeh5``: Quantum Espresso (v6.x or v7.x) HDF5 save file. ``path`` should contain the ``prefix.xml`` file and the ``prefix.save`` folder.
-      - ``qe``: Quantum Espresso (v6.1 only) save file. ``path`` should be the save folder that contains ``data-files.xml`` etc. Deprecated in favor of ``qeh5``.
+      - ``qeh5``: Quantum ESPRESSO (v6.x or v7.x) HDF5 save file. ``path`` should contain the ``prefix.xml`` file and the ``prefix.save`` folder.
+      - ``qe``: Quantum ESPRESSO (v6.1 only) save file. ``path`` should be the save folder that contains ``data-files.xml`` etc. Deprecated in favor of ``qeh5``.
       - ``qbox``: Qbox XML file.
       - ``cube-wfc``: Cube files of (real) wavefunctions (Kohn-Sham orbitals).
       - ``cube-density``: Cube files of (signed) squared wavefunction. This option supports ``pp.x`` output with ``plot_num = 7`` and ``lsign = .TRUE.``.
@@ -68,13 +68,13 @@ After installation, **PyZFS** can be executed in two ways:
 
    - ``memory``: Controls whether certain intermediate quantities are kept in memory or re-computed every time. Supported options are ``high``, ``low``, and ``critical`` which keeps the decreasing amount of quantities in memory. Default is ``critical`` which costs least memory and is recommended for large-scale calculations.
 
-   An example execution command for Quantum Espresso HDF5 save file is
+   An example execution command for Quantum ESPRESSO HDF5 save file is
 
    .. code:: bash
 
       $ mpiexec pyzfs --wfcfmt qeh5 --prefix pwscf
 
-   where ``pwscf`` is the prefix used in the Quantum Espresso calculation.
+   where ``pwscf`` is the prefix used in the Quantum ESPRESSO calculation.
 
    An example execution command for Qbox XML save file is
 

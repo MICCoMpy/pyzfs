@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyzfs"
+authors = [
+    {name = "Giulia Galli", email = "gagalli@uchicago.edu"},
+    {name = "Marco Govoni", email = "mgovoni@unimore.it"},
+    {name = "He Ma", email = "mahe@uchicago.edu"},
+    {name = "Victor Yu", email = "yuw@anl.gov"},
+]
+description = "Python code to compute zero-field splitting tensors"
+readme = "README.md"
+requires-python = ">=3.6, <4"
+license = "MIT"
+dependencies = [
+    "numpy",
+    "scipy",
+    "mpi4py",
+    "h5py",
+    "ase",
+    "lxml",
+    "psutil",
+]
+version = "2.2"
+
+[project.scripts]
+pyzfs = "pyzfs.run:main"
+
+[project.urls]
+Homepage = "https://miccompy.github.io/pyzfs"
+Repository = "https://github.com/MICCoMpy/pyzfs"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyzfs*"]

@@ -19,8 +19,8 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "pyzfs"
-copyright = "2020, University of Chicago"
-author = "He Ma, Marco Govoni, Giulia Galli"
+copyright = "2025, University of Chicago"
+author = "Giulia Galli, Marco Govoni, He Ma, Victor Yu"
 
 
 # -- General configuration ---------------------------------------------------

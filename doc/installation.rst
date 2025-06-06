@@ -5,7 +5,7 @@ Installation
 
 **PyZFS** uses the **mpi4py** package for parallelization. An existing MPI implementation (e.g. **MPICH** or **OpenMPI**) is required to install **mpi4py** and **PyZFS**. Many supercomputers provide modules for pre-compiled MPI implementations. MPI can also be installed from package managers such as APT and Homebrew, or built from source.
 
-**PyZFS** requires Python 3.5+. It is recommended to install **PyZFS** using **pip**. First, clone the git repository:
+**PyZFS** requires Python 3.6+. It is recommended to install **PyZFS** using **pip**. First, clone the git repository:
 
 .. code:: bash
 

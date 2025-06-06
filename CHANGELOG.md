@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+v2.2 (2025/06/06)
+-----------------
+
+- Updated code for compatibility with NumPy 2.x.
+- Updated deprecated usage of `setup.py`.
+
 v2.1 (2023/10/20)
 -----------------
 

@@ -49,15 +49,15 @@ class QboxWavefunctionLoader(WavefunctionLoader):
         for event, leaf in iterxml:
             if event == "end" and leaf.tag == "unit_cell":
                 R1 = (
-                    np.fromstring(leaf.attrib["a"], sep=" ", dtype=np.float_)
+                    np.fromstring(leaf.attrib["a"], sep=" ", dtype=np.float64)
                     * bohr_to_angstrom
                 )
                 R2 = (
-                    np.fromstring(leaf.attrib["b"], sep=" ", dtype=np.float_)
+                    np.fromstring(leaf.attrib["b"], sep=" ", dtype=np.float64)
                     * bohr_to_angstrom
                 )
                 R3 = (
-                    np.fromstring(leaf.attrib["c"], sep=" ", dtype=np.float_)
+                    np.fromstring(leaf.attrib["c"], sep=" ", dtype=np.float64)
                     * bohr_to_angstrom
                 )
                 lattice = np.array([R1, R2, R3])
@@ -90,12 +90,12 @@ class QboxWavefunctionLoader(WavefunctionLoader):
 
             if event == "end" and leaf.tag == "density_matrix":
                 if spin == "up":
-                    uoccs = np.fromstring(leaf.text, sep=" ", dtype=np.float_)
+                    uoccs = np.fromstring(leaf.text, sep=" ", dtype=np.float64)
                     iuorbs = np.where(uoccs > 0.8)[0] + 1
                     nuorbs = len(iuorbs)
                     iorb_sb_map.extend(("up", iuorbs[iorb]) for iorb in range(nuorbs))
                 elif spin == "down":
-                    doccs = np.fromstring(leaf.text, sep=" ", dtype=np.float_)
+                    doccs = np.fromstring(leaf.text, sep=" ", dtype=np.float64)
                     idorbs = np.where(doccs > 0.8)[0] + 1
                     ndorbs = len(idorbs)
                     iorb_sb_map.extend(("down", idorbs[iorb]) for iorb in range(ndorbs))

@@ -5,18 +5,19 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: continuumio/miniconda3:latest
+    container: miccomcenter/bot:gcc1330_0001
 
     steps:
     - uses: actions/checkout@v4
     - name: Build
       run: |
-        conda install openmpi
-        conda install mpi4py
-        pip install .
+        pip3 install -q -U pip
+        pip3 install -q -U numpy
+        pip3 install -q -U pytest
+        pip3 install -q -U setuptools
+        pip3 install .
     - name: Test
       run: |
-        conda install pytest
         cd examples
         cd o2_qbox_xml
         pyzfs --wfcfmt qbox --filename o2.xml > zfs.out

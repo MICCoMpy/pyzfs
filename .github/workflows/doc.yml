@@ -1,0 +1,26 @@
+name: Doc
+
+on: [push, pull_request]
+
+jobs:
+  doc:
+    runs-on: ubuntu-latest
+    container: continuumio/miniconda3:latest
+
+    steps:
+    - uses: actions/checkout@v5
+    - name: Init
+      run: |
+        apt-get update
+        apt-get install -qq make
+        apt-get install -qq pandoc
+        pip install -q -U pip
+        pip install -q -U nbsphinx
+        pip install -q -U sphinx_rtd_theme
+    - name: Build
+      run: |
+        pip install .
+    - name: Doc
+      run: |
+        cd doc
+        make html

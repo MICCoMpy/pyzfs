@@ -12,6 +12,7 @@
 #
 import os
 import sys
+from datetime import datetime
 
 sys.path.insert(0, os.path.abspath("../"))
 
@@ -19,8 +20,9 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "pyzfs"
-copyright = "2025, University of Chicago"
+copyright = f"{datetime.now().year}, University of Chicago"
 author = "Giulia Galli, Marco Govoni, He Ma, Victor Yu"
+version = "2.2"
 
 
 # -- General configuration ---------------------------------------------------

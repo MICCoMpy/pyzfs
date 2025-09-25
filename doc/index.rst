@@ -1,5 +1,5 @@
-Welcome to PyZFS's documentation!
-=================================
+Welcome to the documentation of PyZFS |version|
+===============================================
 
 **PyZFS** is an MPI-parallelized Python code for the first-principles calculation of the spin-spin zero-field-splitting (ZFS) tensor based on wavefunctions obtained from density functional theory (DFT) calculations.
 

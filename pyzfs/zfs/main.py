@@ -221,7 +221,7 @@ class ZFSCalculation:
 
             for obj in ["iorb_psir_map", "iorb_rhog_map"]:
                 try:
-                    nbytes = np.sum(
+                    nbytes = sum(
                         value.nbytes for value in self.wfc.__dict__[obj].values()
                     )
                     print("  {:10} {:.2f} MB".format(obj, nbytes / 1024.0**2))

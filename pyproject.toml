@@ -23,7 +23,7 @@ dependencies = [
     "lxml",
     "psutil",
 ]
-version = "2.2"
+version = "2.3"
 
 [project.scripts]
 pyzfs = "pyzfs.run:main"

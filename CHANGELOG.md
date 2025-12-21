@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+v2.3 (2025/12/20)
+-----------------
+
+- Updated code for compatibility with NumPy 2.4.
+
 v2.2 (2025/06/06)
 -----------------
 

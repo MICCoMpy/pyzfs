@@ -4,7 +4,7 @@ from datetime import datetime
 import numpy as np
 from mpi4py import MPI
 from pprint import pprint
-import pkg_resources
+from importlib.metadata import version
 from .common.misc import parse_sys_argv
 from .common.misc import parse_many_values
 from .zfs.main import ZFSCalculation
@@ -49,12 +49,12 @@ Acceptable kwargs are:
 def main():
     if mpiroot:
         try:
-            version = pkg_resources.require("PyZFS")[0].version
+            version_str = version("pyzfs")
         except Exception:
-            version = ""
+            version_str = ""
 
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("PyZFS code {}".format(version))
+        print("PyZFS code {}".format(version_str))
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 

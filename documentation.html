@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation &mdash; pyzfs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyzfs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyzfs.zfs.main">ZFS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.wfc"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.wfc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.cell"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.cell</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.ft"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.ft</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.ddig"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.ddig</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.Iglobal"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.Iglobal</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.I"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.I</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.D"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.D</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.zfs.main.ZFSCalculation.get_xml"><code class="docutils literal notranslate"><span class="pre">ZFSCalculation.get_xml()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyzfs.common.wfc.baseloader">Common</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.wfc.baseloader.WavefunctionLoader"><code class="docutils literal notranslate"><span class="pre">WavefunctionLoader</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.baseloader.WavefunctionLoader.load"><code class="docutils literal notranslate"><span class="pre">WavefunctionLoader.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.baseloader.WavefunctionLoader.scan"><code class="docutils literal notranslate"><span class="pre">WavefunctionLoader.scan()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction"><code class="docutils literal notranslate"><span class="pre">Wavefunction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.norbs"><code class="docutils literal notranslate"><span class="pre">Wavefunction.norbs</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.sb_iorb_map"><code class="docutils literal notranslate"><span class="pre">Wavefunction.sb_iorb_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.iorb_sb_map"><code class="docutils literal notranslate"><span class="pre">Wavefunction.iorb_sb_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.iorb_psir_map"><code class="docutils literal notranslate"><span class="pre">Wavefunction.iorb_psir_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.cell"><code class="docutils literal notranslate"><span class="pre">Wavefunction.cell</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.ft"><code class="docutils literal notranslate"><span class="pre">Wavefunction.ft</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.compute_psir_from_psig_arr"><code class="docutils literal notranslate"><span class="pre">Wavefunction.compute_psir_from_psig_arr()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.get_psir"><code class="docutils literal notranslate"><span class="pre">Wavefunction.get_psir()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.get_rhog"><code class="docutils literal notranslate"><span class="pre">Wavefunction.get_rhog()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction.normalize"><code class="docutils literal notranslate"><span class="pre">Wavefunction.normalize()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.cell.Cell"><code class="docutils literal notranslate"><span class="pre">Cell</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.ft.FourierTransform"><code class="docutils literal notranslate"><span class="pre">FourierTransform</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.ft.FourierTransform.backward"><code class="docutils literal notranslate"><span class="pre">FourierTransform.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.ft.FourierTransform.forward"><code class="docutils literal notranslate"><span class="pre">FourierTransform.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.ft.FourierTransform.interp"><code class="docutils literal notranslate"><span class="pre">FourierTransform.interp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.parallel.DistributedMatrix"><code class="docutils literal notranslate"><span class="pre">DistributedMatrix</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.parallel.DistributedMatrix.collect"><code class="docutils literal notranslate"><span class="pre">DistributedMatrix.collect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.parallel.DistributedMatrix.gtol"><code class="docutils literal notranslate"><span class="pre">DistributedMatrix.gtol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.parallel.DistributedMatrix.ltog"><code class="docutils literal notranslate"><span class="pre">DistributedMatrix.ltog()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.parallel.ProcessorGrid"><code class="docutils literal notranslate"><span class="pre">ProcessorGrid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyzfs.common.parallel.SymmetricDistributedMatrix"><code class="docutils literal notranslate"><span class="pre">SymmetricDistributedMatrix</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.parallel.SymmetricDistributedMatrix.get_triu_iterator"><code class="docutils literal notranslate"><span class="pre">SymmetricDistributedMatrix.get_triu_iterator()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyzfs.common.parallel.SymmetricDistributedMatrix.symmetrize"><code class="docutils literal notranslate"><span class="pre">SymmetricDistributedMatrix.symmetrize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyzfs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/documentation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="documentation">
+<span id="id1"></span><h1>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h1>
+<p><strong>PyZFS</strong> can be extended to support more wavefunction formats by defining subclasses of the <code class="docutils literal notranslate"><span class="pre">WavefunctionLoader</span></code> abstract class.
+The abstract method <code class="docutils literal notranslate"><span class="pre">scan</span></code> and <code class="docutils literal notranslate"><span class="pre">load</span></code> have to be overridden to parse and read the wavefunction data into memory and store as a <code class="docutils literal notranslate"><span class="pre">Wavefunction</span></code> object.</p>
+<p><strong>PyZFS</strong> API documentation:</p>
+<section id="module-pyzfs.zfs.main">
+<span id="zfs"></span><h2>ZFS<a class="headerlink" href="#module-pyzfs.zfs.main" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.zfs.main.</span></span><span class="sig-name descname"><span class="pre">ZFSCalculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Zero field splitting D tensor calculation.</p>
+<p>Generally, calculation of D tensor involves pairwise iteration over many wavefuctions
+(KS orbitals). Physically, wavefunction is uniquely labeled by a 2-tuple of band index (int)
+and spin (“up” or “down”). Internally, each wavefunction is labeled by an integer index.
+Several maps are defined to describe related transformations.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.wfc">
+<span class="sig-name descname"><span class="pre">wfc</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.wfc" title="Link to this definition"></a></dt>
+<dd><p>container for all KS orbitals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyzfs.common.wfc.wavefunction.Wavefunction" title="pyzfs.common.wfc.wavefunction.Wavefunction">Wavefunction</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.cell">
+<span class="sig-name descname"><span class="pre">cell</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.cell" title="Link to this definition"></a></dt>
+<dd><p>defines cell size, R and G vectors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyzfs.common.cell.Cell" title="pyzfs.common.cell.Cell">Cell</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.ft">
+<span class="sig-name descname"><span class="pre">ft</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.ft" title="Link to this definition"></a></dt>
+<dd><p>defines grid size for fourier transform</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyzfs.common.ft.FourierTransform" title="pyzfs.common.ft.FourierTransform">FourierTransform</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.ddig">
+<span class="sig-name descname"><span class="pre">ddig</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.ddig" title="Link to this definition"></a></dt>
+<dd><p>dipole-dipole interaction tensor in G space. Shape = (6, n1, n2, n3),
+where first index labels cartisian directions (xx, xy, xz, yy, yz, zz), last 3
+indices iterate over G space</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.Iglobal">
+<span class="sig-name descname"><span class="pre">Iglobal</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.Iglobal" title="Link to this definition"></a></dt>
+<dd><p>global I array of shape (norbs, norbs, 6)
+first two indices iterate over wavefunctions, last index labels catesian directions
+in xx, xy, xz, yy, yz, xz manner</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.I">
+<span class="sig-name descname"><span class="pre">I</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.I" title="Link to this definition"></a></dt>
+<dd><p>local I matrix, first two dimensions are distributed among processors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.D">
+<span class="sig-name descname"><span class="pre">D</span></span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.D" title="Link to this definition"></a></dt>
+<dd><p>3 by 3 matrix, total D tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">ev,</span> <span class="pre">evc</span></span></dt>
+<dd><p>eigenvalues and eigenvectors of D tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Dvalue,</span> <span class="pre">Evalue</span></span></dt>
+<dd><p>scalar D and E parameters for triplet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.zfs.main.ZFSCalculation.get_xml">
+<span class="sig-name descname"><span class="pre">get_xml</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.zfs.main.ZFSCalculation.get_xml" title="Link to this definition"></a></dt>
+<dd><p>Generate an xml to store information of this calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A string containing xml.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyzfs.common.wfc.baseloader">
+<span id="common"></span><h2>Common<a class="headerlink" href="#module-pyzfs.common.wfc.baseloader" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.baseloader.WavefunctionLoader">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.wfc.baseloader.</span></span><span class="sig-name descname"><span class="pre">WavefunctionLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'critical'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.baseloader.WavefunctionLoader" title="Link to this definition"></a></dt>
+<dd><p>A wavefunction loader that can load the wavefunction generated by given
+DFT codes into memory, stored as a Wavefunction object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.baseloader.WavefunctionLoader.load">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iorbs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sdm</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.baseloader.WavefunctionLoader.load" title="Link to this definition"></a></dt>
+<dd><p>Load read space KS orbitals to memory, store in wfc.iorb_psir_map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iorbs</strong> – a list of integers representing orbital indices.</p></li>
+<li><p><strong>sdm</strong> – a SymmetricDistributedMatrix object indicating how the wavefunction is distributed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>After load is called, the wavefunction will be loaded into self.wfc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.baseloader.WavefunctionLoader.scan">
+<span class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.baseloader.WavefunctionLoader.scan" title="Link to this definition"></a></dt>
+<dd><p>Scan current directory, construct wavefunction object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyzfs.common.wfc.wavefunction">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.wfc.wavefunction.</span></span><span class="sig-name descname"><span class="pre">Wavefunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ft</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nuorbs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ndorbs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iorb_sb_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iorb_fname_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gvecs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction" title="Link to this definition"></a></dt>
+<dd><p>Container class for Kohn-Sham orbitals</p>
+<p>Physically, wavefunction is uniquely labeled by a 2-tuple of band index (int)
+and spin (“up” or “down”). Internally, each wavefunction is labeled by an integer index.
+Several maps are defined to describe related transformations.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.norbs">
+<span class="sig-name descname"><span class="pre">norbs</span></span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.norbs" title="Link to this definition"></a></dt>
+<dd><p>total number of KS orbitals to be considered</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">nuorbs/ndorbs</span></span></dt>
+<dd><p>number of spin up/down orbitals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.sb_iorb_map">
+<span class="sig-name descname"><span class="pre">sb_iorb_map</span></span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.sb_iorb_map" title="Link to this definition"></a></dt>
+<dd><p>(spin, band index) -&gt; orb index map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.iorb_sb_map">
+<span class="sig-name descname"><span class="pre">iorb_sb_map</span></span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.iorb_sb_map" title="Link to this definition"></a></dt>
+<dd><p>orb index -&gt; (spin, band index) map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.iorb_psir_map">
+<span class="sig-name descname"><span class="pre">iorb_psir_map</span></span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.iorb_psir_map" title="Link to this definition"></a></dt>
+<dd><p>orb index -&gt; orb object (3D array) map</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.cell">
+<span class="sig-name descname"><span class="pre">cell</span></span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.cell" title="Link to this definition"></a></dt>
+<dd><p>defines cell size, R and G vectors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyzfs.common.cell.Cell" title="pyzfs.common.cell.Cell">Cell</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.ft">
+<span class="sig-name descname"><span class="pre">ft</span></span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.ft" title="Link to this definition"></a></dt>
+<dd><p>defines grid size for fourier transform</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyzfs.common.ft.FourierTransform" title="pyzfs.common.ft.FourierTransform">FourierTransform</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Right now only consider ground state, insulating, spin-polarized case.
+No occupation number considerations are implemented yet.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.compute_psir_from_psig_arr">
+<span class="sig-name descname"><span class="pre">compute_psir_from_psig_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psig_arr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.compute_psir_from_psig_arr" title="Link to this definition"></a></dt>
+<dd><p>Compute psi(r) based on psi(G) defined on self.gvecs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.get_psir">
+<span class="sig-name descname"><span class="pre">get_psir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iorb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.get_psir" title="Link to this definition"></a></dt>
+<dd><p>Get psi(r) of certain index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.get_rhog">
+<span class="sig-name descname"><span class="pre">get_rhog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iorb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.get_rhog" title="Link to this definition"></a></dt>
+<dd><p>Get rho(G) of certain index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.wfc.wavefunction.Wavefunction.normalize">
+<span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.wfc.wavefunction.Wavefunction.normalize" title="Link to this definition"></a></dt>
+<dd><p>Normalize psir.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyzfs.common.cell">
+<dt class="sig sig-object py" id="pyzfs.common.cell.Cell">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.cell.</span></span><span class="sig-name descname"><span class="pre">Cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ase_cell</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.cell.Cell" title="Link to this definition"></a></dt>
+<dd><p>A wrapper class for ASE Atoms that defines R and G vectors.</p>
+</dd></dl>
+
+<dl class="py class" id="module-pyzfs.common.ft">
+<dt class="sig sig-object py" id="pyzfs.common.ft.FourierTransform">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.ft.</span></span><span class="sig-name descname"><span class="pre">FourierTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.ft.FourierTransform" title="Link to this definition"></a></dt>
+<dd><p>Define forward/backward 3D FT on a given grid</p>
+<dl class="simple">
+<dt>Forward/backward FT are defined with following conventions:</dt><dd><p>f(G) = 1/omega * int{ f(r) exp(-iGr) dr }
+f(r) = sigma{ f(G) exp(iGr) }</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.ft.FourierTransform.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.ft.FourierTransform.backward" title="Link to this definition"></a></dt>
+<dd><p>Fourier backward transform a function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fg</strong> (<em>np.ndarray</em>) – function in G space (3D array)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>function in R space (with same grid size)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.ft.FourierTransform.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.ft.FourierTransform.forward" title="Link to this definition"></a></dt>
+<dd><p>Fourier forward transform a function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fr</strong> (<em>np.ndarray</em>) – function in R space (3D array)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>function in G space (with same grid size)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.ft.FourierTransform.interp">
+<span class="sig-name descname"><span class="pre">interp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.ft.FourierTransform.interp" title="Link to this definition"></a></dt>
+<dd><p>Fourier interpolate a function to a smoother grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fr</strong> – function to be interpolated</p></li>
+<li><p><strong>n1</strong> (<em>int</em>) – new grid size</p></li>
+<li><p><strong>n2</strong> (<em>int</em>) – new grid size</p></li>
+<li><p><strong>n3</strong> (<em>int</em>) – new grid size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>interpolated function (3D array of size n1 by n2 by n3)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-pyzfs.common.parallel">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.DistributedMatrix">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.parallel.</span></span><span class="sig-name descname"><span class="pre">DistributedMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pgrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.DistributedMatrix" title="Link to this definition"></a></dt>
+<dd><p>An array whose first two dimensions are distributed.</p>
+<p>Convention: a variable indexing local block of a distributed matrix should have
+trailing “loc” in its name, otherwise it is considered a global index</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.DistributedMatrix.collect">
+<span class="sig-name descname"><span class="pre">collect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.DistributedMatrix.collect" title="Link to this definition"></a></dt>
+<dd><p>Gather the distributed matrix to all processor.</p>
+<p>Returns: global matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.DistributedMatrix.gtol">
+<span class="sig-name descname"><span class="pre">gtol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.DistributedMatrix.gtol" title="Link to this definition"></a></dt>
+<dd><p>global -&gt; local index map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.DistributedMatrix.ltog">
+<span class="sig-name descname"><span class="pre">ltog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iloc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jloc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.DistributedMatrix.ltog" title="Link to this definition"></a></dt>
+<dd><p>local -&gt; global index map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.ProcessorGrid">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.parallel.</span></span><span class="sig-name descname"><span class="pre">ProcessorGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">square</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.ProcessorGrid" title="Link to this definition"></a></dt>
+<dd><p>2D Grid of processors used to wrap MPI communications.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.SymmetricDistributedMatrix">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyzfs.common.parallel.</span></span><span class="sig-name descname"><span class="pre">SymmetricDistributedMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pgrid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.SymmetricDistributedMatrix" title="Link to this definition"></a></dt>
+<dd><p>A array whose first two dimensions are distributed and symmetric.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.SymmetricDistributedMatrix.get_triu_iterator">
+<span class="sig-name descname"><span class="pre">get_triu_iterator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.SymmetricDistributedMatrix.get_triu_iterator" title="Link to this definition"></a></dt>
+<dd><p>Get a list of 2D indices to iterate over upper triangular part of the local matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of 2-tuples of ints.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyzfs.common.parallel.SymmetricDistributedMatrix.symmetrize">
+<span class="sig-name descname"><span class="pre">symmetrize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyzfs.common.parallel.SymmetricDistributedMatrix.symmetrize" title="Link to this definition"></a></dt>
+<dd><p>Compute lower triangular part of the matrix from upper triangular part.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Chicago.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

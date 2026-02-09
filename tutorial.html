@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial &mdash; pyzfs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Documentation" href="documentation.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyzfs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyzfs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading"></a></h1>
+<p>After installation, <strong>PyZFS</strong> can be executed in two ways:</p>
+<ol class="arabic">
+<li><p>Construct <code class="docutils literal notranslate"><span class="pre">WavefunctionLoader</span></code> and <code class="docutils literal notranslate"><span class="pre">ZFSCalculation</span></code> from within Python terminal or Jupyter notebook, and call <code class="docutils literal notranslate"><span class="pre">ZFSCalculation.solve</span></code> to perform the calculation.</p>
+<p>An example Python script for computing the ZFS tensor for oxygen molecule is shown below. <code class="docutils literal notranslate"><span class="pre">path/to/o2.xml</span></code> should be replaced by the path to the <code class="docutils literal notranslate"><span class="pre">pyzfs/examples/o2_qbox_xml/o2.xml</span></code> file in the <strong>PyZFS</strong> folder.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyzfs.common.wfc.qboxloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">QboxWavefunctionLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pyzfs.zfs.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZFSCalculation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wfcloader</span> <span class="o">=</span> <span class="n">QboxWavefunctionLoader</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;/path/to/o2.xml&#39;</span><span class="p">)</span>  <span class="c1"># Construct wavefunction loader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zfscalc</span> <span class="o">=</span> <span class="n">ZFSCalculation</span><span class="p">(</span><span class="n">wfcloader</span><span class="o">=</span><span class="n">wfcloader</span><span class="p">)</span>  <span class="c1"># Set up ZFS calculation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zfscalc</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>  <span class="c1"># Perform ZFS calculation</span>
+</pre></div>
+</div>
+<p>Example Jupyter notebooks can be found at <code class="docutils literal notranslate"><span class="pre">examples/o2_qbox_xml/run.ipynb</span></code> and <code class="docutils literal notranslate"><span class="pre">examples/o2_qe_hdf5/run.ipynb</span></code>.</p>
+</li>
+<li><p>Directly execute <strong>PyZFS</strong>. This approach works more smoothly with MPI.</p>
+<p>For serial execution, simply type the following command in the folder that contains DFT wavefunction file(s)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pyzfs<span class="w"> </span><span class="o">[</span>--flags<span class="o">]</span>
+</pre></div>
+</div>
+<p>For parallel execution, use the following command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mpiexec<span class="w"> </span><span class="o">[</span>-n<span class="w"> </span>num_of_processes<span class="o">]</span><span class="w"> </span>pyzfs<span class="w"> </span><span class="o">[</span>--flags<span class="o">]</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">num_of_processes</span></code> is the number of processes. <strong>PyZFS</strong> distributes the calculations on a square grid of processes. If <code class="docutils literal notranslate"><span class="pre">num_of_processes</span></code> is not a square number, <strong>PyZFS</strong> will use the largest square number of processes smaller than <code class="docutils literal notranslate"><span class="pre">num_of_processes</span></code> for calculations.</p>
+<p>Note that to use the above <strong>pyzfs</strong> command, one needs to install <strong>PyZFS</strong> through <strong>pip</strong> (see <a class="reference internal" href="installation.html#installation"><span class="std std-ref">Installation</span></a>). If one manually added the <strong>PyZFS</strong> directory to <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> without installing it, one needs to replace the above commands with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pyzfs.run<span class="w"> </span><span class="o">[</span>--flags<span class="o">]</span>
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mpiexec<span class="w"> </span><span class="o">[</span>-n<span class="w"> </span>num_of_processes<span class="o">]</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pyzfs.run<span class="w"> </span><span class="o">[</span>--flags<span class="o">]</span>
+</pre></div>
+</div>
+<p>Acceptable flags [–flags] are listed below. For detailed explanation see <code class="docutils literal notranslate"><span class="pre">pyzfs/run.py</span></code>.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Working directory for this calculation. Python will first change the working dir before any calculations. Default is <code class="docutils literal notranslate"><span class="pre">.</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wfcfmt</span></code>: Format of input wavefunction. Default is <code class="docutils literal notranslate"><span class="pre">qeh5</span></code> Supported options are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">qeh5</span></code>: Quantum ESPRESSO (v6.x or v7.x) HDF5 save file. <code class="docutils literal notranslate"><span class="pre">path</span></code> should contain the <code class="docutils literal notranslate"><span class="pre">prefix.xml</span></code> file and the <code class="docutils literal notranslate"><span class="pre">prefix.save</span></code> folder.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qe</span></code>: Quantum ESPRESSO (v6.1 only) save file. <code class="docutils literal notranslate"><span class="pre">path</span></code> should be the save folder that contains <code class="docutils literal notranslate"><span class="pre">data-files.xml</span></code> etc. Deprecated in favor of <code class="docutils literal notranslate"><span class="pre">qeh5</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qbox</span></code>: Qbox XML file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cube-wfc</span></code>: Cube files of (real) wavefunctions (Kohn-Sham orbitals).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cube-density</span></code>: Cube files of (signed) squared wavefunction. This option supports <code class="docutils literal notranslate"><span class="pre">pp.x</span></code> output with <code class="docutils literal notranslate"><span class="pre">plot_num</span> <span class="pre">=</span> <span class="pre">7</span></code> and <code class="docutils literal notranslate"><span class="pre">lsign</span> <span class="pre">=</span> <span class="pre">.TRUE.</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">filename</span></code>: Name of the Qbox sample XML file that contains input wavefunction. Only used if <code class="docutils literal notranslate"><span class="pre">wfcfmt</span></code> is <code class="docutils literal notranslate"><span class="pre">qbox</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fftgrid</span></code>: FFT grid used. Default is <code class="docutils literal notranslate"><span class="pre">wave</span></code>. Supported options are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">density</span></code>: The density grid is used for FFT.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wave</span></code>: A reduced grid is used for FFT, which is computationally less expensive and is recommended for large-scale calculations.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">memory</span></code>: Controls whether certain intermediate quantities are kept in memory or re-computed every time. Supported options are <code class="docutils literal notranslate"><span class="pre">high</span></code>, <code class="docutils literal notranslate"><span class="pre">low</span></code>, and <code class="docutils literal notranslate"><span class="pre">critical</span></code> which keeps the decreasing amount of quantities in memory. Default is <code class="docutils literal notranslate"><span class="pre">critical</span></code> which costs least memory and is recommended for large-scale calculations.</p></li>
+</ul>
+<p>An example execution command for Quantum ESPRESSO HDF5 save file is</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mpiexec<span class="w"> </span>pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qeh5<span class="w"> </span>--prefix<span class="w"> </span>pwscf
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">pwscf</span></code> is the prefix used in the Quantum ESPRESSO calculation.</p>
+<p>An example execution command for Qbox XML save file is</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mpiexec<span class="w"> </span>pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qbox<span class="w"> </span>--filename<span class="w"> </span>gs.xml
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">gs.xml</span></code> is the XML save file generated by Qbox.</p>
+</li>
+</ol>
+<p>See <code class="docutils literal notranslate"><span class="pre">pyzfs/examples</span></code> for examples of computing the ZFS tensor for the oxygen molecule and the nitrogen-vacancy (NV) center in diamond.</p>
+<p>After <strong>PyZFS</strong> is executed, the D tensor, its eigenvalues and eigenvectors are printed by the end of the output. The widely-used scalar D and E parameters are also printed. A <code class="docutils literal notranslate"><span class="pre">zfs.xml</span></code> file is generated that includes these information, facilitating parsing the results through scripts.</p>
+<p><strong>PyZFS</strong> can scale to thousands of MPI processes. Starting from version 2.0, further speedup can be achieved by using NVIDIA GPUs. The code has been applied to systems with up to 5000 valence electrons. For large calculations, typical walltime for a calculation is on the order of 12-24 hours on CPUs, and 1-2 hours on GPUs.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Chicago.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

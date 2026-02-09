@@ -1,6 +1,6 @@
 from time import time
 import numpy as np
-import pkg_resources
+from importlib.metadata import version
 import os
 import psutil
 from mpi4py import MPI
@@ -246,13 +246,13 @@ class ZFSCalculation:
 
         """
         try:
-            version = pkg_resources.require("PyZFS")[0].version
+            version_str = version("pyzfs")
         except Exception:
-            version = ""
+            version_str = ""
 
         root = etree.Element("root")
         etree.SubElement(root, "code").text = "PyZFS"
-        etree.SubElement(root, "version").text = version
+        etree.SubElement(root, "version").text = version_str
         etree.SubElement(root, "object").text = self.__class__.__name__
         etree.SubElement(root, "DTensor", unit="MHz").text = np.array2string(self.D)
         etree.SubElement(root, "D", unit="MHz").text = "{:.2f}".format(self.Dvalue)

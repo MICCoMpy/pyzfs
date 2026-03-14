@@ -23,8 +23,7 @@ Acceptable kwargs are:
 
     --wfcfmt: format of input wavefunction. Supported values are
         "qeh5": Quantum ESPRESSO HDF5 save file. path should contains "prefix.xml" and save folder.
-        "qe": Quantum ESPRESSO (v6.1) save file. path should be the save folder that contains "data-files.xml", etc.
-              The gvector and evc files have to be converted to xml through iotk.
+        "qe": Quantum ESPRESSO (v6.1) save file. Deprecated.
         "qbox": Qbox xml file.
         "gpaw": GPAW calculator (assumed to be finished).
         "cube-wfc": cube files of (real) wavefunctions (Kohn-Sham orbitals).
@@ -42,9 +41,10 @@ Acceptable kwargs are:
 
     --gpwfile: Name of the GPAW calculator. Only used for GPAW wavefunction.
 
-    --ae: Boolean, whether all-electron (AE) reconstruction is performed. Default is False.
+    --ae: Boolean, whether all-electron (AE) reconstruction is performed. Default is False. Only
+        used for GPAW wavefunction.
 
-    --ae_reduce: Scale to reduce AE real-space grid. Default is 4.
+    --ae_reduce: Scale to reduce AE real-space grid. Default is 4. Only used for GPAW wavefunction.
 
     --fftgrid: "density" or "wave", currently only works for QE wavefunction. If "wave"
         is specified, orbitals will use a reduced grid for FFT. Default is "wave".
@@ -108,11 +108,7 @@ def main():
     memory = kwargs["memory"]
     if fftgrid not in ["density", "wave"]:
         fftgrid = np.array(parse_many_values(3, int, fftgrid))
-    if wfcfmt == "qe":
-        from .common.wfc.qeloader import QEWavefunctionLoader
-
-        wfcloader = QEWavefunctionLoader(fftgrid=fftgrid)
-    elif wfcfmt in ["cube-wfc", "cube-density"]:
+    if wfcfmt in ["cube-wfc", "cube-density"]:
         from .common.wfc.cubeloader import CubeWavefunctionLoader
 
         wfcloader = CubeWavefunctionLoader(
@@ -123,9 +119,6 @@ def main():
 
         filename = kwargs.pop("filename", None)
         wfcloader = QboxWavefunctionLoader(filename=filename, memory=memory)
-    # elif wfcfmt == "vasp":
-    #     from ..common.wfc.vasploader import VaspWavefunctionLoader
-    #     wfcloader = VaspWavefunctionLoader()
     elif wfcfmt == "qeh5":
         from .common.wfc.qeh5loader import QEHDF5WavefunctionLoader
 
@@ -150,7 +143,7 @@ def main():
     # ZFS calculation
     if mpiroot:
         print(
-            "\n\npyzfs.run: instantializing ZFSCalculation with following arguments..."
+            "\n\npyzfs.run: instantializing ZFSCalculation with the following arguments..."
         )
         pprint(kwargs, indent=2)
 

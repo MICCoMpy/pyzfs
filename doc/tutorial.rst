@@ -54,12 +54,19 @@ After installation, **PyZFS** can be executed in two ways:
    - ``wfcfmt``: Format of input wavefunction. Default is ``qeh5`` Supported options are:
 
       - ``qeh5``: Quantum ESPRESSO (v6.x or v7.x) HDF5 save file. ``path`` should contain the ``prefix.xml`` file and the ``prefix.save`` folder.
-      - ``qe``: Quantum ESPRESSO (v6.1 only) save file. ``path`` should be the save folder that contains ``data-files.xml`` etc. Deprecated in favor of ``qeh5``.
+      - ``qe``: Quantum ESPRESSO (v6.1 only) save file. Deprecated.
       - ``qbox``: Qbox XML file.
+      - ``gpaw``: GPAW calculator (assumed to be finished).
       - ``cube-wfc``: Cube files of (real) wavefunctions (Kohn-Sham orbitals).
       - ``cube-density``: Cube files of (signed) squared wavefunction. This option supports ``pp.x`` output with ``plot_num = 7`` and ``lsign = .TRUE.``.
 
    - ``filename``: Name of the Qbox sample XML file that contains input wavefunction. Only used if ``wfcfmt`` is ``qbox``.
+
+   - ``gpwfile``: Name of the GPAW calculator. Only used if ``wfcfmt`` is ``gpaw``.
+
+   - ``ae``: Boolean, whether all-electron (AE) reconstruction is performed. Default is False. Only used if ``wfcfmt`` is ``gpaw``.
+
+   - ``ae_reduce``: Scale to reduce AE real-space grid. Default is 4. Only used if ``wfcfmt`` is ``gpaw``.
 
    - ``fftgrid``: FFT grid used. Default is ``wave``. Supported options are:
 
@@ -88,4 +95,4 @@ See ``pyzfs/examples`` for examples of computing the ZFS tensor for the oxygen m
 
 After **PyZFS** is executed, the D tensor, its eigenvalues and eigenvectors are printed by the end of the output. The widely-used scalar D and E parameters are also printed. A ``zfs.xml`` file is generated that includes these information, facilitating parsing the results through scripts.
 
-**PyZFS** can scale to thousands of MPI processes. Starting from version 2.0, further speedup can be achieved by using NVIDIA GPUs. The code has been applied to systems with up to 5000 valence electrons. For large calculations, typical walltime for a calculation is on the order of 12-24 hours on CPUs, and 1-2 hours on GPUs.
+**PyZFS** can scale to thousands of MPI processes. Starting from version 2.0, further speedup can be achieved by using NVIDIA GPUs. The code has been applied to systems with thousands of valence electrons. For large calculations, typical walltime for a calculation is on the order of 12-24 hours on CPUs, and 1-2 hours on GPUs.

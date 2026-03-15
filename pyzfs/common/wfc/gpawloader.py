@@ -56,6 +56,8 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
         )
 
         # Create FT objects
+        # Note dimensions of reduced WF
+        # (https://github.com/scipy/scipy/blob/v1.17.0/scipy/ndimage/_interpolation.py#L763-L894)
         if self.ae:
             self.ae_reduce_arr = _ni_support._normalize_sequence(
                 1.0 / self.ae_reduce, 3
@@ -66,7 +68,6 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
                     for ii, jj in zip(self.calc_gpaw_ps2ae.gd.N_c, self.ae_reduce_arr)
                 ]
             )
-            # Note: Above matches the dimensions of reduced WF (https://github.com/scipy/scipy/blob/v1.17.0/scipy/ndimage/_interpolation.py#L763-L894)
         else:
             self.realgrid = self.calc_gpaw.wfs.gd.N_c
         self.wft = FourierTransform(
@@ -96,7 +97,8 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
             ("up", iuorbs[iwfc]) if iwfc < nuorbs else ("down", idorbs[iwfc - nuorbs])
             for iwfc in range(norbs)
         )
-        iorb_fname_map = ["None"] * norbs  # GPAW does not use files
+        # GPAW does not use files
+        iorb_fname_map = ["None"] * norbs
 
         self.wfc = Wavefunction(
             cell=cell,
@@ -109,16 +111,6 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
             gamma=self.gamma,
         )
 
-        # Set indicator of GPAW calc
-        self.wfc.calc_gpaw = self.calc_gpaw
-
-        # Set psi(r) array map
-        self.wfc.iorb_psir_arr_map = {}
-
-        # Add new (GPAW-related) functions to self.wfc object
-        self.wfc.get_psir = self.get_psir_gpaw
-        self.wfc.get_rhog = self.get_rhog_gpaw
-
     def load(self, iorbs, sdm):
         super(GPAWWavefunctionLoader, self).load(iorbs, sdm)
         assert isinstance(sdm, SymmetricDistributedMatrix)
@@ -126,14 +118,13 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
         rank = sdm.pgrid.rank
         onroot = sdm.onroot
 
-        # Distribute WFs if all-electron needed, otherwise the pseudo WFs can be fetched quickly
         if self.ae:
 
             # processor 0 parse wavefunctions
-            psir_arrs_all = None
+            psir_all = None
             arr_len = np.prod(self.realgrid)
             if onroot:
-                psir_arrs_all = np.zeros([sdm.mx, arr_len], dtype=complex)
+                psir_all = np.zeros([sdm.mx, arr_len], dtype=complex)
                 c = Counter(
                     self.wfc.norbs,
                     percent=0.1,
@@ -144,7 +135,7 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
                 for ispin in range(2):
                     for iband in range(nbands):
 
-                        # Get all-electron (PAW-reconstructed) wave function
+                        # Get all-electron (PAW-reconstructed) wavefunctions
                         psir_ae = self.calc_gpaw_ps2ae.get_wave_function(
                             n=iband, s=ispin, ae=self.ae
                         )
@@ -152,10 +143,9 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
                         # Linearly interpolate
                         psir = zoom(psir_ae, self.ae_reduce_arr, order=1)
 
-                        # Convert units from 1/Angstrom^(3/2) to 1/bohr^(3/2)
+                        # Convert from 1/Angstrom^(3/2) to 1/bohr^(3/2)
                         psir *= bohr_to_angstrom ** (3.0 / 2)
 
-                        # Normalize
                         psir = self.wfc.normalize(psir)
 
                         iorb = self.wfc.sb_iorb_map.get(
@@ -163,88 +153,107 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
                         )
                         if iorb is not None:
                             offset = _compute_offset(sdm, iorb)
-                            psir_arrs_all[offset] = psir.flatten()
+                            psir_all[offset] = psir.flatten()
                             c.count()
 
             # scatter wavefunctions
             # allocate wfc arrays
-            psir_arrs_m = np.zeros([sdm.mlocx, arr_len], dtype=complex)
-            psir_arrs_n = np.zeros([sdm.nlocx, arr_len], dtype=complex)
+            psir_m = np.zeros([sdm.mlocx, arr_len], dtype=complex)
+            psir_n = np.zeros([sdm.nlocx, arr_len], dtype=complex)
             comm.barrier()
 
             # root -> first column scatter
             if onroot:
                 print("GPAWWavefunctionLoader: root -> first column scattering")
             if sdm.icol == 0:
-                sdm.colcomm.Scatter(sendbuf=psir_arrs_all, recvbuf=psir_arrs_m, root=0)
+                sdm.colcomm.Scatter(sendbuf=psir_all, recvbuf=psir_m, root=0)
             comm.barrier()
 
             # first column -> other column bcast
             if onroot:
                 print("GPAWWavefunctionLoader: first column -> other column bcast")
-            sdm.rowcomm.Bcast(psir_arrs_m, root=0)
+            sdm.rowcomm.Bcast(psir_m, root=0)
             comm.barrier()
 
             # root -> first row scatter
             if onroot:
                 print("GPAWWavefunctionLoader: root -> first row scattering")
             if sdm.irow == 0:
-                sdm.rowcomm.Scatter(sendbuf=psir_arrs_all, recvbuf=psir_arrs_n, root=0)
+                sdm.rowcomm.Scatter(sendbuf=psir_all, recvbuf=psir_n, root=0)
             comm.barrier()
 
             # first row -> other row bcast
             if onroot:
                 print("GPAWWavefunctionLoader: first row -> other row bcast")
-            sdm.colcomm.Bcast(psir_arrs_n, root=0)
+            sdm.colcomm.Bcast(psir_n, root=0)
             comm.barrier()
 
             if onroot:
-                del psir_arrs_all
+                del psir_all
 
             for iloc in range(sdm.mloc):
                 iorb = sdm.ltog(iloc)
-                self.set_psir_arr(iorb, psir_arrs_m[iloc])
+                self.wfc.set_psir(iorb, psir_m[iloc].reshape(*self.realgrid))
 
             for iloc in range(sdm.nloc):
                 iorb = sdm.ltog(0, iloc)[1]
                 try:
-                    self.set_psir_arr(iorb, psir_arrs_n[iloc])
+                    self.wfc.set_psir(iorb, psir_n[iloc].reshape(*self.realgrid))
                 except ValueError:
                     pass
-            comm.barrier()
 
         else:
-            # Fetch pseudo WF from calc.get_pseudo_wave_function routine (quick)
+
+            for iloc in range(sdm.mloc):
+                iorb = sdm.ltog(iloc)
+
+                # Get orbital info
+                spin = self.wfc.iorb_sb_map[iorb][0]
+                if spin == "up":
+                    ispin = 0
+                elif spin == "down":
+                    ispin = 1
+                iband = self.wfc.iorb_sb_map[iorb][1]
+
+                # Get pseudo WF
+                psir = self.calc_gpaw.get_pseudo_wave_function(band=iband, spin=ispin)
+
+                # Convert from 1/Angstrom^(3/2) to 1/bohr^(3/2)
+                psir *= bohr_to_angstrom ** (3.0 / 2)
+
+                psir = self.wfc.normalize(psir)
+
+                self.wfc.set_psir(iorb, psir)
+
+            for iloc in range(sdm.nloc):
+                iorb = sdm.ltog(0, iloc)[1]
+
+                # Get orbital info
+                spin = self.wfc.iorb_sb_map[iorb][0]
+                if spin == "up":
+                    ispin = 0
+                elif spin == "down":
+                    ispin = 1
+                iband = self.wfc.iorb_sb_map[iorb][1]
+
+                # Get pseudo WF
+                psir = self.calc_gpaw.get_pseudo_wave_function(band=iband, spin=ispin)
+
+                # Convert from 1/Angstrom^(3/2) to 1/bohr^(3/2)
+                psir *= bohr_to_angstrom ** (3.0 / 2)
+
+                psir = self.wfc.normalize(psir)
+
+                try:
+                    self.wfc.set_psir(iorb, psir)
+                except ValueError:
+                    pass
+
+        comm.barrier()
+
+        if self.memory == "high":
+            self.wfc.compute_all_rhog()
+        elif self.memory == "low" or self.memory == "critical":
             pass
-
-    def set_psir_arr(self, iorb, psir_arr):
-        if iorb in self.wfc.iorb_psir_arr_map:
-            raise ValueError("psir_arr {} already set".format(iorb))
-        self.wfc.iorb_psir_arr_map[iorb] = psir_arr
-
-    def get_psir_gpaw(self, iorb):
-        """Get psi(r) of certain index, GPAW edition"""
-        if self.ae:
-            return self.wfc.iorb_psir_arr_map[iorb].reshape(*self.realgrid)
         else:
-
-            # Get orbital info
-            spin = self.wfc.iorb_sb_map[iorb][0]
-            if spin == "up":
-                ispin = 0
-            elif spin == "down":
-                ispin = 1
-            iband = self.wfc.iorb_sb_map[iorb][1]
-
-            # Get pseudo WF
-            psir = self.wfc.calc_gpaw.get_pseudo_wave_function(
-                band=iband, spin=ispin
-            )  # Units 1/Angstrom^(3/2), https://gpaw.readthedocs.io/devel/paw.html#gpaw.calculator.GPAW.get_pseudo_wave_function
-            psir *= bohr_to_angstrom ** (
-                3.0 / 2
-            )  # Convert units from 1/Angstrom^(3/2) to 1/bohr^(3/2)
-            psir = self.wfc.normalize(psir)  # Normalize
-            return psir
-
-    def get_rhog_gpaw(self, iorb):
-        return None
+            raise ValueError

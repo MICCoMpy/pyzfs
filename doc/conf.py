@@ -32,7 +32,15 @@ version = "2.3"
 # ones.
 master_doc = "index"
 
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.napoleon",
+    "nbsphinx",
+    "IPython.sphinxext.ipython_console_highlighting",
+]
 
 autodoc_mock_imports = ["mpi4py"]
 

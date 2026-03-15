@@ -11,3 +11,5 @@ zfs.xml
 Iijab.npy
 env
 .ipynb_checkpoints
+.virtual_documents
+anaconda_projects

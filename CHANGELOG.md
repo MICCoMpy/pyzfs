@@ -1,10 +1,11 @@
 Change Log
 ==========
 
-Not released
-------------
+v2.4 (2026/03/15)
+-----------------
 
-- Added support for [GPAW](https://gpaw.readthedocs.io/). All-electron wave function reconstruction is enabled.
+- Added support for [GPAW](https://gpaw.readthedocs.io/). All-electron wavefunction reconstruction is enabled.
+- Updated documentation. Added more tutorials.
 
 v2.3 (2025/12/20)
 -----------------

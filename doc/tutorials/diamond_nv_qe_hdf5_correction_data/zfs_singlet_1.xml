@@ -1,0 +1,10 @@
+<root>
+  <code>PyZFS</code>
+  <version>2.2</version>
+  <object>ZFSCalculation</object>
+  <DTensor unit="MHz">[[ 347.77636321 -693.42825723 -692.67962668]
+ [-693.42825723 -172.28484447 -669.9773775 ]
+ [-692.67962668 -669.9773775  -175.49151874]]</DTensor>
+  <D unit="MHz">-2092.59</D>
+  <E unit="MHz">201.45</E>
+</root>

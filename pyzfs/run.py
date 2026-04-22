@@ -22,8 +22,8 @@ Acceptable kwargs are:
         the working dir before any calculations. Default is ".".
 
     --wfcfmt: format of input wavefunction. Supported values are
-        "qeh5": Quantum ESPRESSO HDF5 save file. path should contains "prefix.xml" and save folder.
-        "qe": Quantum ESPRESSO (v6.1) save file. Deprecated.
+        "qeh5": Quantum ESPRESSO HDF5 save file. path should contain "prefix.xml" and save folder.
+        "qe": Quantum ESPRESSO save file. path should contain "prefix.xml" and save folder.
         "qbox": Qbox xml file.
         "gpaw": GPAW calculator (assumed to be finished).
         "cube-wfc": cube files of (real) wavefunctions (Kohn-Sham orbitals).
@@ -35,7 +35,7 @@ Acceptable kwargs are:
             3. The last integer value found the file name is interpreted as band index.
         Default is "qeh5".
 
-    --prefix: QE prefix. Only used for QE (HDF5) wavefunction.
+    --prefix: QE prefix. Only used for QE wavefunction.
 
     --filename: name for input wavefunction. Only used for Qbox wavefunction.
 
@@ -126,7 +126,11 @@ def main():
         wfcloader = QEHDF5WavefunctionLoader(
             fftgrid=fftgrid, prefix=prefix, memory=memory
         )
+    elif wfcfmt == "qe":
+        from .common.wfc.qeloader import QEWavefunctionLoader
 
+        prefix = kwargs.pop("prefix", "pwscf")
+        wfcloader = QEWavefunctionLoader(fftgrid=fftgrid, prefix=prefix, memory=memory)
     elif wfcfmt == "gpaw":
         from .common.wfc.gpawloader import GPAWWavefunctionLoader
 
@@ -134,7 +138,6 @@ def main():
         ae = bool(kwargs.pop("ae"))
         ae_reduce = int(kwargs.pop("ae_reduce"))
         wfcloader = GPAWWavefunctionLoader(gpwfile=gpwfile, ae=ae, ae_reduce=ae_reduce)
-
     else:
         raise ValueError("Unsupported wfcfmt: {}".format(wfcfmt))
 

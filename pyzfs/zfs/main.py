@@ -212,8 +212,8 @@ class ZFSCalculation:
     @indent(2)
     def print_memory_usage(self):
         pyproc = psutil.Process(os.getpid())
-        memloc = np.array(pyproc.memory_info()[0] / 2.0**20, dtype="f")
-        memtot = np.array(0.0, dtype="f")
+        memloc = np.array(pyproc.memory_info()[0] / 2.0**20, dtype=np.float32)
+        memtot = np.array(0.0, dtype=np.float32)
         MPI.COMM_WORLD.Reduce([memloc, MPI.FLOAT], [memtot, MPI.FLOAT])
 
         if self.pgrid.onroot:

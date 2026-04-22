@@ -70,7 +70,7 @@ class Wavefunction:
         # d stands for dense, s stands for smooth
         nd = np.array([self.dft.n1, self.dft.n2, self.dft.n3])
         ns = np.array([self.ft.n1, self.ft.n2, self.ft.n3])
-        idxs = np.zeros(3, dtype=int)
+        idxs = np.zeros(3, dtype=np.int_)
 
         psigzyxd = np.zeros((nd[2], nd[1], nd[0] // 2 + 1), dtype=np.complex128)
         psigzyxd[self.gvecs[:, 2], self.gvecs[:, 1], self.gvecs[:, 0]] = psig_arr

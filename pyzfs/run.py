@@ -61,7 +61,7 @@ def main():
             version_str = ""
 
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("PyZFS code {}".format(version_str))
+        print(f"PyZFS code {version_str}")
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
@@ -87,7 +87,7 @@ def main():
     # Change directory
     path = kwargs.pop("path")
     if mpiroot:
-        print('pyzfs.run: setting working directory as "{}"...'.format(path))
+        print(f'pyzfs.run: setting working directory as "{path}"...')
     os.chdir(path)
 
     # CUDA initialization
@@ -96,7 +96,7 @@ def main():
 
         nGPU = getDeviceCount()
         if mpiroot:
-            print("pyzfs.run: found {} GPU devices".format(nGPU))
+            print(f"pyzfs.run: found {nGPU} GPU devices")
             print("pyzfs.run: setting GPU devices...")
         setDevice(mpirank % nGPU)
     except Exception:
@@ -139,7 +139,7 @@ def main():
         ae_reduce = int(kwargs.pop("ae_reduce"))
         wfcloader = GPAWWavefunctionLoader(gpwfile=gpwfile, ae=ae, ae_reduce=ae_reduce)
     else:
-        raise ValueError("Unsupported wfcfmt: {}".format(wfcfmt))
+        raise ValueError(f"Unsupported wfcfmt: {wfcfmt}")
 
     kwargs["wfcloader"] = wfcloader
 

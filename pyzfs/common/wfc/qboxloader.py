@@ -27,22 +27,18 @@ class QboxWavefunctionLoader(WavefunctionLoader):
         if self.xmlfile is None:
             xmllist = sorted(glob("*xml"), key=lambda f: os.path.getsize(f))
             if len(xmllist) == 0:
-                raise IOError(
-                    "No xml file found in current directory: {}".format(os.getcwd())
-                )
+                raise IOError(f"No xml file found in current directory: {os.getcwd()}")
             elif len(xmllist) == 1:
                 self.xmlfile = xmllist[0]
             else:
                 self.xmlfile = xmllist[-1]
                 if mpiroot:
-                    print("More than one xml files found: {}".format(xmllist))
+                    print(f"More than one xml files found: {xmllist}")
                     print(
-                        "Assume wavefunction is in the largest xml file: {} ({} MB)".format(
-                            self.xmlfile, os.path.getsize(self.xmlfile) / 1024**2
-                        )
+                        f"Assume wavefunction is in the largest xml file: {self.xmlfile} ({os.path.getsize(self.xmlfile) / 1024**2} MB)"
                     )
         if mpiroot:
-            print("Reading wavefunction from file {}".format(self.xmlfile))
+            print(f"Reading wavefunction from file {self.xmlfile}")
 
         iterxml = etree.iterparse(self.xmlfile, huge_tree=True, events=("start", "end"))
 

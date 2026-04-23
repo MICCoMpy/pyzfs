@@ -103,12 +103,12 @@ class Wavefunction:
 
     def set_psig_arr(self, iorb, psig_arr):
         if iorb in self.iorb_psig_arr_map:
-            raise ValueError("psig_arr {} already set".format(iorb))
+            raise ValueError(f"psig_arr {iorb} already set")
         self.iorb_psig_arr_map[iorb] = psig_arr
 
     def set_psir(self, iorb, psir):
         if iorb in self.iorb_psir_map:
-            raise ValueError("psir {} already set".format(iorb))
+            raise ValueError(f"psir {iorb} already set")
         try:
             import cupy as cp
 
@@ -122,7 +122,7 @@ class Wavefunction:
             psir = self.iorb_psir_map[iorb]
         else:
             rank = MPI.COMM_WORLD.Get_rank()
-            s = "{} Impossible to get psir: orbital {} is not loaded".format(rank, iorb)
+            s = f"{rank} Impossible to get psir: orbital {iorb} is not loaded"
             assert iorb in self.iorb_psig_arr_map, s
             psir = self.compute_psir_from_psig_arr(self.iorb_psig_arr_map[iorb])
         try:

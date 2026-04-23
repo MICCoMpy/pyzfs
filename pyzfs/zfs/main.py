@@ -114,7 +114,7 @@ class ZFSCalculation:
         t1 = time()
 
         if self.pgrid.onroot:
-            print("Time elapsed for loading wfc: {:.0f}s".format(t1 - t0))
+            print(f"Time elapsed for loading wfc: {t1 - t0:.0f}s")
 
         # Compute dipole-dipole interaction tensor. Due to symmetry we only need the
         # upper triangular part of ddig
@@ -204,10 +204,8 @@ class ZFSCalculation:
             print(self.evc[:, 2])
             print("Dx, Dy, Dz (|Dz| > |Dx| > |Dy|) (MHz): ")
             print(dx, dy, dz)
-            print(
-                "Scalar D = {:.2f} MHz, E = {:.2f} MHz".format(self.Dvalue, self.Evalue)
-            )
-            print("Time elapsed for pair iteration: {:.0f}s".format(time() - t1))
+            print(f"Scalar D = {self.Dvalue:.2f} MHz, E = {self.Evalue:.2f} MHz")
+            print(f"Time elapsed for pair iteration: {time() - t1:.0f}s")
 
     @indent(2)
     def print_memory_usage(self):
@@ -224,19 +222,19 @@ class ZFSCalculation:
                     nbytes = sum(
                         value.nbytes for value in self.wfc.__dict__[obj].values()
                     )
-                    print("  {:10} {:.2f} MB".format(obj, nbytes / 1024.0**2))
+                    print(f"  {obj:10} {nbytes / 1024.0**2:.2f} MB")
                 except KeyError:
                     pass
 
             for obj in ["ddig", "I", "Iglobal"]:
                 try:
                     nbytes = self.__dict__[obj].nbytes
-                    print("  {:10} {:.2f} MB".format(obj, nbytes / 1024.0**2))
+                    print(f"  {obj:10} {nbytes / 1024.0**2:.2f} MB")
                 except AttributeError:
                     pass
 
-            print("\nTotal memory usage (on process 0): {:.2f} MB".format(memloc))
-            print("Total memory usage (all processes): {:.2f} MB".format(memtot))
+            print(f"\nTotal memory usage (on process 0): {memloc:.2f} MB")
+            print(f"Total memory usage (all processes): {memtot:.2f} MB")
 
     def get_xml(self):
         """Generate an xml to store information of this calculation.
@@ -255,8 +253,8 @@ class ZFSCalculation:
         etree.SubElement(root, "version").text = version_str
         etree.SubElement(root, "object").text = self.__class__.__name__
         etree.SubElement(root, "DTensor", unit="MHz").text = np.array2string(self.D)
-        etree.SubElement(root, "D", unit="MHz").text = "{:.2f}".format(self.Dvalue)
-        etree.SubElement(root, "E", unit="MHz").text = "{:.2f}".format(self.Evalue)
+        etree.SubElement(root, "D", unit="MHz").text = f"{self.Dvalue:.2f}"
+        etree.SubElement(root, "E", unit="MHz").text = f"{self.Evalue:.2f}"
 
         tree = etree.ElementTree(root)
         return etree.tostring(tree, pretty_print=True)

@@ -41,7 +41,7 @@ class QEWavefunctionLoader(WavefunctionLoader):
 
         self.root = "."
 
-        pwxml = etree.parse("{}/{}.xml".format(self.root, self.prefix))
+        pwxml = etree.parse(f"{self.root}/{self.prefix}.xml")
         self.prefix = pwxml.find("input/control_variables/prefix").text
 
         # parse cell and FFT grid
@@ -134,7 +134,9 @@ class QEWavefunctionLoader(WavefunctionLoader):
         gvecs = ngvecs = None
         if onroot:
             wfcfile = "wfcup1.dat"
-            with open(os.path.join(self.root, "{}.save".format(self.prefix), wfcfile), "rb") as f:
+            with open(
+                os.path.join(self.root, f"{self.prefix}.save", wfcfile), "rb"
+            ) as f:
                 f.seek(4)
 
                 ik = np.fromfile(f, dtype=np.int32, count=1)[0]
@@ -183,7 +185,9 @@ class QEWavefunctionLoader(WavefunctionLoader):
             )
             for ispin in range(2):
                 wfcfile = "wfcup1.dat" if ispin == 0 else "wfcdw1.dat"
-                with open(os.path.join(self.root, "{}.save".format(self.prefix), wfcfile), "rb") as f:
+                with open(
+                    os.path.join(self.root, f"{self.prefix}.save", wfcfile), "rb"
+                ) as f:
                     # Moves the cursor to evc
                     f.seek(168 + 4 * 3 * ngvecs)
 

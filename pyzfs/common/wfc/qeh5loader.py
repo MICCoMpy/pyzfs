@@ -42,7 +42,7 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
 
         self.root = "."
 
-        pwxml = etree.parse("{}/{}.xml".format(self.root, self.prefix))
+        pwxml = etree.parse(f"{self.root}/{self.prefix}.xml")
         self.prefix = pwxml.find("input/control_variables/prefix").text
 
         # parse cell and FFT grid
@@ -136,7 +136,7 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
         if onroot:
             wfcfile = "wfcup1.hdf5"
             wfch5 = h5py.File(
-                os.path.join(self.root, "{}.save".format(self.prefix), wfcfile), "r"
+                os.path.join(self.root, f"{self.prefix}.save", wfcfile), "r"
             )
             gvecs = np.array(wfch5["MillerIndices"], dtype=np.int_)
             ngvecs = gvecs.shape[0]
@@ -162,7 +162,7 @@ class QEHDF5WavefunctionLoader(WavefunctionLoader):
             for ispin in range(2):
                 wfcfile = "wfcup1.hdf5" if ispin == 0 else "wfcdw1.hdf5"
                 wfch5 = h5py.File(
-                    os.path.join(self.root, "{}.save".format(self.prefix), wfcfile), "r"
+                    os.path.join(self.root, f"{self.prefix}.save", wfcfile), "r"
                 )
                 gvecs = np.array(wfch5["MillerIndices"], dtype=np.int_)
                 ngvecs = gvecs.shape[0]

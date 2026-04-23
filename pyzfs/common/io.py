@@ -26,7 +26,7 @@ class indent:
         if len(args) == 1 and len(kwargs) == 0:
             arg = args[0]
             self.builtin_print(
-                "{}{}".format(self.prefix, str(arg).replace("\n", "\n" + self.prefix))
+                f"{self.prefix}{str(arg).replace("\n", "\n" + self.prefix)}"
             )
         else:
             self.builtin_print(self.prefix, *args, **kwargs)

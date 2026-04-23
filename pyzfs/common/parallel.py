@@ -75,7 +75,7 @@ class ProcessorGrid(object):
     def report(self, tag="", sleep=True):
         if sleep:
             self.sleep()
-        print("rank {} reporting {}".format(self.rank, tag))
+        print(f"rank {self.rank} reporting {tag}")
 
     @indent(4)
     def print_info(self):
@@ -97,7 +97,10 @@ class ProcessorGrid(object):
         )
         allmessage = self.comm.gather(message, root=0)
         if self.onroot:
-            print("ProcessGrid{} info:".format(" (square)" if self.square else ""))
+            if self.square:
+                print("ProcessGrid (square) info:")
+            else:
+                print("ProcessGrid info:")
             print("rank -> (irow, icol) mapping:")
             print(self.pmap)
             print("(irow, icol) -> rank mapping:")
@@ -171,7 +174,7 @@ class DistributedMatrix(object):
         assert self.nstart + self.nloc == self.nend
 
         # Build index map: irow, icol -> mstart, mloc, mend, nstart, nloc, nend
-        indexmap = np.zeros([self.nrow, self.ncol, 6], dtype=np.int_)
+        indexmap = np.zeros([self.nrow, self.ncol, 6], dtype=np.int32)
         indexmap[self.irow, self.icol] = [
             self.mstart,
             self.mloc,
@@ -209,7 +212,7 @@ class DistributedMatrix(object):
         )
         allmessage = self.comm.gather(message, root=0)
         if self.onroot:
-            print("DistributedMatrix info: {}".format(name))
+            print(f"DistributedMatrix info: {name}")
             print(columns)
             for m in allmessage:
                 print(m)
@@ -275,9 +278,6 @@ class SymmetricDistributedMatrix(DistributedMatrix):
         self.mx = self.mlocx * self.nrow
         assert self.mx == self.colcomm.allreduce(self.mlocx, op=MPI.SUM)
         if self.is_active and (self.mloc < self.mlocx or self.nloc < self.nlocx):
-            # self.pgrid.report("expanded array from {}x{} to {}x{}".format(
-            #     self.mloc, self.nloc, self.mlocx, self.nlocx
-            # ))
             self.val.resize((self.mlocx, self.nlocx) + self.shape[2:])
         self.nbytes = self.val.nbytes
 

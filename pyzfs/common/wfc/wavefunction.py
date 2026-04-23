@@ -70,7 +70,7 @@ class Wavefunction:
         # d stands for dense, s stands for smooth
         nd = np.array([self.dft.n1, self.dft.n2, self.dft.n3])
         ns = np.array([self.ft.n1, self.ft.n2, self.ft.n3])
-        idxs = np.zeros(3, dtype=int)
+        idxs = np.zeros(3, dtype=np.int32)
 
         psigzyxd = np.zeros((nd[2], nd[1], nd[0] // 2 + 1), dtype=np.complex128)
         psigzyxd[self.gvecs[:, 2], self.gvecs[:, 1], self.gvecs[:, 0]] = psig_arr
@@ -103,12 +103,12 @@ class Wavefunction:
 
     def set_psig_arr(self, iorb, psig_arr):
         if iorb in self.iorb_psig_arr_map:
-            raise ValueError("psig_arr {} already set".format(iorb))
+            raise ValueError(f"psig_arr {iorb} already set")
         self.iorb_psig_arr_map[iorb] = psig_arr
 
     def set_psir(self, iorb, psir):
         if iorb in self.iorb_psir_map:
-            raise ValueError("psir {} already set".format(iorb))
+            raise ValueError(f"psir {iorb} already set")
         try:
             import cupy as cp
 
@@ -122,7 +122,7 @@ class Wavefunction:
             psir = self.iorb_psir_map[iorb]
         else:
             rank = MPI.COMM_WORLD.Get_rank()
-            s = "{} Impossible to get psir: orbital {} is not loaded".format(rank, iorb)
+            s = f"{rank} Impossible to get psir: orbital {iorb} is not loaded"
             assert iorb in self.iorb_psig_arr_map, s
             psir = self.compute_psir_from_psig_arr(self.iorb_psig_arr_map[iorb])
         try:

@@ -23,9 +23,7 @@ class WavefunctionLoader(object):
         """Scan current directory, construct wavefunction object"""
         if mpiroot:
             print(
-                '\n{}: scanning current working directory "{}"...\n'.format(
-                    self.__class__.__name__, os.getcwd()
-                )
+                f'\n{self.__class__.__name__}: scanning current working directory "{os.getcwd()}"...\n'
             )
 
     @abstractmethod
@@ -41,26 +39,18 @@ class WavefunctionLoader(object):
         """
         if mpiroot:
             print(
-                '\n{}: loading orbitals into memory... (memory mode: "{}")\n'.format(
-                    self.__class__.__name__, self.memory
-                )
+                f'\n{self.__class__.__name__}: loading orbitals into memory... (memory mode: "{self.memory}")\n'
             )
 
     def info(self):
         if mpiroot:
             wfc = self.wfc
             print(
-                "   nuwfcs = {}, ndwfcs = {}, nwfcs = {}".format(
-                    wfc.nuorbs, wfc.ndorbs, wfc.norbs
-                )
+                f"   nuwfcs = {wfc.nuorbs}, ndwfcs = {wfc.ndorbs}, nwfcs = {wfc.norbs}"
             )
             for iorb in range(wfc.norbs):
                 print(
-                    "     spin = {}     band = {}     file = {}".format(
-                        wfc.iorb_sb_map[iorb][0],
-                        wfc.iorb_sb_map[iorb][1],
-                        wfc.iorb_fname_map[iorb],
-                    )
+                    f"     spin = {wfc.iorb_sb_map[iorb][0]}     band = {wfc.iorb_sb_map[iorb][1]}     file = {wfc.iorb_fname_map[iorb]}"
                 )
             print("\nSystem Overview:")
             print("  Cell: ")

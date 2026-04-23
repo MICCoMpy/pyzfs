@@ -35,7 +35,7 @@ class Counter(object):
                         n=self.n,
                         ntot=self.ntot,
                         percent=(100 * self.n) // self.ntot,
-                        dt="{:2f}s".format(t - self.tlast),
+                        dt=f"{t - self.tlast:2f}s",
                     )
                 )
             self.tlast = t

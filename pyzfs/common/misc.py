@@ -39,7 +39,7 @@ def parse_sys_argv(flags=None):
 
     kwargs = OrderedDict()
     for flag, nvalue in flags.items():
-        indices = [i for i in range(argc) if argv[i] == "--{}".format(flag)]
+        indices = [i for i in range(argc) if argv[i] == f"--{flag}"]
         if len(indices) == 0:
             continue
         elif len(indices) == 1:
@@ -52,10 +52,10 @@ def parse_sys_argv(flags=None):
                 else:
                     kwargs[flag] = argv[index + 1 : index + nvalue + 1]
             except IndexError:
-                print("cannot parse enough values for flag --{}".format(flag))
+                print(f"cannot parse enough values for flag --{flag}")
             unparsed[index : index + nvalue + 1] = False
         else:
-            raise ValueError("flag --{} appeared multiple times".format(flag))
+            raise ValueError(f"flag --{flag} appeared multiple times")
 
     args = argv[unparsed]
 
@@ -126,9 +126,7 @@ def parse_many_values(n, dtype, content):
         else:
             if started:
                 raise ValueError(
-                    "cannot parse {} {} variables in content {}".format(
-                        n, dtype, content
-                    )
+                    f"cannot parse {n} {dtype} variables in content {content}"
                 )
         results.extend(found)
         assert len(results) <= n

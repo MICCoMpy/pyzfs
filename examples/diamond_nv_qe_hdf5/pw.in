@@ -1,19 +1,14 @@
 &CONTROL
 calculation = 'scf'
-verbosity = 'high'
-wf_collect = .true.
-tstress = .true.
 /
 &SYSTEM
-input_dft = 'PBE'
 ibrav = 0
-ecutwfc = 50
-nosym = .true.
-nspin = 2
-tot_charge = -1
-tot_magnetization = 2
-nat = 63
 ntyp = 2
+nat = 63
+tot_charge = -1
+nspin = 2
+tot_magnetization = 2
+ecutwfc = 50
 /
 &ELECTRONS
 conv_thr = 1D-08
@@ -24,8 +19,8 @@ CELL_PARAMETERS angstrom
 0.000000  7.136032  0.000000
 0.000000  0.000000  7.136032
 ATOMIC_SPECIES
-C  12.01099968  C_ONCV_PBE-1.0.upf
-N  14.00699997  N_ONCV_PBE-1.0.upf
+C  12.01099968  C_ONCV_PBE-1.2.upf
+N  14.00699997  N_ONCV_PBE-1.2.upf
 ATOMIC_POSITIONS angstrom
 C    7.13567499  7.13567499  7.13567499
 C    0.89157581  0.89157581  0.89157581

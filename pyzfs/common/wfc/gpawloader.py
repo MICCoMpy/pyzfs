@@ -124,7 +124,7 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
             psir_all = None
             arr_len = np.prod(self.realgrid)
             if onroot:
-                psir_all = np.zeros([sdm.mx, arr_len], dtype=complex)
+                psir_all = np.zeros([sdm.mx, arr_len], dtype=np.complex128)
                 c = Counter(
                     self.wfc.norbs,
                     percent=0.1,
@@ -158,8 +158,8 @@ class GPAWWavefunctionLoader(WavefunctionLoader):
 
             # scatter wavefunctions
             # allocate wfc arrays
-            psir_m = np.zeros([sdm.mlocx, arr_len], dtype=complex)
-            psir_n = np.zeros([sdm.nlocx, arr_len], dtype=complex)
+            psir_m = np.zeros([sdm.mlocx, arr_len], dtype=np.complex128)
+            psir_n = np.zeros([sdm.nlocx, arr_len], dtype=np.complex128)
             comm.barrier()
 
             # root -> first column scatter

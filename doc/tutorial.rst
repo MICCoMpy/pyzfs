@@ -74,13 +74,13 @@ Acceptable flags [``--flags``] are listed below.
 - ``wfcfmt``: Format of wavefunctions. Default is ``qeh5``. Supported options are:
 
    - ``qeh5``: Quantum ESPRESSO (v6.x or v7.x) HDF5. ``path`` should contain the ``prefix.xml`` file and the ``prefix.save`` folder.
-   - ``qe``: Quantum ESPRESSO (v6.1 only). Deprecated.
+   - ``qe``: Quantum ESPRESSO (v7.x). ``path`` should contain the ``prefix.xml`` file and the ``prefix.save`` folder.
    - ``qbox``: Qbox XML.
    - ``gpaw``: GPAW calculator (assumed to be finished).
    - ``cube-wfc``: Cube files of (real) wavefunctions.
    - ``cube-density``: Cube files of (signed) squared wavefunction. This option supports ``pp.x`` output with ``plot_num = 7`` and ``lsign = .TRUE.``.
 
-- ``prefix``: QE prefix. Only used if ``wfcfmt`` is ``qeh5``.
+- ``prefix``: QE prefix. Only used if ``wfcfmt`` is ``qe`` or ``qeh5``.
 
 - ``filename``: Name of the Qbox sample XML file that contains the wavefunctions. Only used if ``wfcfmt`` is ``qbox``.
 

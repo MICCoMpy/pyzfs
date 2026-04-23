@@ -22,8 +22,8 @@ Acceptable kwargs are:
         the working dir before any calculations. Default is ".".
 
     --wfcfmt: format of input wavefunction. Supported values are
-        "qeh5": Quantum ESPRESSO HDF5 save file. path should contains "prefix.xml" and save folder.
-        "qe": Quantum ESPRESSO (v6.1) save file. Deprecated.
+        "qeh5": Quantum ESPRESSO HDF5 save file. path should contain "prefix.xml" and save folder.
+        "qe": Quantum ESPRESSO save file. path should contain "prefix.xml" and save folder.
         "qbox": Qbox xml file.
         "gpaw": GPAW calculator (assumed to be finished).
         "cube-wfc": cube files of (real) wavefunctions (Kohn-Sham orbitals).
@@ -35,7 +35,7 @@ Acceptable kwargs are:
             3. The last integer value found the file name is interpreted as band index.
         Default is "qeh5".
 
-    --prefix: QE prefix. Only used for QE (HDF5) wavefunction.
+    --prefix: QE prefix. Only used for QE wavefunction.
 
     --filename: name for input wavefunction. Only used for Qbox wavefunction.
 
@@ -61,7 +61,7 @@ def main():
             version_str = ""
 
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print("PyZFS code {}".format(version_str))
+        print(f"PyZFS code {version_str}")
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
@@ -87,7 +87,7 @@ def main():
     # Change directory
     path = kwargs.pop("path")
     if mpiroot:
-        print('pyzfs.run: setting working directory as "{}"...'.format(path))
+        print(f'pyzfs.run: setting working directory as "{path}"...')
     os.chdir(path)
 
     # CUDA initialization
@@ -96,7 +96,7 @@ def main():
 
         nGPU = getDeviceCount()
         if mpiroot:
-            print("pyzfs.run: found {} GPU devices".format(nGPU))
+            print(f"pyzfs.run: found {nGPU} GPU devices")
             print("pyzfs.run: setting GPU devices...")
         setDevice(mpirank % nGPU)
     except Exception:
@@ -120,13 +120,19 @@ def main():
         filename = kwargs.pop("filename", None)
         wfcloader = QboxWavefunctionLoader(filename=filename, memory=memory)
     elif wfcfmt == "qeh5":
-        from .common.wfc.qeh5loader import QEHDF5WavefunctionLoader
+        from .common.wfc.qeloader import QEWavefunctionLoader
 
         prefix = kwargs.pop("prefix", "pwscf")
-        wfcloader = QEHDF5WavefunctionLoader(
-            fftgrid=fftgrid, prefix=prefix, memory=memory
+        wfcloader = QEWavefunctionLoader(
+            fftgrid=fftgrid, prefix=prefix, memory=memory, l_hdf5=True
         )
+    elif wfcfmt == "qe":
+        from .common.wfc.qeloader import QEWavefunctionLoader
 
+        prefix = kwargs.pop("prefix", "pwscf")
+        wfcloader = QEWavefunctionLoader(
+            fftgrid=fftgrid, prefix=prefix, memory=memory, l_hdf5=False
+        )
     elif wfcfmt == "gpaw":
         from .common.wfc.gpawloader import GPAWWavefunctionLoader
 
@@ -134,9 +140,8 @@ def main():
         ae = bool(kwargs.pop("ae"))
         ae_reduce = int(kwargs.pop("ae_reduce"))
         wfcloader = GPAWWavefunctionLoader(gpwfile=gpwfile, ae=ae, ae_reduce=ae_reduce)
-
     else:
-        raise ValueError("Unsupported wfcfmt: {}".format(wfcfmt))
+        raise ValueError(f"Unsupported wfcfmt: {wfcfmt}")
 
     kwargs["wfcloader"] = wfcloader
 

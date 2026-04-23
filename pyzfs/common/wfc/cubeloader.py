@@ -44,9 +44,7 @@ class CubeWavefunctionLoader(WavefunctionLoader):
                 ft = FourierTransform(*map(lambda x: x // 2, psir.shape))
                 if mpiroot:
                     print(
-                        "Charge density grid {} will be interpolated to wavefunction grid {}.\n".format(
-                            map(lambda x: x // 2, psir.shape), psir.shape
-                        )
+                        f"Charge density grid {map(lambda x: x // 2, psir.shape)} will be interpolated to wavefunction grid {psir.shape}.\n"
                     )
             else:
                 if mpiroot:

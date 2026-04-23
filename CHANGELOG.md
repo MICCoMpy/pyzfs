@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+v2.5 (2026/04/22)
+-----------------
+
+- Added support for Quantum ESPRESSO wavefunctions in the `.dat` format, in addition to the HDF5 format.
+
 v2.4 (2026/03/15)
 -----------------
 

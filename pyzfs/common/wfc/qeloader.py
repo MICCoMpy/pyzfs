@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import h5py
 from lxml import etree
 from mpi4py import MPI
 
@@ -28,12 +29,18 @@ def _compute_offset(sdm, iorb):
 
 class QEWavefunctionLoader(WavefunctionLoader):
     def __init__(
-        self, fftgrid="density", prefix="pwscf", memory="critical", comm=MPI.COMM_WORLD
+        self,
+        fftgrid="density",
+        prefix="pwscf",
+        memory="critical",
+        l_hdf5=True,
+        comm=MPI.COMM_WORLD,
     ):
         self.fftgrid = fftgrid
         self.dft = None
         self.wft = None
         self.prefix = prefix
+        self.l_hdf5 = l_hdf5
         super(QEWavefunctionLoader, self).__init__(memory=memory)
 
     def scan(self):
@@ -54,12 +61,12 @@ class QEWavefunctionLoader(WavefunctionLoader):
         n2 = int(pwxml.find("output/basis_set/fft_grid").attrib["nr2"])
         n3 = int(pwxml.find("output/basis_set/fft_grid").attrib["nr3"])
 
-        grids = np.array([n1, n2, n3], dtype=np.int_)
+        grids = np.array([n1, n2, n3], dtype=np.int32)
         self.dft = FourierTransform(grids[0], grids[1], grids[2])
         if self.fftgrid == "density":
             n1, n2, n3 = grids
         elif self.fftgrid == "wave":
-            n1, n2, n3 = np.array(grids / 2, dtype=np.int_)
+            n1, n2, n3 = np.array(grids / 2, dtype=np.int32)
         else:
             raise ValueError
         self.wft = FourierTransform(n1, n2, n3)
@@ -109,7 +116,10 @@ class QEWavefunctionLoader(WavefunctionLoader):
             ("up", iuorbs[iwfc]) if iwfc < nuorbs else ("down", idorbs[iwfc - nuorbs])
             for iwfc in range(norbs)
         )
-        iorb_fname_map = ["wfcup1.dat"] * nuorbs + ["wfcdw1.dat"] * ndorbs
+        if self.l_hdf5:
+            iorb_fname_map = ["wfcup1.hdf5"] * nuorbs + ["wfcdw1.hdf5"] * ndorbs
+        else:
+            iorb_fname_map = ["wfcup1.dat"] * nuorbs + ["wfcdw1.dat"] * ndorbs
 
         self.wfc = Wavefunction(
             cell=cell,
@@ -133,37 +143,44 @@ class QEWavefunctionLoader(WavefunctionLoader):
         # parse G vectors
         gvecs = ngvecs = None
         if onroot:
-            wfcfile = "wfcup1.dat"
-            with open(
-                os.path.join(self.root, f"{self.prefix}.save", wfcfile), "rb"
-            ) as f:
-                f.seek(4)
+            if self.l_hdf5:
+                wfcfile = "wfcup1.hdf5"
+                wfch5 = h5py.File(
+                    os.path.join(self.root, f"{self.prefix}.save", wfcfile), "r"
+                )
+                gvecs = np.array(wfch5["MillerIndices"], dtype=np.int32)
+            else:
+                wfcfile = "wfcup1.dat"
+                with open(
+                    os.path.join(self.root, f"{self.prefix}.save", wfcfile), "rb"
+                ) as f:
+                    f.seek(4)
 
-                ik = np.fromfile(f, dtype=np.int32, count=1)[0]
-                xk = np.fromfile(f, dtype=np.float64, count=3)
-                ispin = np.fromfile(f, dtype=np.int32, count=1)[0]
-                gamma_only = bool(np.fromfile(f, dtype=np.int32, count=1)[0])
-                scalef = np.fromfile(f, dtype=np.float64, count=1)[0]
+                    ik = np.fromfile(f, dtype=np.int32, count=1)[0]
+                    xk = np.fromfile(f, dtype=np.float64, count=3)
+                    ispin = np.fromfile(f, dtype=np.int32, count=1)[0]
+                    gamma_only = bool(np.fromfile(f, dtype=np.int32, count=1)[0])
+                    scalef = np.fromfile(f, dtype=np.float64, count=1)[0]
 
-                f.seek(8, 1)
+                    f.seek(8, 1)
 
-                ngw = np.fromfile(f, dtype=np.int32, count=1)[0]
-                igwx = np.fromfile(f, dtype=np.int32, count=1)[0]
-                npol = np.fromfile(f, dtype=np.int32, count=1)[0]
-                nbnd = np.fromfile(f, dtype=np.int32, count=1)[0]
+                    ngw = np.fromfile(f, dtype=np.int32, count=1)[0]
+                    igwx = np.fromfile(f, dtype=np.int32, count=1)[0]
+                    npol = np.fromfile(f, dtype=np.int32, count=1)[0]
+                    nbnd = np.fromfile(f, dtype=np.int32, count=1)[0]
 
-                f.seek(8, 1)
+                    f.seek(8, 1)
 
-                b1 = np.fromfile(f, dtype=np.float64, count=3)
-                b2 = np.fromfile(f, dtype=np.float64, count=3)
-                b3 = np.fromfile(f, dtype=np.float64, count=3)
+                    b1 = np.fromfile(f, dtype=np.float64, count=3)
+                    b2 = np.fromfile(f, dtype=np.float64, count=3)
+                    b3 = np.fromfile(f, dtype=np.float64, count=3)
 
-                f.seek(8, 1)
+                    f.seek(8, 1)
 
-                gvecs = np.fromfile(f, dtype=np.int32, count=3 * igwx)
-                gvecs = gvecs.reshape((igwx, 3))
-                ngvecs = gvecs.shape[0]
+                    gvecs = np.fromfile(f, dtype=np.int32, count=3 * igwx)
+                    gvecs = gvecs.reshape((igwx, 3))
 
+            ngvecs = gvecs.shape[0]
             assert gvecs.shape == (ngvecs, 3)
 
         # broadcast G vectors
@@ -184,17 +201,26 @@ class QEWavefunctionLoader(WavefunctionLoader):
                 message="(process 0) {n} orbitals ({percent}%) loaded in {dt}...",
             )
             for ispin in range(2):
-                wfcfile = "wfcup1.dat" if ispin == 0 else "wfcdw1.dat"
-                with open(
-                    os.path.join(self.root, f"{self.prefix}.save", wfcfile), "rb"
-                ) as f:
-                    # Moves the cursor to evc
-                    f.seek(168 + 4 * 3 * ngvecs)
+                if self.l_hdf5:
+                    wfcfile = "wfcup1.hdf5" if ispin == 0 else "wfcdw1.hdf5"
+                    wfch5 = h5py.File(
+                        os.path.join(self.root, f"{self.prefix}.save", wfcfile), "r"
+                    )
+                    evc = np.array(wfch5["evc"])
+                else:
+                    wfcfile = "wfcup1.dat" if ispin == 0 else "wfcdw1.dat"
+                    with open(
+                        os.path.join(self.root, f"{self.prefix}.save", wfcfile), "rb"
+                    ) as f:
+                        # Moves the cursor to evc
+                        f.seek(168 + 4 * 3 * ngvecs)
 
-                    evc = np.zeros((nbnd, ngvecs), dtype=np.complex128)
-                    for i in range(nbnd):
-                        evc[i, :] = np.fromfile(f, dtype=np.complex128, count=ngvecs)
-                        f.seek(8, 1)
+                        evc = np.zeros((nbnd, ngvecs), dtype=np.complex128)
+                        for i in range(nbnd):
+                            evc[i, :] = np.fromfile(
+                                f, dtype=np.complex128, count=ngvecs
+                            )
+                            f.seek(8, 1)
 
                 for ievc in range(evc.shape[0]):
                     band = ievc + 1
@@ -203,7 +229,10 @@ class QEWavefunctionLoader(WavefunctionLoader):
                     )
                     if iorb is not None:
                         offset = _compute_offset(sdm, iorb)
-                        psig_arrs_all[offset] = evc[ievc]
+                        if self.l_hdf5:
+                            psig_arrs_all[offset] = evc[ievc].view(np.complex128)
+                        else:
+                            psig_arrs_all[offset] = evc[ievc]
                         c.count()
 
         # scatter wavefunctions

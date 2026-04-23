@@ -120,17 +120,19 @@ def main():
         filename = kwargs.pop("filename", None)
         wfcloader = QboxWavefunctionLoader(filename=filename, memory=memory)
     elif wfcfmt == "qeh5":
-        from .common.wfc.qeh5loader import QEHDF5WavefunctionLoader
+        from .common.wfc.qeloader import QEWavefunctionLoader
 
         prefix = kwargs.pop("prefix", "pwscf")
-        wfcloader = QEHDF5WavefunctionLoader(
-            fftgrid=fftgrid, prefix=prefix, memory=memory
+        wfcloader = QEWavefunctionLoader(
+            fftgrid=fftgrid, prefix=prefix, memory=memory, l_hdf5=True
         )
     elif wfcfmt == "qe":
         from .common.wfc.qeloader import QEWavefunctionLoader
 
         prefix = kwargs.pop("prefix", "pwscf")
-        wfcloader = QEWavefunctionLoader(fftgrid=fftgrid, prefix=prefix, memory=memory)
+        wfcloader = QEWavefunctionLoader(
+            fftgrid=fftgrid, prefix=prefix, memory=memory, l_hdf5=False
+        )
     elif wfcfmt == "gpaw":
         from .common.wfc.gpawloader import GPAWWavefunctionLoader
 

@@ -174,7 +174,7 @@ class DistributedMatrix(object):
         assert self.nstart + self.nloc == self.nend
 
         # Build index map: irow, icol -> mstart, mloc, mend, nstart, nloc, nend
-        indexmap = np.zeros([self.nrow, self.ncol, 6], dtype=np.int_)
+        indexmap = np.zeros([self.nrow, self.ncol, 6], dtype=np.int32)
         indexmap[self.irow, self.icol] = [
             self.mstart,
             self.mloc,

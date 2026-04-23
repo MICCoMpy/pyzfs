@@ -1,0 +1,1364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Correcting for spin contamination in zero-field splitting calculations &mdash; pyzfs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Documentation" href="../documentation.html" />
+    <link rel="prev" title="Running PyZFS with GPAW" href="c3h6_gpaw.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyzfs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="o2_qbox_xml.html">Running PyZFS with Qbox</a></li>
+<li class="toctree-l2"><a class="reference internal" href="o2_qe_hdf5.html">Running PyZFS with Quantum ESPRESSO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c3h6_gpaw.html">Running PyZFS with GPAW</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Correcting for spin contamination in zero-field splitting calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#1-Compute-magnetic-dipolar-interaction-for-triplet-spin-state">1 Compute magnetic dipolar interaction for triplet spin state</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2-Compute-magnetic-dipolar-interaction-for-three-singlet-spin-states">2 Compute magnetic dipolar interaction for three singlet spin states</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#3-Compute-zero-field-splitting-with-correction-for-spin-contamination">3 Compute zero-field splitting with correction for spin contamination</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#scalability">Scalability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#spin-decontamination">Spin decontamination</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyzfs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../tutorial.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Correcting for spin contamination in zero-field splitting calculations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/diamond_nv_qe_hdf5_correction.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Correcting-for-spin-contamination-in-zero-field-splitting-calculations">
+<h1>Correcting for spin contamination in zero-field splitting calculations<a class="headerlink" href="#Correcting-for-spin-contamination-in-zero-field-splitting-calculations" title="Link to this heading"></a></h1>
+<p>The accuracy of the computed zero-field splitting (ZFS) tensor can be affected by spin contamination in spin-polarized density functional theory (DFT) calculations, where the Kohn–Sham states in the two spin channels have different energies and spatial distributions. <a class="reference external" href="https://doi.org/10.1103/PhysRevResearch.2.022024">Biktagirov et al.</a> proposed a correction scheme that effectively cancels spin contamination errors, providing more accurate computation of ZFS tensors while reducing the
+dependence on the exchange-correlation functional employed in DFT calculations.</p>
+<p>In this tutorial, we demonstrate how to apply this correction to the negatively charged nitrogen-vacancy (NV<span class="math notranslate nohighlight">\(^-\)</span>) center in diamond.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> diamond_nv_qe_hdf5_correction_data
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+/Users/vwzyu/Soft/pyzfs/doc/tutorials/diamond_nv_qe_hdf5_correction_data
+</pre></div></div>
+</div>
+<section id="1-Compute-magnetic-dipolar-interaction-for-triplet-spin-state">
+<h2>1 Compute magnetic dipolar interaction for triplet spin state<a class="headerlink" href="#1-Compute-magnetic-dipolar-interaction-for-triplet-spin-state" title="Link to this heading"></a></h2>
+<p>First, we perform a regular PyZFS calculation for the triplet spin state (<span class="math notranslate nohighlight">\(S=1\)</span>) of the NV<span class="math notranslate nohighlight">\(^-\)</span> center in diamond, obtaining the uncorrected spin-spin ZFS tensor <span class="math notranslate nohighlight">\(\mathbf{D}^{\mathrm{SS}} = \frac{\mathbf{d}}{S(S-1/2)}\)</span>. The magnetic dipolar interaction <span class="math notranslate nohighlight">\(\mathbf{d}\)</span> is a 3 <span class="math notranslate nohighlight">\(\times\)</span> 3 tensor defined as</p>
+<p><span class="math notranslate nohighlight">\(d_{ab} = \frac{\alpha^2}{8} \sum_{ij} \chi_{ij} \int \frac{|\mathbf{r} - \mathbf{r}'|^2 \delta_{ab} - 3(\mathbf{r} - \mathbf{r}')_a(\mathbf{r} - \mathbf{r}')_b}{|\mathbf{r} - \mathbf{r}'|^5} \times [n_{ii}(\mathbf{r}) n_{jj}^*(\mathbf{r}') - n_{ij}(\mathbf{r}) n_{ij}^*(\mathbf{r}')] d\mathbf{r}d\mathbf{r}'\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(a, b = x, y, z\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span> is the fine-structure constant, <span class="math notranslate nohighlight">\(i, j\)</span> are indices of occupied Kohn-Sham states <span class="math notranslate nohighlight">\(\psi(\mathbf{r})\)</span>, <span class="math notranslate nohighlight">\(n_{ij}(\mathbf{r}) = \psi_i(\mathbf{r}) \psi_j(\mathbf{r})\)</span>, and <span class="math notranslate nohighlight">\(\chi_{ij} = 1\)</span> when <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> belong to the same spin channel, and <span class="math notranslate nohighlight">\(\chi_{ij} = -1\)</span> otherwise. The <span class="math notranslate nohighlight">\(\mathbf{d}\)</span> tensor will be used to carry out the correction for spin contamination errors.</p>
+<p>We run the <code class="docutils literal notranslate"><span class="pre">pw.x</span></code> code of Quantum ESPRESSO for the DFT calculation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+cat<span class="w"> </span>pw_triplet.in
+
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pw.x<span class="w"> </span>-i<span class="w"> </span>pw_triplet.in<span class="w"> </span>&gt;<span class="w"> </span>pw_triplet.out
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&amp;CONTROL
+calculation = &#39;scf&#39;
+pseudo_dir = &#39;./&#39;
+prefix = &#39;triplet&#39;
+/
+&amp;SYSTEM
+ibrav = 0
+ntyp = 2
+nat = 215
+tot_charge = -1.0
+tot_magnetization = 2.0
+nspin = 2
+nbnd = 628
+ecutwfc = 60.0
+/
+&amp;ELECTRONS
+diago_full_acc = .true.
+/
+ATOMIC_SPECIES
+C  12.01099968  C_ONCV_PBE-1.2.upf
+N  14.00699997  N_ONCV_PBE-1.2.upf
+CELL_PARAMETERS angstrom
+10.704  0.000  0.000
+ 0.000 10.704  0.000
+ 0.000  0.000 10.704
+K_POINTS gamma
+ATOMIC_POSITIONS crystal
+N 0.09152860 0.09152860 0.09152860
+C 0.00406095 0.16656435 0.16656435
+C 0.08375956 0.25132100 0.25132100
+C 0.16656435 0.00406095 0.16656435
+C 0.25132100 0.08375956 0.25132100
+C 0.16656435 0.16656435 0.00406095
+C 0.25132100 0.25132100 0.08375956
+C 0.00008479 0.00008479 0.33283360
+C 0.08339786 0.08339786 0.41672965
+C 0.00001566 0.16656881 0.50004871
+C 0.08326671 0.24989560 0.58351323
+C 0.16656881 0.00001566 0.50004871
+C 0.24989560 0.08326671 0.58351323
+C 0.16713153 0.16713153 0.33408428
+C 0.25020487 0.25020487 0.41712458
+C 0.99984338 0.99984338 0.66702816
+C 0.08281135 0.08281135 0.75072909
+C 0.99895986 0.16485431 0.83461141
+C 0.08251591 0.24836734 0.91825974
+C 0.16485431 0.99895986 0.83461141
+C 0.24836734 0.08251591 0.91825974
+C 0.16622186 0.16622186 0.66720992
+C 0.24953177 0.24953177 0.75057394
+C 0.00008479 0.33283360 0.00008479
+C 0.08339786 0.41672965 0.08339786
+C 0.00001566 0.50004871 0.16656881
+C 0.08326671 0.58351323 0.24989560
+C 0.16713153 0.33408428 0.16713153
+C 0.25020487 0.41712458 0.25020487
+C 0.16656881 0.50004871 0.00001566
+C 0.24989560 0.58351323 0.08326671
+C 0.00027688 0.33386603 0.33386603
+C 0.08336456 0.41697495 0.41697495
+C 0.00001683 0.49998105 0.49998105
+C 0.08321204 0.58306345 0.58306345
+C 0.16670944 0.33337114 0.50028918
+C 0.24993513 0.41657415 0.58357284
+C 0.16670944 0.50028918 0.33337114
+C 0.24993513 0.58357284 0.41657415
+C 0.99985602 0.33340447 0.66654379
+C 0.08316950 0.41622885 0.75039993
+C 0.99998161 0.49983489 0.83346972
+C 0.08322304 0.58335107 0.91669677
+C 0.16638542 0.33231108 0.83427654
+C 0.24992639 0.41652052 0.91689915
+C 0.16665894 0.49975729 0.66687415
+C 0.24993176 0.58319109 0.75005301
+C 0.99984338 0.66702816 0.99984338
+C 0.08281135 0.75072909 0.08281135
+C 0.99895986 0.83461141 0.16485431
+C 0.08251591 0.91825974 0.24836734
+C 0.16622186 0.66720992 0.16622186
+C 0.24953177 0.75057394 0.24953177
+C 0.16485431 0.83461141 0.99895986
+C 0.24836734 0.91825974 0.08251591
+C 0.99985602 0.66654379 0.33340447
+C 0.08316950 0.75039993 0.41622885
+C 0.99998161 0.83346972 0.49983489
+C 0.08322304 0.91669677 0.58335107
+C 0.16665894 0.66687415 0.49975729
+C 0.24993176 0.75005301 0.58319109
+C 0.16638542 0.83427654 0.33231108
+C 0.24992639 0.91689915 0.41652052
+C 0.00008183 0.66614375 0.66614375
+C 0.08289904 0.74902978 0.74902978
+C 0.00053850 0.83348289 0.83348289
+C 0.08713894 0.91048546 0.91048546
+C 0.16657469 0.66657430 0.83322405
+C 0.25035752 0.74957641 0.91684864
+C 0.16657469 0.83322405 0.66657430
+C 0.25035752 0.91684864 0.74957641
+C 0.33283360 0.00008479 0.00008479
+C 0.41672965 0.08339786 0.08339786
+C 0.33408428 0.16713153 0.16713153
+C 0.41712458 0.25020487 0.25020487
+C 0.50004871 0.00001566 0.16656881
+C 0.58351323 0.08326671 0.24989560
+C 0.50004871 0.16656881 0.00001566
+C 0.58351323 0.24989560 0.08326671
+C 0.33386603 0.00027688 0.33386603
+C 0.41697495 0.08336456 0.41697495
+C 0.33337114 0.16670944 0.50028918
+C 0.41657415 0.24993513 0.58357284
+C 0.49998105 0.00001683 0.49998105
+C 0.58306345 0.08321204 0.58306345
+C 0.50028918 0.16670944 0.33337114
+C 0.58357284 0.24993513 0.41657415
+C 0.33340447 0.99985602 0.66654379
+C 0.41622885 0.08316950 0.75039993
+C 0.33231108 0.16638542 0.83427654
+C 0.41652052 0.24992639 0.91689915
+C 0.49983489 0.99998161 0.83346972
+C 0.58335107 0.08322304 0.91669677
+C 0.49975729 0.16665894 0.66687415
+C 0.58319109 0.24993176 0.75005301
+C 0.33386603 0.33386603 0.00027688
+C 0.41697495 0.41697495 0.08336456
+C 0.33337114 0.50028918 0.16670944
+C 0.41657415 0.58357284 0.24993513
+C 0.50028918 0.33337114 0.16670944
+C 0.58357284 0.41657415 0.24993513
+C 0.49998105 0.49998105 0.00001683
+C 0.58306345 0.58306345 0.08321204
+C 0.33347050 0.33347050 0.33347050
+C 0.41673247 0.41673247 0.41673247
+C 0.33329711 0.50005503 0.50005503
+C 0.41664684 0.58334948 0.58334948
+C 0.50005503 0.33329711 0.50005503
+C 0.58334948 0.41664684 0.58334948
+C 0.50005503 0.50005503 0.33329711
+C 0.58334948 0.58334948 0.41664684
+C 0.33309935 0.33309935 0.66702679
+C 0.41654604 0.41654604 0.75010768
+C 0.33320910 0.49986185 0.83336463
+C 0.41672856 0.58316778 0.91673106
+C 0.49986185 0.33320910 0.83336463
+C 0.58316778 0.41672856 0.91673106
+C 0.49997743 0.49997743 0.66672237
+C 0.58336242 0.58336242 0.75004203
+C 0.33340447 0.66654379 0.99985602
+C 0.41622885 0.75039993 0.08316950
+C 0.33231108 0.83427654 0.16638542
+C 0.41652052 0.91689915 0.24992639
+C 0.49975729 0.66687415 0.16665894
+C 0.58319109 0.75005301 0.24993176
+C 0.49983489 0.83346972 0.99998161
+C 0.58335107 0.91669677 0.08322304
+C 0.33309935 0.66702679 0.33309935
+C 0.41654604 0.75010768 0.41654604
+C 0.33320910 0.83336463 0.49986185
+C 0.41672856 0.91673106 0.58316778
+C 0.49997743 0.66672237 0.49997743
+C 0.58336242 0.75004203 0.58336242
+C 0.49986185 0.83336463 0.33320910
+C 0.58316778 0.91673106 0.41672856
+C 0.33323057 0.66669044 0.66669044
+C 0.41664480 0.74999600 0.74999600
+C 0.33322293 0.83331221 0.83331221
+C 0.41644973 0.91672376 0.91672376
+C 0.49995303 0.66666581 0.83331752
+C 0.58318248 0.74995219 0.91666536
+C 0.49995303 0.83331752 0.66666581
+C 0.58318248 0.91666536 0.74995219
+C 0.66702816 0.99984338 0.99984338
+C 0.75072909 0.08281135 0.08281135
+C 0.66720992 0.16622186 0.16622186
+C 0.75057394 0.24953177 0.24953177
+C 0.83461141 0.99895986 0.16485431
+C 0.91825974 0.08251591 0.24836734
+C 0.83461141 0.16485431 0.99895986
+C 0.91825974 0.24836734 0.08251591
+C 0.66654379 0.99985602 0.33340447
+C 0.75039993 0.08316950 0.41622885
+C 0.66687415 0.16665894 0.49975729
+C 0.75005301 0.24993176 0.58319109
+C 0.83346972 0.99998161 0.49983489
+C 0.91669677 0.08322304 0.58335107
+C 0.83427654 0.16638542 0.33231108
+C 0.91689915 0.24992639 0.41652052
+C 0.66614375 0.00008183 0.66614375
+C 0.74902978 0.08289904 0.74902978
+C 0.66657430 0.16657469 0.83322405
+C 0.74957641 0.25035752 0.91684864
+C 0.83348289 0.00053850 0.83348289
+C 0.91048546 0.08713894 0.91048546
+C 0.83322405 0.16657469 0.66657430
+C 0.91684864 0.25035752 0.74957641
+C 0.66654379 0.33340447 0.99985602
+C 0.75039993 0.41622885 0.08316950
+C 0.66687415 0.49975729 0.16665894
+C 0.75005301 0.58319109 0.24993176
+C 0.83427654 0.33231108 0.16638542
+C 0.91689915 0.41652052 0.24992639
+C 0.83346972 0.49983489 0.99998161
+C 0.91669677 0.58335107 0.08322304
+C 0.66702679 0.33309935 0.33309935
+C 0.75010768 0.41654604 0.41654604
+C 0.66672237 0.49997743 0.49997743
+C 0.75004203 0.58336242 0.58336242
+C 0.83336463 0.33320910 0.49986185
+C 0.91673106 0.41672856 0.58316778
+C 0.83336463 0.49986185 0.33320910
+C 0.91673106 0.58316778 0.41672856
+C 0.66669044 0.33323057 0.66669044
+C 0.74999600 0.41664480 0.74999600
+C 0.66666581 0.49995303 0.83331752
+C 0.74995219 0.58318248 0.91666536
+C 0.83331221 0.33322293 0.83331221
+C 0.91672376 0.41644973 0.91672376
+C 0.83331752 0.49995303 0.66666581
+C 0.91666536 0.58318248 0.74995219
+C 0.66614375 0.66614375 0.00008183
+C 0.74902978 0.74902978 0.08289904
+C 0.66657430 0.83322405 0.16657469
+C 0.74957641 0.91684864 0.25035752
+C 0.83322405 0.66657430 0.16657469
+C 0.91684864 0.74957641 0.25035752
+C 0.83348289 0.83348289 0.00053850
+C 0.91048546 0.91048546 0.08713894
+C 0.66669044 0.66669044 0.33323057
+C 0.74999600 0.74999600 0.41664480
+C 0.66666581 0.83331752 0.49995303
+C 0.74995219 0.91666536 0.58318248
+C 0.83331752 0.66666581 0.49995303
+C 0.91666536 0.74995219 0.58318248
+C 0.83331221 0.83331221 0.33322293
+C 0.91672376 0.91672376 0.41644973
+C 0.66676564 0.66676564 0.66676564
+C 0.75009290 0.75009290 0.75009290
+C 0.66679851 0.83348831 0.83348831
+C 0.75027490 0.91667191 0.91667191
+C 0.83348831 0.66679851 0.83348831
+C 0.91667191 0.75027490 0.91667191
+C 0.83348831 0.83348831 0.66679851
+C 0.91667191 0.91667191 0.75027490
+</pre></div></div>
+</div>
+<p>Next, we run PyZFS to compute the ZFS tensor.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qeh5<span class="w"> </span>--prefix<span class="w"> </span>triplet<span class="w"> </span>--memory<span class="w"> </span>low<span class="w"> </span>&gt;<span class="w"> </span>zfs_triplet.out
+mv<span class="w"> </span>zfs.xml<span class="w"> </span>zfs_triplet.xml
+</pre></div>
+</div>
+</div>
+<p>From the XML output of PyZFS, we extract the uncorrected ZFS parameters D and E, as well as the magnetic dipolar interaction <span class="math notranslate nohighlight">\(\mathbf{d}\)</span> tensor.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xml.etree.ElementTree</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ET</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;zfs_triplet.xml&quot;</span><span class="p">)</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+<span class="n">ZFS_D</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="n">ZFS_E</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D = </span><span class="si">{</span><span class="n">ZFS_D</span><span class="si">}</span><span class="s2"> MHz&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E = </span><span class="si">{</span><span class="n">ZFS_E</span><span class="si">}</span><span class="s2"> MHz&quot;</span><span class="p">)</span>
+
+<span class="n">D_triplet</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;DTensor&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+<span class="n">D_triplet</span> <span class="o">=</span> <span class="n">D_triplet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="n">D_triplet</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">D_triplet</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># PyZFS internally assumes S = 1, so d = D / 2</span>
+<span class="n">d_triplet</span> <span class="o">=</span> <span class="n">D_triplet</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;d tensor:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d_triplet</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+D = 3033.97 MHz
+E = -0.68 MHz
+d tensor:
+[[-1.37407286e-01  5.05645425e+02  5.05897945e+02]
+ [ 5.05645425e+02  1.36650451e-01  5.05442520e+02]
+ [ 5.05897945e+02  5.05442520e+02  7.56833945e-04]]
+</pre></div></div>
+</div>
+</section>
+<section id="2-Compute-magnetic-dipolar-interaction-for-three-singlet-spin-states">
+<h2>2 Compute magnetic dipolar interaction for three singlet spin states<a class="headerlink" href="#2-Compute-magnetic-dipolar-interaction-for-three-singlet-spin-states" title="Link to this heading"></a></h2>
+<p>To correct for spin contamination in the spin-spin ZFS tensor, we compute</p>
+<p><span class="math notranslate nohighlight">\(\tilde{\mathbf{D}}^{\mathrm{SS}} = \frac{\mathbf{d}_{(m_S=S)} - \bar{\mathbf{d}}_{(m_S=S-1)}}{2S-1}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\bar{\mathbf{d}}_{(m_S=S-1)}\)</span> is the average <span class="math notranslate nohighlight">\(\mathbf{d}_{(m_S=S−1)}\)</span> among all the possible <span class="math notranslate nohighlight">\(m_S=S−1\)</span> configurations. For our target triplet state (<span class="math notranslate nohighlight">\(S=1\)</span>), we compute and average <span class="math notranslate nohighlight">\(\mathbf{d}\)</span> for the singlet states (<span class="math notranslate nohighlight">\(S=0\)</span>).</p>
+<p>The unpaired electrons of the NV<span class="math notranslate nohighlight">\(^-\)</span> center in diamond are equally distributed among the three carbon dangling bonds surrounding the vacancy. In an <span class="math notranslate nohighlight">\(m_S=0\)</span> configuration, the spin up electron localizes at one of the three dangling bonds, while the spin down electron is shared by the other two adjacent carbon atoms, resulting in three configurations of singlet states.</p>
+<p>To simulate these singlet states, we change the <code class="docutils literal notranslate"><span class="pre">tot_magnetization</span></code> input keyword of <code class="docutils literal notranslate"><span class="pre">pw.x</span></code> from 2.0 to 0.0, and we initialize the magnetization by setting the <code class="docutils literal notranslate"><span class="pre">starting_magnetization</span></code> such that the spin up electron localizes at one of the three carbon atoms around the vacancy (for example, <code class="docutils literal notranslate"><span class="pre">C1</span></code> in the input file below), while the spin down electron is shared by the other two carbon atoms around the vacancy (<code class="docutils literal notranslate"><span class="pre">C2</span></code> and <code class="docutils literal notranslate"><span class="pre">C3</span></code>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+cat<span class="w"> </span>pw_singlet_1.in
+
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pw.x<span class="w"> </span>-i<span class="w"> </span>pw_singlet_1.in<span class="w"> </span>&gt;<span class="w"> </span>pw_singlet_1.out
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&amp;CONTROL
+calculation = &#39;scf&#39;
+pseudo_dir = &#39;./&#39;
+prefix = &#39;singlet_1&#39;
+/
+&amp;SYSTEM
+ibrav = 0
+ntyp = 5
+nat = 215
+tot_charge = -1.0
+tot_magnetization = 0.0
+starting_magnetization(1) =  0.5  ! C1
+starting_magnetization(2) = -0.25 ! C2
+starting_magnetization(3) = -0.25 ! C3
+starting_magnetization(4) =  0.0  ! C
+starting_magnetization(5) =  0.0  ! N
+nspin = 2
+nbnd = 628
+ecutwfc = 60.0
+/
+&amp;ELECTRONS
+diago_full_acc = .true.
+mixing_beta = 0.2
+/
+ATOMIC_SPECIES
+C1  12.01099968  C_ONCV_PBE-1.2.upf
+C2  12.01099968  C_ONCV_PBE-1.2.upf
+C3  12.01099968  C_ONCV_PBE-1.2.upf
+C   12.01099968  C_ONCV_PBE-1.2.upf
+N   14.00699997  N_ONCV_PBE-1.2.upf
+CELL_PARAMETERS angstrom
+10.704  0.000  0.000
+ 0.000 10.704  0.000
+ 0.000  0.000 10.704
+K_POINTS gamma
+ATOMIC_POSITIONS crystal
+N 0.09152860 0.09152860 0.09152860
+C 0.00406095 0.16656435 0.16656435
+C 0.08375956 0.25132100 0.25132100
+C 0.16656435 0.00406095 0.16656435
+C 0.25132100 0.08375956 0.25132100
+C 0.16656435 0.16656435 0.00406095
+C 0.25132100 0.25132100 0.08375956
+C 0.00008479 0.00008479 0.33283360
+C 0.08339786 0.08339786 0.41672965
+C 0.00001566 0.16656881 0.50004871
+C 0.08326671 0.24989560 0.58351323
+C 0.16656881 0.00001566 0.50004871
+C 0.24989560 0.08326671 0.58351323
+C 0.16713153 0.16713153 0.33408428
+C 0.25020487 0.25020487 0.41712458
+C 0.99984338 0.99984338 0.66702816
+C 0.08281135 0.08281135 0.75072909
+C 0.99895986 0.16485431 0.83461141
+C 0.08251591 0.24836734 0.91825974
+C 0.16485431 0.99895986 0.83461141
+C 0.24836734 0.08251591 0.91825974
+C 0.16622186 0.16622186 0.66720992
+C 0.24953177 0.24953177 0.75057394
+C 0.00008479 0.33283360 0.00008479
+C 0.08339786 0.41672965 0.08339786
+C 0.00001566 0.50004871 0.16656881
+C 0.08326671 0.58351323 0.24989560
+C 0.16713153 0.33408428 0.16713153
+C 0.25020487 0.41712458 0.25020487
+C 0.16656881 0.50004871 0.00001566
+C 0.24989560 0.58351323 0.08326671
+C 0.00027688 0.33386603 0.33386603
+C 0.08336456 0.41697495 0.41697495
+C 0.00001683 0.49998105 0.49998105
+C 0.08321204 0.58306345 0.58306345
+C 0.16670944 0.33337114 0.50028918
+C 0.24993513 0.41657415 0.58357284
+C 0.16670944 0.50028918 0.33337114
+C 0.24993513 0.58357284 0.41657415
+C 0.99985602 0.33340447 0.66654379
+C 0.08316950 0.41622885 0.75039993
+C 0.99998161 0.49983489 0.83346972
+C 0.08322304 0.58335107 0.91669677
+C 0.16638542 0.33231108 0.83427654
+C 0.24992639 0.41652052 0.91689915
+C 0.16665894 0.49975729 0.66687415
+C 0.24993176 0.58319109 0.75005301
+C 0.99984338 0.66702816 0.99984338
+C 0.08281135 0.75072909 0.08281135
+C 0.99895986 0.83461141 0.16485431
+C 0.08251591 0.91825974 0.24836734
+C 0.16622186 0.66720992 0.16622186
+C 0.24953177 0.75057394 0.24953177
+C 0.16485431 0.83461141 0.99895986
+C 0.24836734 0.91825974 0.08251591
+C 0.99985602 0.66654379 0.33340447
+C 0.08316950 0.75039993 0.41622885
+C 0.99998161 0.83346972 0.49983489
+C 0.08322304 0.91669677 0.58335107
+C 0.16665894 0.66687415 0.49975729
+C 0.24993176 0.75005301 0.58319109
+C 0.16638542 0.83427654 0.33231108
+C 0.24992639 0.91689915 0.41652052
+C 0.00008183 0.66614375 0.66614375
+C 0.08289904 0.74902978 0.74902978
+C 0.00053850 0.83348289 0.83348289
+C1 0.08713894 0.91048546 0.91048546
+C 0.16657469 0.66657430 0.83322405
+C 0.25035752 0.74957641 0.91684864
+C 0.16657469 0.83322405 0.66657430
+C 0.25035752 0.91684864 0.74957641
+C 0.33283360 0.00008479 0.00008479
+C 0.41672965 0.08339786 0.08339786
+C 0.33408428 0.16713153 0.16713153
+C 0.41712458 0.25020487 0.25020487
+C 0.50004871 0.00001566 0.16656881
+C 0.58351323 0.08326671 0.24989560
+C 0.50004871 0.16656881 0.00001566
+C 0.58351323 0.24989560 0.08326671
+C 0.33386603 0.00027688 0.33386603
+C 0.41697495 0.08336456 0.41697495
+C 0.33337114 0.16670944 0.50028918
+C 0.41657415 0.24993513 0.58357284
+C 0.49998105 0.00001683 0.49998105
+C 0.58306345 0.08321204 0.58306345
+C 0.50028918 0.16670944 0.33337114
+C 0.58357284 0.24993513 0.41657415
+C 0.33340447 0.99985602 0.66654379
+C 0.41622885 0.08316950 0.75039993
+C 0.33231108 0.16638542 0.83427654
+C 0.41652052 0.24992639 0.91689915
+C 0.49983489 0.99998161 0.83346972
+C 0.58335107 0.08322304 0.91669677
+C 0.49975729 0.16665894 0.66687415
+C 0.58319109 0.24993176 0.75005301
+C 0.33386603 0.33386603 0.00027688
+C 0.41697495 0.41697495 0.08336456
+C 0.33337114 0.50028918 0.16670944
+C 0.41657415 0.58357284 0.24993513
+C 0.50028918 0.33337114 0.16670944
+C 0.58357284 0.41657415 0.24993513
+C 0.49998105 0.49998105 0.00001683
+C 0.58306345 0.58306345 0.08321204
+C 0.33347050 0.33347050 0.33347050
+C 0.41673247 0.41673247 0.41673247
+C 0.33329711 0.50005503 0.50005503
+C 0.41664684 0.58334948 0.58334948
+C 0.50005503 0.33329711 0.50005503
+C 0.58334948 0.41664684 0.58334948
+C 0.50005503 0.50005503 0.33329711
+C 0.58334948 0.58334948 0.41664684
+C 0.33309935 0.33309935 0.66702679
+C 0.41654604 0.41654604 0.75010768
+C 0.33320910 0.49986185 0.83336463
+C 0.41672856 0.58316778 0.91673106
+C 0.49986185 0.33320910 0.83336463
+C 0.58316778 0.41672856 0.91673106
+C 0.49997743 0.49997743 0.66672237
+C 0.58336242 0.58336242 0.75004203
+C 0.33340447 0.66654379 0.99985602
+C 0.41622885 0.75039993 0.08316950
+C 0.33231108 0.83427654 0.16638542
+C 0.41652052 0.91689915 0.24992639
+C 0.49975729 0.66687415 0.16665894
+C 0.58319109 0.75005301 0.24993176
+C 0.49983489 0.83346972 0.99998161
+C 0.58335107 0.91669677 0.08322304
+C 0.33309935 0.66702679 0.33309935
+C 0.41654604 0.75010768 0.41654604
+C 0.33320910 0.83336463 0.49986185
+C 0.41672856 0.91673106 0.58316778
+C 0.49997743 0.66672237 0.49997743
+C 0.58336242 0.75004203 0.58336242
+C 0.49986185 0.83336463 0.33320910
+C 0.58316778 0.91673106 0.41672856
+C 0.33323057 0.66669044 0.66669044
+C 0.41664480 0.74999600 0.74999600
+C 0.33322293 0.83331221 0.83331221
+C 0.41644973 0.91672376 0.91672376
+C 0.49995303 0.66666581 0.83331752
+C 0.58318248 0.74995219 0.91666536
+C 0.49995303 0.83331752 0.66666581
+C 0.58318248 0.91666536 0.74995219
+C 0.66702816 0.99984338 0.99984338
+C 0.75072909 0.08281135 0.08281135
+C 0.66720992 0.16622186 0.16622186
+C 0.75057394 0.24953177 0.24953177
+C 0.83461141 0.99895986 0.16485431
+C 0.91825974 0.08251591 0.24836734
+C 0.83461141 0.16485431 0.99895986
+C 0.91825974 0.24836734 0.08251591
+C 0.66654379 0.99985602 0.33340447
+C 0.75039993 0.08316950 0.41622885
+C 0.66687415 0.16665894 0.49975729
+C 0.75005301 0.24993176 0.58319109
+C 0.83346972 0.99998161 0.49983489
+C 0.91669677 0.08322304 0.58335107
+C 0.83427654 0.16638542 0.33231108
+C 0.91689915 0.24992639 0.41652052
+C 0.66614375 0.00008183 0.66614375
+C 0.74902978 0.08289904 0.74902978
+C 0.66657430 0.16657469 0.83322405
+C 0.74957641 0.25035752 0.91684864
+C 0.83348289 0.00053850 0.83348289
+C2 0.91048546 0.08713894 0.91048546
+C 0.83322405 0.16657469 0.66657430
+C 0.91684864 0.25035752 0.74957641
+C 0.66654379 0.33340447 0.99985602
+C 0.75039993 0.41622885 0.08316950
+C 0.66687415 0.49975729 0.16665894
+C 0.75005301 0.58319109 0.24993176
+C 0.83427654 0.33231108 0.16638542
+C 0.91689915 0.41652052 0.24992639
+C 0.83346972 0.49983489 0.99998161
+C 0.91669677 0.58335107 0.08322304
+C 0.66702679 0.33309935 0.33309935
+C 0.75010768 0.41654604 0.41654604
+C 0.66672237 0.49997743 0.49997743
+C 0.75004203 0.58336242 0.58336242
+C 0.83336463 0.33320910 0.49986185
+C 0.91673106 0.41672856 0.58316778
+C 0.83336463 0.49986185 0.33320910
+C 0.91673106 0.58316778 0.41672856
+C 0.66669044 0.33323057 0.66669044
+C 0.74999600 0.41664480 0.74999600
+C 0.66666581 0.49995303 0.83331752
+C 0.74995219 0.58318248 0.91666536
+C 0.83331221 0.33322293 0.83331221
+C 0.91672376 0.41644973 0.91672376
+C 0.83331752 0.49995303 0.66666581
+C 0.91666536 0.58318248 0.74995219
+C 0.66614375 0.66614375 0.00008183
+C 0.74902978 0.74902978 0.08289904
+C 0.66657430 0.83322405 0.16657469
+C 0.74957641 0.91684864 0.25035752
+C 0.83322405 0.66657430 0.16657469
+C 0.91684864 0.74957641 0.25035752
+C 0.83348289 0.83348289 0.00053850
+C3 0.91048546 0.91048546 0.08713894
+C 0.66669044 0.66669044 0.33323057
+C 0.74999600 0.74999600 0.41664480
+C 0.66666581 0.83331752 0.49995303
+C 0.74995219 0.91666536 0.58318248
+C 0.83331752 0.66666581 0.49995303
+C 0.91666536 0.74995219 0.58318248
+C 0.83331221 0.83331221 0.33322293
+C 0.91672376 0.91672376 0.41644973
+C 0.66676564 0.66676564 0.66676564
+C 0.75009290 0.75009290 0.75009290
+C 0.66679851 0.83348831 0.83348831
+C 0.75027490 0.91667191 0.91667191
+C 0.83348831 0.66679851 0.83348831
+C 0.91667191 0.75027490 0.91667191
+C 0.83348831 0.83348831 0.66679851
+C 0.91667191 0.91667191 0.75027490
+</pre></div></div>
+</div>
+<p>Next, we run PyZFS to compute the <span class="math notranslate nohighlight">\(\mathbf{d}\)</span> tensor.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qeh5<span class="w"> </span>--prefix<span class="w"> </span>singlet_1<span class="w"> </span>--memory<span class="w"> </span>low<span class="w"> </span>&gt;<span class="w"> </span>zfs_singlet_1.out
+mv<span class="w"> </span>zfs.xml<span class="w"> </span>zfs_singlet_1.xml
+</pre></div>
+</div>
+</div>
+<p>The same is done for the other two singlet configurations that have the spin up electron localized on <code class="docutils literal notranslate"><span class="pre">C2</span></code> or <code class="docutils literal notranslate"><span class="pre">C3</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+cat<span class="w"> </span>pw_singlet_2.in
+
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pw.x<span class="w"> </span>-i<span class="w"> </span>pw_singlet_2.in<span class="w"> </span>&gt;<span class="w"> </span>pw_singlet_2.out
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qeh5<span class="w"> </span>--prefix<span class="w"> </span>singlet_2<span class="w"> </span>--memory<span class="w"> </span>low<span class="w"> </span>&gt;<span class="w"> </span>zfs_singlet_2.out
+mv<span class="w"> </span>zfs.xml<span class="w"> </span>zfs_singlet_2.xml
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&amp;CONTROL
+calculation = &#39;scf&#39;
+pseudo_dir = &#39;./&#39;
+prefix = &#39;singlet_2&#39;
+/
+&amp;SYSTEM
+ibrav = 0
+ntyp = 5
+nat = 215
+tot_charge = -1.0
+tot_magnetization = 0.0
+starting_magnetization(1) = -0.125 ! C1
+starting_magnetization(2) =  0.25  ! C2
+starting_magnetization(3) = -0.125 ! C3
+starting_magnetization(4) =  0.0   ! C
+starting_magnetization(5) =  0.0   ! N
+nspin = 2
+nbnd = 628
+ecutwfc = 60.0
+/
+&amp;ELECTRONS
+diago_full_acc = .true.
+mixing_beta = 0.2
+/
+ATOMIC_SPECIES
+C1  12.01099968  C_ONCV_PBE-1.2.upf
+C2  12.01099968  C_ONCV_PBE-1.2.upf
+C3  12.01099968  C_ONCV_PBE-1.2.upf
+C   12.01099968  C_ONCV_PBE-1.2.upf
+N   14.00699997  N_ONCV_PBE-1.2.upf
+CELL_PARAMETERS angstrom
+10.704  0.000  0.000
+ 0.000 10.704  0.000
+ 0.000  0.000 10.704
+K_POINTS gamma
+ATOMIC_POSITIONS crystal
+N 0.09152860 0.09152860 0.09152860
+C 0.00406095 0.16656435 0.16656435
+C 0.08375956 0.25132100 0.25132100
+C 0.16656435 0.00406095 0.16656435
+C 0.25132100 0.08375956 0.25132100
+C 0.16656435 0.16656435 0.00406095
+C 0.25132100 0.25132100 0.08375956
+C 0.00008479 0.00008479 0.33283360
+C 0.08339786 0.08339786 0.41672965
+C 0.00001566 0.16656881 0.50004871
+C 0.08326671 0.24989560 0.58351323
+C 0.16656881 0.00001566 0.50004871
+C 0.24989560 0.08326671 0.58351323
+C 0.16713153 0.16713153 0.33408428
+C 0.25020487 0.25020487 0.41712458
+C 0.99984338 0.99984338 0.66702816
+C 0.08281135 0.08281135 0.75072909
+C 0.99895986 0.16485431 0.83461141
+C 0.08251591 0.24836734 0.91825974
+C 0.16485431 0.99895986 0.83461141
+C 0.24836734 0.08251591 0.91825974
+C 0.16622186 0.16622186 0.66720992
+C 0.24953177 0.24953177 0.75057394
+C 0.00008479 0.33283360 0.00008479
+C 0.08339786 0.41672965 0.08339786
+C 0.00001566 0.50004871 0.16656881
+C 0.08326671 0.58351323 0.24989560
+C 0.16713153 0.33408428 0.16713153
+C 0.25020487 0.41712458 0.25020487
+C 0.16656881 0.50004871 0.00001566
+C 0.24989560 0.58351323 0.08326671
+C 0.00027688 0.33386603 0.33386603
+C 0.08336456 0.41697495 0.41697495
+C 0.00001683 0.49998105 0.49998105
+C 0.08321204 0.58306345 0.58306345
+C 0.16670944 0.33337114 0.50028918
+C 0.24993513 0.41657415 0.58357284
+C 0.16670944 0.50028918 0.33337114
+C 0.24993513 0.58357284 0.41657415
+C 0.99985602 0.33340447 0.66654379
+C 0.08316950 0.41622885 0.75039993
+C 0.99998161 0.49983489 0.83346972
+C 0.08322304 0.58335107 0.91669677
+C 0.16638542 0.33231108 0.83427654
+C 0.24992639 0.41652052 0.91689915
+C 0.16665894 0.49975729 0.66687415
+C 0.24993176 0.58319109 0.75005301
+C 0.99984338 0.66702816 0.99984338
+C 0.08281135 0.75072909 0.08281135
+C 0.99895986 0.83461141 0.16485431
+C 0.08251591 0.91825974 0.24836734
+C 0.16622186 0.66720992 0.16622186
+C 0.24953177 0.75057394 0.24953177
+C 0.16485431 0.83461141 0.99895986
+C 0.24836734 0.91825974 0.08251591
+C 0.99985602 0.66654379 0.33340447
+C 0.08316950 0.75039993 0.41622885
+C 0.99998161 0.83346972 0.49983489
+C 0.08322304 0.91669677 0.58335107
+C 0.16665894 0.66687415 0.49975729
+C 0.24993176 0.75005301 0.58319109
+C 0.16638542 0.83427654 0.33231108
+C 0.24992639 0.91689915 0.41652052
+C 0.00008183 0.66614375 0.66614375
+C 0.08289904 0.74902978 0.74902978
+C 0.00053850 0.83348289 0.83348289
+C1 0.08713894 0.91048546 0.91048546
+C 0.16657469 0.66657430 0.83322405
+C 0.25035752 0.74957641 0.91684864
+C 0.16657469 0.83322405 0.66657430
+C 0.25035752 0.91684864 0.74957641
+C 0.33283360 0.00008479 0.00008479
+C 0.41672965 0.08339786 0.08339786
+C 0.33408428 0.16713153 0.16713153
+C 0.41712458 0.25020487 0.25020487
+C 0.50004871 0.00001566 0.16656881
+C 0.58351323 0.08326671 0.24989560
+C 0.50004871 0.16656881 0.00001566
+C 0.58351323 0.24989560 0.08326671
+C 0.33386603 0.00027688 0.33386603
+C 0.41697495 0.08336456 0.41697495
+C 0.33337114 0.16670944 0.50028918
+C 0.41657415 0.24993513 0.58357284
+C 0.49998105 0.00001683 0.49998105
+C 0.58306345 0.08321204 0.58306345
+C 0.50028918 0.16670944 0.33337114
+C 0.58357284 0.24993513 0.41657415
+C 0.33340447 0.99985602 0.66654379
+C 0.41622885 0.08316950 0.75039993
+C 0.33231108 0.16638542 0.83427654
+C 0.41652052 0.24992639 0.91689915
+C 0.49983489 0.99998161 0.83346972
+C 0.58335107 0.08322304 0.91669677
+C 0.49975729 0.16665894 0.66687415
+C 0.58319109 0.24993176 0.75005301
+C 0.33386603 0.33386603 0.00027688
+C 0.41697495 0.41697495 0.08336456
+C 0.33337114 0.50028918 0.16670944
+C 0.41657415 0.58357284 0.24993513
+C 0.50028918 0.33337114 0.16670944
+C 0.58357284 0.41657415 0.24993513
+C 0.49998105 0.49998105 0.00001683
+C 0.58306345 0.58306345 0.08321204
+C 0.33347050 0.33347050 0.33347050
+C 0.41673247 0.41673247 0.41673247
+C 0.33329711 0.50005503 0.50005503
+C 0.41664684 0.58334948 0.58334948
+C 0.50005503 0.33329711 0.50005503
+C 0.58334948 0.41664684 0.58334948
+C 0.50005503 0.50005503 0.33329711
+C 0.58334948 0.58334948 0.41664684
+C 0.33309935 0.33309935 0.66702679
+C 0.41654604 0.41654604 0.75010768
+C 0.33320910 0.49986185 0.83336463
+C 0.41672856 0.58316778 0.91673106
+C 0.49986185 0.33320910 0.83336463
+C 0.58316778 0.41672856 0.91673106
+C 0.49997743 0.49997743 0.66672237
+C 0.58336242 0.58336242 0.75004203
+C 0.33340447 0.66654379 0.99985602
+C 0.41622885 0.75039993 0.08316950
+C 0.33231108 0.83427654 0.16638542
+C 0.41652052 0.91689915 0.24992639
+C 0.49975729 0.66687415 0.16665894
+C 0.58319109 0.75005301 0.24993176
+C 0.49983489 0.83346972 0.99998161
+C 0.58335107 0.91669677 0.08322304
+C 0.33309935 0.66702679 0.33309935
+C 0.41654604 0.75010768 0.41654604
+C 0.33320910 0.83336463 0.49986185
+C 0.41672856 0.91673106 0.58316778
+C 0.49997743 0.66672237 0.49997743
+C 0.58336242 0.75004203 0.58336242
+C 0.49986185 0.83336463 0.33320910
+C 0.58316778 0.91673106 0.41672856
+C 0.33323057 0.66669044 0.66669044
+C 0.41664480 0.74999600 0.74999600
+C 0.33322293 0.83331221 0.83331221
+C 0.41644973 0.91672376 0.91672376
+C 0.49995303 0.66666581 0.83331752
+C 0.58318248 0.74995219 0.91666536
+C 0.49995303 0.83331752 0.66666581
+C 0.58318248 0.91666536 0.74995219
+C 0.66702816 0.99984338 0.99984338
+C 0.75072909 0.08281135 0.08281135
+C 0.66720992 0.16622186 0.16622186
+C 0.75057394 0.24953177 0.24953177
+C 0.83461141 0.99895986 0.16485431
+C 0.91825974 0.08251591 0.24836734
+C 0.83461141 0.16485431 0.99895986
+C 0.91825974 0.24836734 0.08251591
+C 0.66654379 0.99985602 0.33340447
+C 0.75039993 0.08316950 0.41622885
+C 0.66687415 0.16665894 0.49975729
+C 0.75005301 0.24993176 0.58319109
+C 0.83346972 0.99998161 0.49983489
+C 0.91669677 0.08322304 0.58335107
+C 0.83427654 0.16638542 0.33231108
+C 0.91689915 0.24992639 0.41652052
+C 0.66614375 0.00008183 0.66614375
+C 0.74902978 0.08289904 0.74902978
+C 0.66657430 0.16657469 0.83322405
+C 0.74957641 0.25035752 0.91684864
+C 0.83348289 0.00053850 0.83348289
+C2 0.91048546 0.08713894 0.91048546
+C 0.83322405 0.16657469 0.66657430
+C 0.91684864 0.25035752 0.74957641
+C 0.66654379 0.33340447 0.99985602
+C 0.75039993 0.41622885 0.08316950
+C 0.66687415 0.49975729 0.16665894
+C 0.75005301 0.58319109 0.24993176
+C 0.83427654 0.33231108 0.16638542
+C 0.91689915 0.41652052 0.24992639
+C 0.83346972 0.49983489 0.99998161
+C 0.91669677 0.58335107 0.08322304
+C 0.66702679 0.33309935 0.33309935
+C 0.75010768 0.41654604 0.41654604
+C 0.66672237 0.49997743 0.49997743
+C 0.75004203 0.58336242 0.58336242
+C 0.83336463 0.33320910 0.49986185
+C 0.91673106 0.41672856 0.58316778
+C 0.83336463 0.49986185 0.33320910
+C 0.91673106 0.58316778 0.41672856
+C 0.66669044 0.33323057 0.66669044
+C 0.74999600 0.41664480 0.74999600
+C 0.66666581 0.49995303 0.83331752
+C 0.74995219 0.58318248 0.91666536
+C 0.83331221 0.33322293 0.83331221
+C 0.91672376 0.41644973 0.91672376
+C 0.83331752 0.49995303 0.66666581
+C 0.91666536 0.58318248 0.74995219
+C 0.66614375 0.66614375 0.00008183
+C 0.74902978 0.74902978 0.08289904
+C 0.66657430 0.83322405 0.16657469
+C 0.74957641 0.91684864 0.25035752
+C 0.83322405 0.66657430 0.16657469
+C 0.91684864 0.74957641 0.25035752
+C 0.83348289 0.83348289 0.00053850
+C3 0.91048546 0.91048546 0.08713894
+C 0.66669044 0.66669044 0.33323057
+C 0.74999600 0.74999600 0.41664480
+C 0.66666581 0.83331752 0.49995303
+C 0.74995219 0.91666536 0.58318248
+C 0.83331752 0.66666581 0.49995303
+C 0.91666536 0.74995219 0.58318248
+C 0.83331221 0.83331221 0.33322293
+C 0.91672376 0.91672376 0.41644973
+C 0.66676564 0.66676564 0.66676564
+C 0.75009290 0.75009290 0.75009290
+C 0.66679851 0.83348831 0.83348831
+C 0.75027490 0.91667191 0.91667191
+C 0.83348831 0.66679851 0.83348831
+C 0.91667191 0.75027490 0.91667191
+C 0.83348831 0.83348831 0.66679851
+C 0.91667191 0.91667191 0.75027490
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+cat<span class="w"> </span>pw_singlet_3.in
+
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pw.x<span class="w"> </span>-i<span class="w"> </span>pw_singlet_3.in<span class="w"> </span>&gt;<span class="w"> </span>pw_singlet_3.out
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qeh5<span class="w"> </span>--prefix<span class="w"> </span>singlet_3<span class="w"> </span>--memory<span class="w"> </span>low<span class="w"> </span>&gt;<span class="w"> </span>zfs_singlet_3.out
+mv<span class="w"> </span>zfs.xml<span class="w"> </span>zfs_singlet_3.xml
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&amp;CONTROL
+calculation = &#39;scf&#39;
+pseudo_dir = &#39;./&#39;
+prefix = &#39;singlet_3&#39;
+/
+&amp;SYSTEM
+ibrav = 0
+ntyp = 5
+nat = 215
+tot_charge = -1.0
+tot_magnetization = 0.0
+starting_magnetization(1) = -0.125 ! C1
+starting_magnetization(2) = -0.125 ! C2
+starting_magnetization(3) =  0.25  ! C3
+starting_magnetization(4) =  0.0   ! C
+starting_magnetization(5) =  0.0   ! N
+nspin = 2
+nbnd = 628
+ecutwfc = 60.0
+/
+&amp;ELECTRONS
+diago_full_acc = .true.
+mixing_beta = 0.2
+/
+ATOMIC_SPECIES
+C1  12.01099968  C_ONCV_PBE-1.2.upf
+C2  12.01099968  C_ONCV_PBE-1.2.upf
+C3  12.01099968  C_ONCV_PBE-1.2.upf
+C   12.01099968  C_ONCV_PBE-1.2.upf
+N   14.00699997  N_ONCV_PBE-1.2.upf
+CELL_PARAMETERS angstrom
+10.704  0.000  0.000
+ 0.000 10.704  0.000
+ 0.000  0.000 10.704
+K_POINTS gamma
+ATOMIC_POSITIONS crystal
+N 0.09152860 0.09152860 0.09152860
+C 0.00406095 0.16656435 0.16656435
+C 0.08375956 0.25132100 0.25132100
+C 0.16656435 0.00406095 0.16656435
+C 0.25132100 0.08375956 0.25132100
+C 0.16656435 0.16656435 0.00406095
+C 0.25132100 0.25132100 0.08375956
+C 0.00008479 0.00008479 0.33283360
+C 0.08339786 0.08339786 0.41672965
+C 0.00001566 0.16656881 0.50004871
+C 0.08326671 0.24989560 0.58351323
+C 0.16656881 0.00001566 0.50004871
+C 0.24989560 0.08326671 0.58351323
+C 0.16713153 0.16713153 0.33408428
+C 0.25020487 0.25020487 0.41712458
+C 0.99984338 0.99984338 0.66702816
+C 0.08281135 0.08281135 0.75072909
+C 0.99895986 0.16485431 0.83461141
+C 0.08251591 0.24836734 0.91825974
+C 0.16485431 0.99895986 0.83461141
+C 0.24836734 0.08251591 0.91825974
+C 0.16622186 0.16622186 0.66720992
+C 0.24953177 0.24953177 0.75057394
+C 0.00008479 0.33283360 0.00008479
+C 0.08339786 0.41672965 0.08339786
+C 0.00001566 0.50004871 0.16656881
+C 0.08326671 0.58351323 0.24989560
+C 0.16713153 0.33408428 0.16713153
+C 0.25020487 0.41712458 0.25020487
+C 0.16656881 0.50004871 0.00001566
+C 0.24989560 0.58351323 0.08326671
+C 0.00027688 0.33386603 0.33386603
+C 0.08336456 0.41697495 0.41697495
+C 0.00001683 0.49998105 0.49998105
+C 0.08321204 0.58306345 0.58306345
+C 0.16670944 0.33337114 0.50028918
+C 0.24993513 0.41657415 0.58357284
+C 0.16670944 0.50028918 0.33337114
+C 0.24993513 0.58357284 0.41657415
+C 0.99985602 0.33340447 0.66654379
+C 0.08316950 0.41622885 0.75039993
+C 0.99998161 0.49983489 0.83346972
+C 0.08322304 0.58335107 0.91669677
+C 0.16638542 0.33231108 0.83427654
+C 0.24992639 0.41652052 0.91689915
+C 0.16665894 0.49975729 0.66687415
+C 0.24993176 0.58319109 0.75005301
+C 0.99984338 0.66702816 0.99984338
+C 0.08281135 0.75072909 0.08281135
+C 0.99895986 0.83461141 0.16485431
+C 0.08251591 0.91825974 0.24836734
+C 0.16622186 0.66720992 0.16622186
+C 0.24953177 0.75057394 0.24953177
+C 0.16485431 0.83461141 0.99895986
+C 0.24836734 0.91825974 0.08251591
+C 0.99985602 0.66654379 0.33340447
+C 0.08316950 0.75039993 0.41622885
+C 0.99998161 0.83346972 0.49983489
+C 0.08322304 0.91669677 0.58335107
+C 0.16665894 0.66687415 0.49975729
+C 0.24993176 0.75005301 0.58319109
+C 0.16638542 0.83427654 0.33231108
+C 0.24992639 0.91689915 0.41652052
+C 0.00008183 0.66614375 0.66614375
+C 0.08289904 0.74902978 0.74902978
+C 0.00053850 0.83348289 0.83348289
+C1 0.08713894 0.91048546 0.91048546
+C 0.16657469 0.66657430 0.83322405
+C 0.25035752 0.74957641 0.91684864
+C 0.16657469 0.83322405 0.66657430
+C 0.25035752 0.91684864 0.74957641
+C 0.33283360 0.00008479 0.00008479
+C 0.41672965 0.08339786 0.08339786
+C 0.33408428 0.16713153 0.16713153
+C 0.41712458 0.25020487 0.25020487
+C 0.50004871 0.00001566 0.16656881
+C 0.58351323 0.08326671 0.24989560
+C 0.50004871 0.16656881 0.00001566
+C 0.58351323 0.24989560 0.08326671
+C 0.33386603 0.00027688 0.33386603
+C 0.41697495 0.08336456 0.41697495
+C 0.33337114 0.16670944 0.50028918
+C 0.41657415 0.24993513 0.58357284
+C 0.49998105 0.00001683 0.49998105
+C 0.58306345 0.08321204 0.58306345
+C 0.50028918 0.16670944 0.33337114
+C 0.58357284 0.24993513 0.41657415
+C 0.33340447 0.99985602 0.66654379
+C 0.41622885 0.08316950 0.75039993
+C 0.33231108 0.16638542 0.83427654
+C 0.41652052 0.24992639 0.91689915
+C 0.49983489 0.99998161 0.83346972
+C 0.58335107 0.08322304 0.91669677
+C 0.49975729 0.16665894 0.66687415
+C 0.58319109 0.24993176 0.75005301
+C 0.33386603 0.33386603 0.00027688
+C 0.41697495 0.41697495 0.08336456
+C 0.33337114 0.50028918 0.16670944
+C 0.41657415 0.58357284 0.24993513
+C 0.50028918 0.33337114 0.16670944
+C 0.58357284 0.41657415 0.24993513
+C 0.49998105 0.49998105 0.00001683
+C 0.58306345 0.58306345 0.08321204
+C 0.33347050 0.33347050 0.33347050
+C 0.41673247 0.41673247 0.41673247
+C 0.33329711 0.50005503 0.50005503
+C 0.41664684 0.58334948 0.58334948
+C 0.50005503 0.33329711 0.50005503
+C 0.58334948 0.41664684 0.58334948
+C 0.50005503 0.50005503 0.33329711
+C 0.58334948 0.58334948 0.41664684
+C 0.33309935 0.33309935 0.66702679
+C 0.41654604 0.41654604 0.75010768
+C 0.33320910 0.49986185 0.83336463
+C 0.41672856 0.58316778 0.91673106
+C 0.49986185 0.33320910 0.83336463
+C 0.58316778 0.41672856 0.91673106
+C 0.49997743 0.49997743 0.66672237
+C 0.58336242 0.58336242 0.75004203
+C 0.33340447 0.66654379 0.99985602
+C 0.41622885 0.75039993 0.08316950
+C 0.33231108 0.83427654 0.16638542
+C 0.41652052 0.91689915 0.24992639
+C 0.49975729 0.66687415 0.16665894
+C 0.58319109 0.75005301 0.24993176
+C 0.49983489 0.83346972 0.99998161
+C 0.58335107 0.91669677 0.08322304
+C 0.33309935 0.66702679 0.33309935
+C 0.41654604 0.75010768 0.41654604
+C 0.33320910 0.83336463 0.49986185
+C 0.41672856 0.91673106 0.58316778
+C 0.49997743 0.66672237 0.49997743
+C 0.58336242 0.75004203 0.58336242
+C 0.49986185 0.83336463 0.33320910
+C 0.58316778 0.91673106 0.41672856
+C 0.33323057 0.66669044 0.66669044
+C 0.41664480 0.74999600 0.74999600
+C 0.33322293 0.83331221 0.83331221
+C 0.41644973 0.91672376 0.91672376
+C 0.49995303 0.66666581 0.83331752
+C 0.58318248 0.74995219 0.91666536
+C 0.49995303 0.83331752 0.66666581
+C 0.58318248 0.91666536 0.74995219
+C 0.66702816 0.99984338 0.99984338
+C 0.75072909 0.08281135 0.08281135
+C 0.66720992 0.16622186 0.16622186
+C 0.75057394 0.24953177 0.24953177
+C 0.83461141 0.99895986 0.16485431
+C 0.91825974 0.08251591 0.24836734
+C 0.83461141 0.16485431 0.99895986
+C 0.91825974 0.24836734 0.08251591
+C 0.66654379 0.99985602 0.33340447
+C 0.75039993 0.08316950 0.41622885
+C 0.66687415 0.16665894 0.49975729
+C 0.75005301 0.24993176 0.58319109
+C 0.83346972 0.99998161 0.49983489
+C 0.91669677 0.08322304 0.58335107
+C 0.83427654 0.16638542 0.33231108
+C 0.91689915 0.24992639 0.41652052
+C 0.66614375 0.00008183 0.66614375
+C 0.74902978 0.08289904 0.74902978
+C 0.66657430 0.16657469 0.83322405
+C 0.74957641 0.25035752 0.91684864
+C 0.83348289 0.00053850 0.83348289
+C2 0.91048546 0.08713894 0.91048546
+C 0.83322405 0.16657469 0.66657430
+C 0.91684864 0.25035752 0.74957641
+C 0.66654379 0.33340447 0.99985602
+C 0.75039993 0.41622885 0.08316950
+C 0.66687415 0.49975729 0.16665894
+C 0.75005301 0.58319109 0.24993176
+C 0.83427654 0.33231108 0.16638542
+C 0.91689915 0.41652052 0.24992639
+C 0.83346972 0.49983489 0.99998161
+C 0.91669677 0.58335107 0.08322304
+C 0.66702679 0.33309935 0.33309935
+C 0.75010768 0.41654604 0.41654604
+C 0.66672237 0.49997743 0.49997743
+C 0.75004203 0.58336242 0.58336242
+C 0.83336463 0.33320910 0.49986185
+C 0.91673106 0.41672856 0.58316778
+C 0.83336463 0.49986185 0.33320910
+C 0.91673106 0.58316778 0.41672856
+C 0.66669044 0.33323057 0.66669044
+C 0.74999600 0.41664480 0.74999600
+C 0.66666581 0.49995303 0.83331752
+C 0.74995219 0.58318248 0.91666536
+C 0.83331221 0.33322293 0.83331221
+C 0.91672376 0.41644973 0.91672376
+C 0.83331752 0.49995303 0.66666581
+C 0.91666536 0.58318248 0.74995219
+C 0.66614375 0.66614375 0.00008183
+C 0.74902978 0.74902978 0.08289904
+C 0.66657430 0.83322405 0.16657469
+C 0.74957641 0.91684864 0.25035752
+C 0.83322405 0.66657430 0.16657469
+C 0.91684864 0.74957641 0.25035752
+C 0.83348289 0.83348289 0.00053850
+C3 0.91048546 0.91048546 0.08713894
+C 0.66669044 0.66669044 0.33323057
+C 0.74999600 0.74999600 0.41664480
+C 0.66666581 0.83331752 0.49995303
+C 0.74995219 0.91666536 0.58318248
+C 0.83331752 0.66666581 0.49995303
+C 0.91666536 0.74995219 0.58318248
+C 0.83331221 0.83331221 0.33322293
+C 0.91672376 0.91672376 0.41644973
+C 0.66676564 0.66676564 0.66676564
+C 0.75009290 0.75009290 0.75009290
+C 0.66679851 0.83348831 0.83348831
+C 0.75027490 0.91667191 0.91667191
+C 0.83348831 0.66679851 0.83348831
+C 0.91667191 0.75027490 0.91667191
+C 0.83348831 0.83348831 0.66679851
+C 0.91667191 0.91667191 0.75027490
+</pre></div></div>
+</div>
+<p>From the XML outputs of PyZFS, we extract the magnetic dipolar interaction <span class="math notranslate nohighlight">\(\mathbf{d}\)</span> tensors of the singlet states.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_singlet</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">conf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;zfs_singlet_</span><span class="si">{</span><span class="n">conf</span><span class="si">}</span><span class="s2">.xml&quot;</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+    <span class="n">D_singlet</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;DTensor&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+    <span class="n">D_singlet</span> <span class="o">=</span> <span class="n">D_singlet</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">D_singlet</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">D_singlet</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># PyZFS internally assumes S = 1, so d = D / 2</span>
+    <span class="n">d_singlet</span><span class="p">[</span><span class="n">conf</span><span class="p">]</span> <span class="o">=</span> <span class="n">D_singlet</span> <span class="o">/</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="3-Compute-zero-field-splitting-with-correction-for-spin-contamination">
+<h2>3 Compute zero-field splitting with correction for spin contamination<a class="headerlink" href="#3-Compute-zero-field-splitting-with-correction-for-spin-contamination" title="Link to this heading"></a></h2>
+<p>Finally we build and diagonalize the spin decontaminated spin-spin ZFS tensor <span class="math notranslate nohighlight">\(\tilde{\mathbf{D}}^{\mathrm{SS}}\)</span>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">D_corrected</span> <span class="o">=</span> <span class="n">d_triplet</span> <span class="o">-</span> <span class="p">(</span><span class="n">d_singlet</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">d_singlet</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">d_singlet</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="mi">3</span>
+
+<span class="n">ev</span><span class="p">,</span> <span class="n">evc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">D_corrected</span><span class="p">)</span>
+
+<span class="c1"># For triplet states, compute D and E parameters:</span>
+<span class="c1"># Denote three eigenvalues as Dx, Dy, Dz: |Dz| &gt; |Dx| &gt; |Dy|</span>
+<span class="c1"># D = 3/2 Dz, E = 1/2(Dx - Dy)</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+<span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dz</span> <span class="o">=</span> <span class="n">ev</span><span class="p">[</span><span class="n">args</span><span class="p">]</span>
+<span class="n">ZFS_D_corrected</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">dz</span>
+<span class="n">ZFS_E_corrected</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">dx</span> <span class="o">-</span> <span class="n">dy</span><span class="p">)</span>
+
+<span class="c1"># Summarize results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uncorrected ZFS:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D = </span><span class="si">{</span><span class="n">ZFS_D</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E = </span><span class="si">{</span><span class="n">ZFS_E</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Corrected ZFS:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;D = </span><span class="si">{</span><span class="n">ZFS_D_corrected</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;E = </span><span class="si">{</span><span class="n">ZFS_E_corrected</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Uncorrected ZFS:
+D = 3033.97
+E = -0.68
+
+Corrected ZFS:
+D = 2544.28
+E = -0.59
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="c3h6_gpaw.html" class="btn btn-neutral float-left" title="Running PyZFS with GPAW" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Chicago.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

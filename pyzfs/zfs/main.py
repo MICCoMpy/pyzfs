@@ -183,7 +183,7 @@ class ZFSCalculation:
         # Sum over G vectors to get D tensor
         self.D[np.triu_indices(3)] = np.sum(self.Iglobal, axis=(0, 1))
         self.D = self.D + self.D.T - np.diag(self.D.diagonal())
-        self.ev, self.evc = np.linalg.eig(self.D)
+        self.ev, self.evc = np.linalg.eigh(self.D)
 
         # For triplet states, compute D and E parameters:
         # Denote three eigenvalues as Dx, Dy, Dz: |Dz| > |Dx| > |Dy|

@@ -40,6 +40,4 @@ jobs:
           examples/o2_qe_hdf5
           examples/c3h6_gpaw
           examples/c3h6_gpaw_ae
-          examples/diamond_nv_gpaw
-          examples/diamond_nv_gpaw_ae
         retention-days: 1

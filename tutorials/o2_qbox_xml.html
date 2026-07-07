@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running PyZFS with Qbox &mdash; pyzfs  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running PyZFS with Quantum ESPRESSO" href="o2_qe_hdf5.html" />
+    <link rel="prev" title="Tutorials" href="../tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pyzfs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Running PyZFS with Qbox</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#1-Command-line-interface">1 Command line interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#2-Python-library-interface">2 Python library interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#2.1-Load-PyZFS">2.1 Load PyZFS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#2.2-Construct-wavefunction-loader">2.2 Construct wavefunction loader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#2.3-Construct-ZFSCalculation">2.3 Construct ZFSCalculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#2.4-Perform-ZFS-calculation">2.4 Perform ZFS calculation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="o2_qe_hdf5.html">Running PyZFS with Quantum ESPRESSO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="c3h6_gpaw.html">Running PyZFS with GPAW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diamond_nv_qe_hdf5_correction.html">Correcting for spin contamination in zero-field splitting calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#scalability">Scalability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial.html#spin-decontamination">Spin decontamination</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyzfs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../tutorial.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Running PyZFS with Qbox</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/o2_qbox_xml.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Running-PyZFS-with-Qbox">
+<h1>Running PyZFS with Qbox<a class="headerlink" href="#Running-PyZFS-with-Qbox" title="Link to this heading"></a></h1>
+<p>This tutorial assumes that a density functional theory calculation with Qbox has already been completed.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> ../../examples/o2_qbox_xml
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+/pyzfs/examples/o2_qbox_xml
+</pre></div></div>
+</div>
+<section id="1-Command-line-interface">
+<h2>1 Command line interface<a class="headerlink" href="#1-Command-line-interface" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-bash notranslate"><div class="highlight"><pre><span></span>%%bash
+pyzfs<span class="w"> </span>--wfcfmt<span class="w"> </span>qbox<span class="w"> </span>--filename<span class="w"> </span>o2.xml
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PyZFS code 2.3
+2026-03-14 22:43:42
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pyzfs.run: setting working directory as &#34;.&#34;...
+
+QboxWavefunctionLoader: scanning current working directory &#34;/pyzfs/examples/o2_qbox_xml&#34;...
+
+Reading wavefunction from file o2.xml
+   nuwfcs = 7, ndwfcs = 5, nwfcs = 12
+     spin = up     band = 1     file = o2.xml
+     spin = up     band = 2     file = o2.xml
+     spin = up     band = 3     file = o2.xml
+     spin = up     band = 4     file = o2.xml
+     spin = up     band = 5     file = o2.xml
+     spin = up     band = 6     file = o2.xml
+     spin = up     band = 7     file = o2.xml
+     spin = down     band = 1     file = o2.xml
+     spin = down     band = 2     file = o2.xml
+     spin = down     band = 3     file = o2.xml
+     spin = down     band = 4     file = o2.xml
+     spin = down     band = 5     file = o2.xml
+
+System Overview:
+  Cell:
+{   &#39;G1&#39;: array([0.66497797, 0.        , 0.        ]),
+    &#39;G2&#39;: array([0.        , 0.66497797, 0.        ]),
+    &#39;G3&#39;: array([0.        , 0.        , 0.66497797]),
+    &#39;R1&#39;: array([9.448712, 0.      , 0.      ]),
+    &#39;R2&#39;: array([0.      , 9.448712, 0.      ]),
+    &#39;R3&#39;: array([0.      , 0.      , 9.448712]),
+    &#39;ase_cell&#39;: Atoms(symbols=&#39;O2&#39;, pbc=True, cell=[5.00006941616, 5.00006941616, 5.00006941616]),
+    &#39;omega&#39;: 843.5636071689257}
+  FFT Grid:
+{&#39;N&#39;: 4096, &#39;n1&#39;: 16, &#39;n2&#39;: 16, &#39;n3&#39;: 16}
+
+
+pyzfs.run: instantializing ZFSCalculation with following arguments...
+{ &#39;ae&#39;: False,
+  &#39;ae_reduce&#39;: 4,
+  &#39;comm&#39;: &lt;mpi4py.MPI.Intracomm object at 0x102a003b0&gt;,
+  &#39;memory&#39;: &#39;critical&#39;,
+  &#39;prefix&#39;: &#39;pwscf&#39;,
+  &#39;wfcloader&#39;: &lt;pyzfs.common.wfc.qboxloader.QboxWavefunctionLoader object at 0x102a4b260&gt;}
+
+
+  Zero Field Splitting Calculation Created...
+
+
+    ProcessGrid (square) info:
+    rank -&gt; (irow, icol) mapping:
+    [[0 0]]
+    (irow, icol) -&gt; rank mapping:
+    [[0]]
+    rank  onroot  nrow  ncol  size  irow  icol  is_active  rowcomm_rank  colcomm_rank
+      0    True      1    1    1    0    0    True    0    0
+
+  Creating I array...
+
+    DistributedMatrix info: I
+    irow  icol  nrow  ncol  m  mloc  mstart  mend  n  nloc  nstart  nend  val.shape
+      0    0    1    1    12    12    0    12    12    12    0    12     (12, 12, 6)
+    Index map:
+    [[[ 0 12 12  0 12 12]]]
+
+  Memory usage (on process 0):
+    iorb_psir_map 0.00 MB
+    iorb_rhog_map 0.00 MB
+    I          0.01 MB
+
+  Total memory usage (on process 0): 62.28 MB
+  Total memory usage (all processes): 62.28 MB
+  (process 0) 2 orbitals (16%) loaded in 0.000315s...
+  (process 0) 4 orbitals (33%) loaded in 0.000201s...
+  (process 0) 6 orbitals (50%) loaded in 0.000195s...
+  (process 0) 8 orbitals (66%) loaded in 0.000186s...
+  (process 0) 10 orbitals (83%) loaded in 0.000196s...
+  (process 0) 12 orbitals (100%) loaded in 0.000175s...
+
+  Memory usage (on process 0):
+    iorb_psir_map 0.38 MB
+    iorb_rhog_map 0.00 MB
+    I          0.01 MB
+
+  Total memory usage (on process 0): 63.03 MB
+  Total memory usage (all processes): 63.03 MB
+  Time elapsed for loading wfc: 0s
+
+  Computing dipole-dipole interaction tensor in G space...
+
+
+  Memory usage (on process 0):
+    iorb_psir_map 0.38 MB
+    iorb_rhog_map 0.00 MB
+    ddig       0.19 MB
+    I          0.01 MB
+
+  Total memory usage (on process 0): 63.61 MB
+  Total memory usage (all processes): 63.61 MB
+
+  Iterating over pairs...
+
+  (process 0) 1 pairs (1%) computed in 0.000017s...
+  (process 0) 2 pairs (2%) computed in 0.001132s...
+  (process 0) 3 pairs (3%) computed in 0.000422s...
+  (process 0) 4 pairs (5%) computed in 0.000346s...
+  (process 0) 5 pairs (6%) computed in 0.000336s...
+  (process 0) 6 pairs (7%) computed in 0.000335s...
+  (process 0) 7 pairs (8%) computed in 0.000468s...
+  (process 0) 8 pairs (10%) computed in 0.000331s...
+  (process 0) 9 pairs (11%) computed in 0.000327s...
+  (process 0) 10 pairs (12%) computed in 0.000326s...
+  (process 0) 11 pairs (14%) computed in 0.000325s...
+  (process 0) 12 pairs (15%) computed in 0.000324s...
+  (process 0) 13 pairs (16%) computed in 0.000002s...
+  (process 0) 14 pairs (17%) computed in 0.000329s...
+  (process 0) 15 pairs (19%) computed in 0.000330s...
+  (process 0) 16 pairs (20%) computed in 0.000328s...
+  (process 0) 17 pairs (21%) computed in 0.000328s...
+  (process 0) 18 pairs (23%) computed in 0.000326s...
+  (process 0) 19 pairs (24%) computed in 0.000323s...
+  (process 0) 20 pairs (25%) computed in 0.000721s...
+  (process 0) 21 pairs (26%) computed in 0.000334s...
+  (process 0) 22 pairs (28%) computed in 0.000329s...
+  (process 0) 23 pairs (29%) computed in 0.000324s...
+  (process 0) 24 pairs (30%) computed in 0.000001s...
+  (process 0) 25 pairs (32%) computed in 0.000326s...
+  (process 0) 26 pairs (33%) computed in 0.000324s...
+  (process 0) 27 pairs (34%) computed in 0.000328s...
+  (process 0) 28 pairs (35%) computed in 0.000326s...
+  (process 0) 29 pairs (37%) computed in 0.000325s...
+  (process 0) 30 pairs (38%) computed in 0.001191s...
+  (process 0) 31 pairs (39%) computed in 0.000327s...
+  (process 0) 32 pairs (41%) computed in 0.000326s...
+  (process 0) 33 pairs (42%) computed in 0.000324s...
+  (process 0) 34 pairs (43%) computed in 0.000002s...
+  (process 0) 35 pairs (44%) computed in 0.000324s...
+  (process 0) 36 pairs (46%) computed in 0.000784s...
+  (process 0) 37 pairs (47%) computed in 0.000987s...
+  (process 0) 38 pairs (48%) computed in 0.000807s...
+  (process 0) 39 pairs (50%) computed in 0.000796s...
+  (process 0) 40 pairs (51%) computed in 0.000802s...
+  (process 0) 41 pairs (52%) computed in 0.000789s...
+  (process 0) 42 pairs (53%) computed in 0.000795s...
+  (process 0) 43 pairs (55%) computed in 0.000005s...
+  (process 0) 44 pairs (56%) computed in 0.000786s...
+  (process 0) 45 pairs (57%) computed in 0.000794s...
+  (process 0) 46 pairs (58%) computed in 0.000786s...
+  (process 0) 47 pairs (60%) computed in 0.000791s...
+  (process 0) 48 pairs (61%) computed in 0.000784s...
+  (process 0) 49 pairs (62%) computed in 0.000788s...
+  (process 0) 50 pairs (64%) computed in 0.000554s...
+  (process 0) 51 pairs (65%) computed in 0.000008s...
+  (process 0) 52 pairs (66%) computed in 0.000360s...
+  (process 0) 53 pairs (67%) computed in 0.000348s...
+  (process 0) 54 pairs (69%) computed in 0.000345s...
+  (process 0) 55 pairs (70%) computed in 0.000337s...
+  (process 0) 56 pairs (71%) computed in 0.000708s...
+  (process 0) 57 pairs (73%) computed in 0.000333s...
+  (process 0) 58 pairs (74%) computed in 0.000003s...
+  (process 0) 59 pairs (75%) computed in 0.000332s...
+  (process 0) 60 pairs (76%) computed in 0.000333s...
+  (process 0) 61 pairs (78%) computed in 0.000334s...
+  (process 0) 62 pairs (79%) computed in 0.000334s...
+  (process 0) 63 pairs (80%) computed in 0.000332s...
+  (process 0) 64 pairs (82%) computed in 0.000004s...
+  (process 0) 65 pairs (83%) computed in 0.000332s...
+  (process 0) 66 pairs (84%) computed in 0.000340s...
+  (process 0) 67 pairs (85%) computed in 0.000332s...
+  (process 0) 68 pairs (87%) computed in 0.000331s...
+  (process 0) 69 pairs (88%) computed in 0.000003s...
+  (process 0) 70 pairs (89%) computed in 0.000329s...
+  (process 0) 71 pairs (91%) computed in 0.000330s...
+  (process 0) 72 pairs (92%) computed in 0.000328s...
+  (process 0) 73 pairs (93%) computed in 0.000001s...
+  (process 0) 74 pairs (94%) computed in 0.000329s...
+  (process 0) 75 pairs (96%) computed in 0.000328s...
+  (process 0) 76 pairs (97%) computed in 0.000002s...
+  (process 0) 77 pairs (98%) computed in 0.000330s...
+  (process 0) 78 pairs (100%) computed in 0.000001s...
+
+
+  Total D tensor (MHz):
+  [[-8.35479598e+03  6.04449841e-01  2.29018026e-01]
+   [ 6.04449841e-01 -8.35479606e+03  1.24204179e-01]
+   [ 2.29018026e-01  1.24204179e-01  1.67095920e+04]]
+  D eigenvalues (MHz):
+  [-8355.40047224 -8354.19157483 16709.59204707]
+  D eigenvectors:
+  [ 7.07082904e-01 -7.07130657e-01 -2.95655974e-06]
+  [-7.07130657e-01 -7.07082904e-01  9.96530782e-06]
+  [9.13730752e-06 4.95562477e-06 1.00000000e+00]
+  Dx, Dy, Dz (|Dz| &gt; |Dx| &gt; |Dy|) (MHz):
+   -8355.400472244126 -8354.191574829296 16709.59204707317
+  Scalar D = 25064.39 MHz, E = -0.60 MHz
+  Time elapsed for pair iteration: 0s
+</pre></div></div>
+</div>
+</section>
+<section id="2-Python-library-interface">
+<h2>2 Python library interface<a class="headerlink" href="#2-Python-library-interface" title="Link to this heading"></a></h2>
+<section id="2.1-Load-PyZFS">
+<h3>2.1 Load PyZFS<a class="headerlink" href="#2.1-Load-PyZFS" title="Link to this heading"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyzfs.common.wfc.qboxloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">QboxWavefunctionLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyzfs.zfs.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZFSCalculation</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="2.2-Construct-wavefunction-loader">
+<h3>2.2 Construct wavefunction loader<a class="headerlink" href="#2.2-Construct-wavefunction-loader" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wfcloader</span> <span class="o">=</span> <span class="n">QboxWavefunctionLoader</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;o2.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+QboxWavefunctionLoader: scanning current working directory &#34;/pyzfs/examples/o2_qbox_xml&#34;...
+
+Reading wavefunction from file o2.xml
+   nuwfcs = 7, ndwfcs = 5, nwfcs = 12
+     spin = up     band = 1     file = o2.xml
+     spin = up     band = 2     file = o2.xml
+     spin = up     band = 3     file = o2.xml
+     spin = up     band = 4     file = o2.xml
+     spin = up     band = 5     file = o2.xml
+     spin = up     band = 6     file = o2.xml
+     spin = up     band = 7     file = o2.xml
+     spin = down     band = 1     file = o2.xml
+     spin = down     band = 2     file = o2.xml
+     spin = down     band = 3     file = o2.xml
+     spin = down     band = 4     file = o2.xml
+     spin = down     band = 5     file = o2.xml
+
+System Overview:
+  Cell:
+{   &#39;G1&#39;: array([0.66497797, 0.        , 0.        ]),
+    &#39;G2&#39;: array([0.        , 0.66497797, 0.        ]),
+    &#39;G3&#39;: array([0.        , 0.        , 0.66497797]),
+    &#39;R1&#39;: array([9.448712, 0.      , 0.      ]),
+    &#39;R2&#39;: array([0.      , 9.448712, 0.      ]),
+    &#39;R3&#39;: array([0.      , 0.      , 9.448712]),
+    &#39;ase_cell&#39;: Atoms(symbols=&#39;O2&#39;, pbc=True, cell=[5.00006941616, 5.00006941616, 5.00006941616]),
+    &#39;omega&#39;: 843.5636071689257}
+  FFT Grid:
+{&#39;N&#39;: 4096, &#39;n1&#39;: 16, &#39;n2&#39;: 16, &#39;n3&#39;: 16}
+</pre></div></div>
+</div>
+</section>
+<section id="2.3-Construct-ZFSCalculation">
+<h3>2.3 Construct ZFSCalculation<a class="headerlink" href="#2.3-Construct-ZFSCalculation" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zfscalc</span> <span class="o">=</span> <span class="n">ZFSCalculation</span><span class="p">(</span><span class="n">wfcloader</span><span class="o">=</span><span class="n">wfcloader</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+
+  Zero Field Splitting Calculation Created...
+
+
+    ProcessGrid (square) info:
+    rank -&gt; (irow, icol) mapping:
+    [[0 0]]
+    (irow, icol) -&gt; rank mapping:
+    [[0]]
+    rank  onroot  nrow  ncol  size  irow  icol  is_active  rowcomm_rank  colcomm_rank
+      0    True      1    1    1    0    0    True    0    0
+
+  Creating I array...
+
+    DistributedMatrix info: I
+    irow  icol  nrow  ncol  m  mloc  mstart  mend  n  nloc  nstart  nend  val.shape
+      0    0    1    1    12    12    0    12    12    12    0    12     (12, 12, 6)
+    Index map:
+    [[[ 0 12 12  0 12 12]]]
+
+  Memory usage (on process 0):
+    iorb_psir_map 0.00 MB
+    iorb_rhog_map 0.00 MB
+    I          0.01 MB
+
+  Total memory usage (on process 0): 96.16 MB
+  Total memory usage (all processes): 96.16 MB
+</pre></div></div>
+</div>
+</section>
+<section id="2.4-Perform-ZFS-calculation">
+<h3>2.4 Perform ZFS calculation<a class="headerlink" href="#2.4-Perform-ZFS-calculation" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">zfscalc</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+  (process 0) 2 orbitals (16%) loaded in 0.004308s...
+  (process 0) 4 orbitals (33%) loaded in 0.003059s...
+  (process 0) 6 orbitals (50%) loaded in 0.001334s...
+  (process 0) 8 orbitals (66%) loaded in 0.001345s...
+  (process 0) 10 orbitals (83%) loaded in 0.001702s...
+  (process 0) 12 orbitals (100%) loaded in 0.001397s...
+
+  Memory usage (on process 0):
+    iorb_psir_map 0.38 MB
+    iorb_rhog_map 0.00 MB
+    I          0.01 MB
+
+  Total memory usage (on process 0): 97.00 MB
+  Total memory usage (all processes): 97.00 MB
+  Time elapsed for loading wfc: 0s
+
+  Computing dipole-dipole interaction tensor in G space...
+
+
+  Memory usage (on process 0):
+    iorb_psir_map 0.38 MB
+    iorb_rhog_map 0.00 MB
+    ddig       0.19 MB
+    I          0.01 MB
+
+  Total memory usage (on process 0): 97.91 MB
+  Total memory usage (all processes): 97.91 MB
+
+  Iterating over pairs...
+
+  (process 0) 1 pairs (1%) computed in 0.000040s...
+  (process 0) 2 pairs (2%) computed in 0.011990s...
+  (process 0) 3 pairs (3%) computed in 0.001393s...
+  (process 0) 4 pairs (5%) computed in 0.003238s...
+  (process 0) 5 pairs (6%) computed in 0.003851s...
+  (process 0) 6 pairs (7%) computed in 0.001558s...
+  (process 0) 7 pairs (8%) computed in 0.003500s...
+  (process 0) 8 pairs (10%) computed in 0.001206s...
+  (process 0) 9 pairs (11%) computed in 0.000735s...
+  (process 0) 10 pairs (12%) computed in 0.000854s...
+  (process 0) 11 pairs (14%) computed in 0.000749s...
+  (process 0) 12 pairs (15%) computed in 0.000895s...
+  (process 0) 13 pairs (16%) computed in 0.000010s...
+  (process 0) 14 pairs (17%) computed in 0.000733s...
+  (process 0) 15 pairs (19%) computed in 0.000779s...
+  (process 0) 16 pairs (20%) computed in 0.001832s...
+  (process 0) 17 pairs (21%) computed in 0.001529s...
+  (process 0) 18 pairs (23%) computed in 0.002410s...
+  (process 0) 19 pairs (24%) computed in 0.000934s...
+  (process 0) 20 pairs (25%) computed in 0.000796s...
+  (process 0) 21 pairs (26%) computed in 0.002261s...
+  (process 0) 22 pairs (28%) computed in 0.001467s...
+  (process 0) 23 pairs (29%) computed in 0.001356s...
+  (process 0) 24 pairs (30%) computed in 0.000017s...
+  (process 0) 25 pairs (32%) computed in 0.000904s...
+  (process 0) 26 pairs (33%) computed in 0.000693s...
+  (process 0) 27 pairs (34%) computed in 0.000679s...
+  (process 0) 28 pairs (35%) computed in 0.000645s...
+  (process 0) 29 pairs (37%) computed in 0.000635s...
+  (process 0) 30 pairs (38%) computed in 0.000641s...
+  (process 0) 31 pairs (39%) computed in 0.000624s...
+  (process 0) 32 pairs (41%) computed in 0.000622s...
+  (process 0) 33 pairs (42%) computed in 0.000623s...
+  (process 0) 34 pairs (43%) computed in 0.000007s...
+  (process 0) 35 pairs (44%) computed in 0.000634s...
+  (process 0) 36 pairs (46%) computed in 0.000621s...
+  (process 0) 37 pairs (47%) computed in 0.000624s...
+  (process 0) 38 pairs (48%) computed in 0.000623s...
+  (process 0) 39 pairs (50%) computed in 0.000620s...
+  (process 0) 40 pairs (51%) computed in 0.000624s...
+  (process 0) 41 pairs (52%) computed in 0.000620s...
+  (process 0) 42 pairs (53%) computed in 0.002299s...
+  (process 0) 43 pairs (55%) computed in 0.000011s...
+  (process 0) 44 pairs (56%) computed in 0.000541s...
+  (process 0) 45 pairs (57%) computed in 0.001330s...
+  (process 0) 46 pairs (58%) computed in 0.000479s...
+  (process 0) 47 pairs (60%) computed in 0.000569s...
+  (process 0) 48 pairs (61%) computed in 0.000468s...
+  (process 0) 49 pairs (62%) computed in 0.000563s...
+  (process 0) 50 pairs (64%) computed in 0.000467s...
+  (process 0) 51 pairs (65%) computed in 0.000006s...
+  (process 0) 52 pairs (66%) computed in 0.000559s...
+  (process 0) 53 pairs (67%) computed in 0.000467s...
+  (process 0) 54 pairs (69%) computed in 0.000542s...
+  (process 0) 55 pairs (70%) computed in 0.000448s...
+  (process 0) 56 pairs (71%) computed in 0.000538s...
+  (process 0) 57 pairs (73%) computed in 0.000446s...
+  (process 0) 58 pairs (74%) computed in 0.000005s...
+  (process 0) 59 pairs (75%) computed in 0.000535s...
+  (process 0) 60 pairs (76%) computed in 0.000466s...
+  (process 0) 61 pairs (78%) computed in 0.000538s...
+  (process 0) 62 pairs (79%) computed in 0.000452s...
+  (process 0) 63 pairs (80%) computed in 0.000510s...
+  (process 0) 64 pairs (82%) computed in 0.000005s...
+  (process 0) 65 pairs (83%) computed in 0.000422s...
+  (process 0) 66 pairs (84%) computed in 0.000508s...
+  (process 0) 67 pairs (85%) computed in 0.000425s...
+  (process 0) 68 pairs (87%) computed in 0.000509s...
+  (process 0) 69 pairs (88%) computed in 0.000005s...
+  (process 0) 70 pairs (89%) computed in 0.001238s...
+  (process 0) 71 pairs (91%) computed in 0.000504s...
+  (process 0) 72 pairs (92%) computed in 0.000418s...
+  (process 0) 73 pairs (93%) computed in 0.000004s...
+  (process 0) 74 pairs (94%) computed in 0.000502s...
+  (process 0) 75 pairs (96%) computed in 0.000416s...
+  (process 0) 76 pairs (97%) computed in 0.000004s...
+  (process 0) 77 pairs (98%) computed in 0.000501s...
+  (process 0) 78 pairs (100%) computed in 0.000005s...
+
+
+  Total D tensor (MHz):
+  [[-8.35479598e+03  6.04449841e-01  2.29018026e-01]
+   [ 6.04449841e-01 -8.35479606e+03  1.24204179e-01]
+   [ 2.29018026e-01  1.24204179e-01  1.67095920e+04]]
+  D eigenvalues (MHz):
+  [-8355.40047224 -8354.19157483 16709.59204707]
+  D eigenvectors:
+  [ 7.07082904e-01 -7.07130657e-01 -2.95655974e-06]
+  [-7.07130657e-01 -7.07082904e-01  9.96530782e-06]
+  [9.13730752e-06 4.95562477e-06 1.00000000e+00]
+  Dx, Dy, Dz (|Dz| &gt; |Dx| &gt; |Dy|) (MHz):
+   -8355.40047224412 -8354.19157482929 16709.59204707317
+  Scalar D = 25064.39 MHz, E = -0.60 MHz
+  Time elapsed for pair iteration: 0s
+</pre></div></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorial.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="o2_qe_hdf5.html" class="btn btn-neutral float-right" title="Running PyZFS with Quantum ESPRESSO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Chicago.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
